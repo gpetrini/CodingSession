@@ -1,0 +1,32 @@
+
+# ignore every file
+*.*
+
+# except gitignore, readme, do and other files
+!.gitignore
+!README.md
+!*.do
+!*.md
+!*.csv
+!*.py
+!*.org
+!*.R
+!*.Rmd
+!*.tex
+!*.txt
+!*.doc
+!*.docx
+!*.odt
+!*.odf
+!*.bib
+!*.sty
+!*.css
+!*.lsd
+!*.h
+!*.cpp
+.*/log.txt
+.Rproj.user
+!*.sa
+*.res.gz
+*.log
+!*.sh

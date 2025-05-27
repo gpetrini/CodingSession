@@ -1,0 +1,16 @@
+#+title: Coding sessions
+#+subtitle: Agent-based models in Economics: theory, toolkit and policy laboratories
+
+* About these lectures
+
+* Presentations
+
+- Model introdution and LSD familiarization
+- Writing equations on LSD
+- Visualizing results in R and a primer on sensitivity analysis
+
+* Codes
+
+- Final code: sample.cpp
+- Coding01: NW.cpp
+- Coding02: NW.R

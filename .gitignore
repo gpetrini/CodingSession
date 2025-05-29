@@ -30,3 +30,6 @@
 *.res.gz
 *.log
 !*.sh
+
+*LSD
+*lsdNW

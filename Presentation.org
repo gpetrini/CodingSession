@@ -1,0 +1,574 @@
+#+OPTIONS: H:2 toc: ':t |: t
+#+TITLE: Coding session
+#+SUBTITLE: Nelson and Winter (1982) Dynamic competition and technological progress
+#+AUTHOR: Gabriel Petrini
+#+DATE: July, 2025
+#+email: gpetrinidasilveira@gmail.com
+#+BIBLIOGRAPHY: ~/Org/zotero_refs.bib
+#+CITE_EXPORT: biblatex authoryear
+#+language: en
+
+* Main cpp file :noexport:
+
+
+#+name: main-cpp
+#+begin_src cpp :eval no :noweb yes :main no :tangle ./Industry_SummerSchool/fun_complete.cpp
+// Script created using tangle and noweb features of org-mode
+
+#include "fun_head_fast.h"
+
+MODELBEGIN
+
+
+<<EQ-init>>
+
+<<EQ-a>>
+
+<<EQ-s>>
+
+<<EQ-exit>>
+
+<<EQ-aAvg>>
+
+<<EQ-entry-exit>>
+
+<<EQ-hhi>>
+
+MODELEND
+
+
+void close_sim(void)
+{
+
+}
+#+end_src
+
+* Beamer specific settings :ignore:noexport:
+
+#+LATEX_HEADER: \usepackage{caption, subcaption, csquotes, amssymb, xcolor}
+#+LATEX_HEADER: \usepackage[english]{babel}
+#+beamer_frame_level: 1
+#+startup: beamer
+#+latex_class_options: [bigger,aspectratio=169]
+# #+BEAMER_THEME: Dresden
+#+BEAMER_THEME: Pittsburgh
+#+BEAMER_COLOR_THEME: beaver
+#+LATEX_HEADER: \titlegraphic{\includesvg[height=1cm]{./figs/IE_Unicamp}\hspace*{1.25cm}\includesvg[height=1cm]{./figs/SSSA}\hspace*{1.25cm} \includesvg[height=1cm]{./figs/YSI}}
+#+LATEX_HEADER: \AtBeginSection[]{
+#+LATEX_HEADER:   \begin{frame}{Outline}
+#+LATEX_HEADER:     \tableofcontents[currentsection]
+#+LATEX_HEADER:   \end{frame}
+#+LATEX_HEADER: }
+
+* Pacotes :noexport:ignore:
+
+
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{amsfonts}
+#+LATEX_HEADER: \usepackage{amssymb}
+#+LATEX_HEADER: \usepackage{multicol}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage{textpos}
+#+LATEX_HEADER: \usepackage{caption}
+#+LATEX_HEADER: \usepackage{subfig}
+#+LATEX_HEADER: \usepackage{svg}
+#+LATEX_HEADER: \usepackage{pgfpages}
+#+LATEX_HEADER: \usepackage{epstopdf}
+#+LATEX_HEADER: \epstopdfsetup{update} % only regenerate if changed
+#+LATEX_HEADER: \DeclareGraphicsRule{.eps}{pdf}{.pdf}{`epstopdf #1}
+#+latex_header: \usepackage{minted}
+#+latex_header: \usepackage{tikz}
+#+latex_header: \usetikzlibrary{arrows.meta, positioning, shapes}
+
+
+
+* Introduction
+
+** Objectives
+
+In all blocks, we will
+
+1. Understand the overall structure of [cite/t:@dosi_2017_footprint]  model
+2. Understand how LSD works
+3. Implement the theoretical model on LSD
+4. Analyse the model results on LSD
+
+** Structure of the sessions
+
+- Session 1 :: Presents the general structure of the model and of LSD
+- Session 2 :: Write model equations on LSD
+- Session 3 :: Analysis of results
+
+** Repository structure
+
+This presentation can be found on this (LINK) repository. In addition:
+
+- Final.cpp :: Complete equation file for reference
+- Coding.cpp :: Script to start with for LSD coding
+- Coding.lsd :: Model structure file
+- Coding.sa :: Sensitvity Analysis file
+- Coding.R :: R script for generating plots
+
+*Important:* Clone this folder under =LSD/Work/SummerSchool/=
+
+*** Missed something?
+
+=Final.cpp= contains the complete equation file for reference.
+
+
+* Session 1
+** Theoretical model :ignore:
+
+#+include: "Model.org" :level 2
+
+
+* Session 2
+
+** Where we are and to where we go?
+
+** Technicals :ignore:
+
+** C++ for LSD I
+
+LSD adds macros to =C++=.
+As a consequence, some basic knowledge on =C++= is usefull.
+What we need to know here?
+
+*** In python
+    :PROPERTIES:
+    :BEAMER_col: 0.4
+    :BEAMER_env: block
+    :END:
+
+#+begin_example python
+x = 5 # A comment
+y = 2.5
+## We do not need to
+## look at pointers
+#+end_example
+
+
+*** In C++
+    :PROPERTIES:
+    :BEAMER_col: 0.4
+    :BEAMER_env: block
+    :END:
+
+#+begin_example cpp
+int x = 5; // A comment
+double y = 2.5;
+object *agent; // Latter
+#+end_example
+
+*** Compilation
+
+Different from python and R, we need to *compile* our code before using it.
+
+** C++ for LSD II
+
+To avoid initializing everything, LSD has some already initialized variables:
+
+#+begin_example cpp
+v[0] = 10; // We can assing number to
+v[1] = 50; // a vector (always available)
+T; // Current simulation time
+i = 1; // i,h,j,k can be used for integers
+cur; cur1; // Pre-allocated pointers
+#+end_example
+
+Those are *local variables* that we can use on equations.
+
+
+*** Debbuging
+
+LSD has an internal debbuger that allow us to look to local variables on the fly.
+
+** Macros I
+
+#+begin_src python :results output graphics file :file ./figs/Macros_LSD.pdf :exports results
+import matplotlib.pyplot as plt
+
+# Use LaTeX-style text rendering
+plt.rcParams["text.usetex"] = False
+plt.rcParams["font.family"] = "monospace"
+
+fig, ax = plt.subplots(figsize=(10, 2))
+ax.axis("off")
+
+# The main syntax string
+text = '*LS(POS, "...", LAG)'
+
+# Add the syntax string in the center
+ax.text(0.5, 0.5, text, fontsize=24, ha="center", va="center", color="goldenrod")
+
+# Annotated segments
+segments = {
+    "Operation": {
+        "text": "Macro",
+        "xytext": (0.15, 0.8),
+        "xy": (0.3, 0.53),
+        "color": "orange",
+    },
+    "Lag (optional)": {
+        "text": "L",
+        "xytext": (0.65, 0.2),
+        "xy": (0.65, 0.45),
+        "color": "royalblue",
+    },
+    "Obj (optional)": {
+        "text": "S",
+        "xytext": (0.4, 0.85),
+        "xy": (0.4, 0.575),
+        "color": "purple",
+    },
+    "Name (mandatory)": {
+        "text": "Equation name",
+        "xytext": (0.6, 0.85),
+        "xy": (0.55, 0.52),
+        "color": "seagreen",
+    },
+}
+
+results = {
+    "Value": {
+        "text": "Value",
+        "xytext": (0.9, 0.85),
+        "xy": (0.7, 0.52),
+        "color": "red",
+    },
+    "Pointer": {
+        "text": "Pointer",
+        "xytext": (0.9, 0.5),
+        "xy": (0.7, 0.52),
+        "color": "brown",
+    },
+    "Overwrites": {
+        "text": "Overwrites",
+        "xytext": (0.9, 0.125),
+        "xy": (0.7, 0.52),
+        "color": "gray",
+    },
+}
+
+# Draw arrows and labels
+for label, props in segments.items():
+    ax.annotate(
+        label,
+        xy=props["xy"],
+        xytext=props["xytext"],
+        textcoords="axes fraction",
+        arrowprops=dict(arrowstyle="->", color=props["color"], lw=1.5),
+        fontsize=14,
+        color=props["color"],
+        ha="center",
+    )
+
+for label, props in results.items():
+    ax.annotate(
+        label,
+        xy=props["xy"],
+        xytext=props["xytext"],
+        textcoords="axes fraction",
+        arrowprops=dict(arrowstyle="<-", color=props["color"], lw=1.5),
+        fontsize=14,
+        color=props["color"],
+        ha="center",
+    )
+
+plt.tight_layout()
+#+end_src
+
+#+caption: General structure of most LSD macros
+#+RESULTS:
+[[file:./figs/Macros_LSD.pdf]]
+
+Examples:
+- VLS(POS, "NAME", 1) :: Returns the value of variable =NAME= at lag =1= at position =POS=
+- SUMS(POS, "NAME") :: Sums the value of variable =NAME= at position =POS=
+- SEARCHS(PARENT, "AGT") :: Searches for agent =AGT= starting from =PARENT=
+- WRITES(POS, "NAME", 1) :: Overwrites variable =NAME= at lag =1= at position =POS=
+
+
+** Macros II
+
+
+#+caption: Other LSD macros
+[[file:figs/LSD_Macros_ScreenShot.png]]
+
+** Simple example I
+
+How can we write the following equation using LSD syntax?
+
+\[X_{t} = X_{t-1} + m\]
+
+#+begin_src cpp :eval no
+EQUATION("X") // This is a one line comment
+/*
+This is a long comment
+*/
+v[0] = VL("X",1); //past value of X, lagged of 1 period
+v[1] = V("m"); //current value of m (variable or parameter)
+v[2] = v[0] + v[1]; // v[n] are local variables
+RESULT(v[2]) // Specify the output of the function
+#+end_src
+
+*** Variable or parameter?
+
+As a rule of thumb, variables have an =EQUATION= associated, parameters do not.
+
+
+** Simple example II
+
+How can we write the following equation using LSD syntax?
+
+\[Y_{t} = \sum_{i=1}^{n} X_{n,t} + W_{n,t}\]
+
+
+#+begin_src cpp :eval no
+EQUATION("Y")
+v[0] = 0; // Initialize the Accumulation
+CYCLE(cur, "Firm") { // Similar to a for-loop in other languages
+    v[1] = VS(cur, "X"); // cur points to a "Firm" object
+    v[2] = VS(cur, "W"); // cur is a locally defined pointer
+    v[3] = v[1] + v[2];
+    v[0] = v[0] + v[3];
+}
+RESULT(v[0])
+#+end_src
+
+** Equation file
+
+Any equation file (=.cpp=) must contain the following text:
+#+begin_src cpp :eval no :tangle ./Industry_SummerSchool/fun_industry.cpp :main no
+// File created using org-mode tangle feature.
+#include "fun_head.h" // This is mandatory
+
+MODELBEGIN
+
+// Your code goes here
+
+MODELEND
+void close_sim(void) {}
+#+end_src
+
+In our session, we will copy-and-paste the initialization equation and continue from there.
+
+** Other files
+
+Besides the equation files (=.cpp= or =.h=), LSD defines the model structures on a different file (extension =.lsd=).
+This special file has:
+
+- Variables and parameters names
+- Model structure (where elements are)
+- Initial and parameter values
+- Simulation settings
+- Number of objects
+- Variables to plot, analyse, debug, etc
+
+*** LSD and OOP
+
+This structure ensure the modeler to think in terms of data structure.
+
+
+** Structure of NW model
+
+[[file:figs/NW_Structure.png]]
+
+** Simulation pipeline
+
+Whenever running a model on LSD, we need to:
+
+1. Design a model (on paper);
+2. Write the code implementing the equation;
+3. Define the model structure and initialization;
+4. Run the simulation;
+5. Analyse the results.
+
+
+** Main equations :ignore:
+
+** Memo: Equations
+#+include: "Model.org::*Equations" :only-contents t
+
+
+** Firm-level productivity (\(a_{i}\)_{})
+
+#+begin_export latex
+\begin{equation}
+a_{i,t} = a_{i,t-1}\cdot (1 + \theta_{i,t})
+\end{equation}
+#+end_export
+
+#+name: EQ-a
+#+begin_src cpp :eval no :noweb yes
+EQUATION("a")
+// Firm knowledge/productivity
+v[0] = CURRENT;
+v[1] = V("eta");
+v[2] = V("beta1");
+v[3] = V("beta2");
+v[4] = beta(v[2], v[3]);
+v[5] = v[0] * (1 + v[1] * v[4]);
+RESULT(v[5])
+#+end_src
+
+
+** Market-share (\(s_{i}\))
+
+#+begin_export latex
+\begin{equation}
+s_{i,t} = s_{i,t-1} \cdot \left( 1 + A\cdot\frac{a_{i,t} - \bar{a}_{t}}{\bar{a}_{t}}\right)
+\end{equation}
+#+end_export
+
+
+#+name: EQ-s
+#+begin_src cpp :eval no :noweb yes
+EQUATION("s")
+// Firm size/market share
+v[0] = CURRENT;
+v[1] = V("A");
+v[2] = V("a");
+v[3] = V("aAvg");
+v[4] = (v[2] - v[3])/v[3];
+v[5] = v[0] * (1 + v[1] * v[4]);
+RESULT(v[5])
+#+end_src
+
+** Exit condition
+
+
+#+name: EQ-exit
+#+begin_src cpp :eval no :noweb yes
+EQUATION("exit_decision")
+
+v[0] = V("s"); v[1] = V("sMin");
+// update entrant firm productivity and market share
+if (v[0] < v[1]) {
+  v[2] = V("eta"); v[3] = V("beta1"); v[4] = V("beta2");
+  v[5] = beta(v[3], v[4]);
+  v[6] = V("aAvg");
+  v[7] = v[6] * (1 + v[2] * v[5]);
+  WRITE( "a", v[7] );
+  WRITE( "s", 1 / COUNT( "Firm" ) );
+}
+RESULT(0)
+#+end_src
+
+** Market-level Productivity (Weighted) Average (\(\bar{a_{t}}\))
+
+#+begin_export latex
+\begin{equation}
+\bar{a}_{t} =  \sum_{i=1}^{NF} s_{i, t-1}\cdot a_{i,t}
+\end{equation}
+#+end_export
+
+
+#+name: EQ-aAvg
+#+begin_src cpp :eval no :noweb yes
+EQUATION( "aAvg" )
+// Mean knowledge/productivity
+
+v[0] = 0;        // accumulator
+CYCLE(cur, "Firm") {
+  v[1] = VLS( cur, "s", 1 );
+  v[2] = VS( cur, "a" );
+  v[3] = v[1] * v[2];
+  v[0] += v[3] ;
+}
+RESULT( v[0] )
+#+end_src
+
+
+** Entry-Exit condition
+
+
+#+name: EQ-Entry-Exit
+#+begin_src cpp :eval no :noweb yes
+EQUATION( "exit_entry" )
+// Trigger market-wise exit-entry dynamics and re-scale shares
+V( "HHI" ); // first, compute HH index before exits
+
+// second, ensure firms have decided on exit
+CYCLE(cur, "Firm") {VS( cur, "exit_decision" );}
+
+v[0] = 1 / SUM( "s" ); // factor to scale back to sum = 1
+CYCLE(cur, "Firm") { // third, rescale market shares after exits
+  v[1] = VS( cur, "s" );
+  v[2] = v[0] * v[1];
+  WRITES( cur, "s", v[2]);
+}
+RESULT( SUM("s") )
+#+end_src
+
+
+** Herfindahl-Hirschman concentration index (\(HHI\))
+
+#+begin_export latex
+\begin{equation}
+HHI_{t} = \sum_{i=1}^{NF} (s_{i})^2
+\end{equation}
+#+end_export
+
+
+#+name: EQ-hhi
+#+begin_src cpp :eval no :noweb yes
+EQUATION( "HHI" )
+// Herfindahl-Hirschman concentration index
+v[0] = WHTAVE( "s", "s" );
+RESULT( v[0] )
+#+end_src
+
+*** Note on WHTAVE(LS)
+
+=WHTAVE= (weighed average, not used here in the strict sense) computes the sum of \(s\times s\) over every firm
+
+
+** Initialization I
+
+Firm-level initialization can be set for every \(NF\) objects on the LSD browser.
+The same applies for every other initial condition.
+
+On the following slide, we will see an alternative way in which we control some few parameters and create \(NF-1\) copies of a example object.
+
+#+begin_example cpp
+ADDNOBJ_EX("TypeOfAgent", number, *pointer);
+#+end_example
+
+
+*** Semi-automatic initialization and sensitivity analysis
+
+By doing this, we automate the model initialization to test different model configurations (next lecture)
+
+** Initialization II
+
+
+#+name: EQ-init
+#+begin_src cpp :eval no :noweb yes
+EQUATION( "init" )
+PARAMETER;                  // turn into parameter (run once)
+// finds the agent on memory
+cur = SEARCH( "Market" ); cur1 = SEARCHS(cur, "Firm" );
+
+v[0] = V("A0"); // We define
+v[1] = V("Nfirm"); // We define
+v[2] = 1 / v[1]; // Fair share
+// Overwrites the lag 1 of "a" to v[0] at time 1
+WRITELLS(cur1, "a", v[0], 1, 1);
+WRITELLS(cur1, "s", v[2], 1, 1);
+// Adds N - 1 copies of cur1 agent located under cur
+ADDNOBJ_EXS(cur, "Firm", v[1] - 1, cur1);
+RESULT( 1 )
+#+end_src
+
+
+* Session 3
+
+** Where we are and to where we go?
+
+** Required packages
+
+** Required files
+

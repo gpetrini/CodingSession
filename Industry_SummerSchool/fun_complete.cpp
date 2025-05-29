@@ -1,0 +1,95 @@
+// Script created using tangle and noweb features of org-mode
+
+#include "fun_head_fast.h"
+
+MODELBEGIN
+
+
+EQUATION( "init" )
+PARAMETER;                  // turn into parameter (run once)
+
+cur = SEARCH( "Market" ); cur1 = SEARCHS(cur, "Firm" );
+
+v[0] = V("A0");
+v[1] = V("Nfirm");
+v[2] = 1 / v[1];
+WRITELLS(cur1, "s", v[2], 1, 1);
+WRITELLS(cur1, "a", v[0], 1, 1);
+// Adds N - 1 copies of cur agent
+ADDNOBJ_EXS(cur, "Firm", v[1] - 1, cur1);
+
+RESULT( 1 )
+
+EQUATION("a")
+// Firm knowledge/productivity
+v[0] = CURRENT;
+v[1] = V("eta");
+v[2] = V("beta1");
+v[3] = V("beta2");
+v[4] = beta(v[2], v[3]);
+v[5] = v[0] * (1 + v[1] * v[4]);
+RESULT(v[5])
+
+EQUATION("s")
+// Firm size/market share
+v[0] = CURRENT;
+v[1] = V("A");
+v[2] = V("a");
+v[3] = V("aAvg");
+v[4] = (v[2] - v[3])/v[3];
+v[5] = v[0] * (1 + v[1] * v[4]);
+RESULT(v[5])
+
+EQUATION("exit_decision")
+
+v[0] = V("s"); v[1] = V("sMin");
+// update entrant firm productivity and market share
+if (v[0] < v[1]) {
+  v[2] = V("eta"); v[3] = V("beta1"); v[4] = V("beta2");
+  v[5] = beta(v[3], v[4]);
+  v[6] = V("aAvg");
+  v[7] = v[6] * (1 + v[2] * v[5]);
+  WRITE( "a", v[7] );
+  WRITE( "s", 1 / COUNT( "Firm" ) );
+}
+RESULT(0)
+
+EQUATION( "aAvg" )
+// Mean knowledge/productivity
+
+v[0] = 0;        // accumulator
+CYCLE(cur, "Firm") {
+  v[1] = VLS( cur, "s", 1 ); v[2] = VS( cur, "a" );
+  v[3] = v[1] * v[2];
+  v[0] += v[3] ;
+}
+
+RESULT( v[0] )
+
+EQUATION( "exit_entry" )
+// Trigger market-wise exit-entry dynamics and re-scale shares
+V( "HHI" ); // first, compute HH index before exits
+
+// second, ensure firms have decided on exit
+CYCLE(cur, "Firm") {VS( cur, "exit_decision" );}
+
+v[0] = 1 / SUM( "s" ); // factor to scale back to sum = 1
+CYCLE(cur, "Firm") { // third, rescale market shares after exits
+  v[1] = VS( cur, "s" );
+  v[2] = v[0] * v[1];
+  WRITES( cur, "s", v[2]);
+}
+RESULT( SUM("s") )
+
+EQUATION( "HHI" )
+// Herfindahl-Hirschman concentration index
+v[0] = WHTAVE( "s", "s" );
+RESULT( v[0] )
+
+MODELEND
+
+
+void close_sim(void)
+{
+
+}

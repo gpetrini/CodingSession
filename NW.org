@@ -1,0 +1,273 @@
+* Overview
+
+*Science-based*: A firm can reduce its unit costs by discovering more productive techniques through:
+
+- Innovation
+- Imitation
+
+Both strategies depend on firm size ($K_{it}$), affect profitability ($\pi_{it}$), and are uncertain ($Pr$).
+
+*Result:* Market structure is *endogenous* and has a bidirectional relationship with innovation.
+
+* Equations
+
+\[ \begin{array}{lrl}
+\mbox{Full Capacity:} & Q_{i,t} = &A_{i,t}K_t\\
+\mbox{Total Production:} & Q_t=  &\sum{Q_{i,t}}\\
+\mbox{Demand Curve:} & P =  & D(Q_t) \\
+\mbox{Profit Rate:} & \pi_{i,t} =& P_tA_{i,t} -c -r_{im} - r_{in}\\
+\mbox{Imitation Success:} & Pr(d_{im}=1) =& a_mr_{im}K_{i,t} \\
+\mbox{Innovation Success:} & Pr(d_{in}=1) =& a_nr_{in}K_{i,t} \\
+\mbox{Productivity Change:} & A_{t+1} =& \max(A_{i,t}, \hat{A}_{t}, A^{\sim}_{i,t}) \\
+\mbox{Expansion:} & \Delta K_{t+1} =& I(\mu, s, \pi_{i,t}, \delta)\cdot K_{i,t} -\delta K_{i,t}\\
+\mbox{Steady state:} &\lim_{s\to0} & I(1,s,0,\delta)  = \delta \\
+\end{array}\]
+
+
+* Model Diagram
+
+#+ATTR_LATEX: :width \textwidth :height .8\textheight :float t :options [clip,trim=0 0 0 0]
+[[file:figs/modelo.eps]]
+
+* Simplifying Assumptions :noexport:
+
+- Homogeneous product
+- Unit demand curve
+- Constant returns to scale and fixed coefficients with perfectly elastic inputs
+- No scale gains in R&D expenditures
+- No entry of new firms
+- *Appropriating advantage of large firms:* Implementation costs equal to small firms
+
+R&D expenditures are uncertain and proportional to firm size. Randomization in two stages: (i) Draws whether capable of innovating; if yes, $A$ is determined by a log-normal probability distribution whose mean is called *latent productivity*. For imitation, draws once. To expand, the mark-up must be greater the larger the firm size.
+
+* Extreme cases
+
+#+begin_export latex
+\begin{table}
+\centering
+\label{tab:casos}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{c|c|c|c|c|c|c|c}
+\hline\hline
+\textbf{Case} &
+  $r_{in}$ &
+  \textbf{$r_{im}$} &
+  \textbf{$g_A$} &
+  \textbf{$A_i$} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Average\\Productivity\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Unit\\Costs\end{tabular}} &
+  \textbf{Equilibrium} \\ \hline\hline
+\textbf{\begin{tabular}[c]{@{}c@{}}No R\&D\\(identical firms)\end{tabular}} &
+  0 &
+  0 &
+  0 &
+  $\overline A$ &
+  const. &
+  $\overline c$ &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Deterministic\\ $(s_i = 1/N)$\end{tabular}} \\ \hline
+\textbf{\begin{tabular}[c]{@{}c@{}}No R\&D\\(identical firms)\end{tabular}} &
+  0 &
+  0 &
+  0 &
+  $A_i$ &
+  const. &
+  $c_i$ &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Deterministic\\ $s_i = f(\underset{-}{c_i})$\end{tabular}} \\ \hline
+\textbf{\begin{tabular}[c]{@{}c@{}}No R\&D\\(one large firm)\end{tabular}} &
+  0 &
+  0 &
+  0 &
+  $A_1 >> A_{i\neq 1}$ &
+  \begin{tabular}[c]{@{}c@{}}Selection\\mechanism\end{tabular} &
+  $c_1 << c_{i\neq 1}$ &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Deterministic\\ $(c_j >> c_1 \Rightarrow s_j = 0 )$\end{tabular}} \\ \hline
+\textbf{Imitators} &
+  0 &
+  $\overline r_{im}$ &
+  const. &
+  $A_i = f(\underset{+}{r_{im}})$ &
+  \begin{tabular}[c]{@{}c@{}}Selection\\mechanism\end{tabular} &
+  $min\, \overline c_{i0}$ &
+  \textbf{Stochastic} \\ \hline
+\textbf{\begin{tabular}[c]{@{}c@{}}Innovators\\(same size)\end{tabular}} &
+  $+$ &
+  $+$ &
+  const. &
+  $P; \pi_i \nRightarrow A_i$ &
+  \begin{tabular}[c]{@{}c@{}}Gravitates around\\latent productivity\end{tabular} &
+  $c_i = f(\underset{-}{A_i})$ &
+  \textbf{Stochastic} \\ \hline
+\textbf{\begin{tabular}[c]{@{}c@{}}Innovators\\(different sizes)\end{tabular}} &
+  $+$ &
+  $+$ &
+  const. &
+  $P; \pi_i \Rightarrow A_i$ &
+  \begin{tabular}[c]{@{}c@{}}Depends on\\demand elasticity\end{tabular} &
+  $c_i = f(\underset{-}{A_i})$ &
+  \textbf{Stochastic} \\ \hline\hline
+\end{tabular}
+}
+\end{table}
+#+end_export
+
+** Notes about extreme cases :noexport:
+
+In the case where firms neither innovate nor imitate, whenever prices are higher than unit costs, there will be incentives for expansion, since the only costs are production costs.
+
+If firms only imitate, production costs will tend to equal the lowest of the initial unit costs.
+
+In the case where firms innovate but always remain the same size (due to investment and entry-exit mechanisms), the dynamics of productivity are independent of prices and profitability. Productivity will approach latent productivity.
+
+In the case where firms innovate and have different sizes, with a unit-elastic demand curve: the capital stock does not change.
+The percentage increase in productivity leads to the same decrease in both unit costs and prices.
+In other words, productivity dynamics alone do not cause a trend in the capital stock.
+
+* Initial Settings I
+
+- 5 initial conditions: 2,4,6,8,16,32 firms
+- Half spend on innovation, half on imitation
+  - Innovators also spend on imitation
+- All firms start with:
+  - Same size
+  - Same latent productivity level
+- Equal production costs, but:
+  - R&D firms have higher initial total costs
+    - Innovation/imitation spending equal across conditions
+- Zero initial net investment
+
+* Initial Settings II
+
+Two financing regimes:
+- Bank 1.0 :: Limited to 1\(\times\) profits
+- Bank 2.5 :: Up to 2.5\(\times\) profits
+
+Experimental design:
+- 10 conditions (5 structures \(\times\) 2 regimes)
+- 5 runs per condition (100 periods = 25 years)
+- Science-based model: 1% latent productivity growth/period
+- Low-profit innovators vs stable imitators over time
+
+* Initial Settings III
+
+
+Analysis divided into:
+
+*Performance Metrics*: Response to initial industry conditions
+- Best techniques
+- Average productivity
+- Markup
+- Price
+
+*Structure Evolution*: Initial concentration effects
+- Innovation profitability
+- Innovator survival rates
+- Concentration/stability trends
+
+
+* Best Techniques
+
+#+ATTR_LATEX: :width .83\linewidth :heigth .8\paperheight
+[[file:./figs/12_1.svg]]
+
+
+
+* Productivity Metrics
+
+#+begin_export latex
+\begin{columns}[T]
+\begin{column}{\dimexpr\paperwidth-10pt}
+\begin{figure}
+\centering
+\subfloat[Average productivity]{\includesvg[width=.45\paperwidth]{./figs/12_2.svg}}
+\subfloat[Productivity gap]{\includesvg[width=.45\paperwidth]{./figs/12_3.svg}}
+\end{figure}
+\end{column}
+\end{columns}
+#+end_export
+
+* R&D Expenditure
+:PROPERTIES:
+:BEAMER_ENV: frame
+:BEAMER_SUBFRAME: Innovators' R&D spending
+:END:
+
+#+ATTR_LATEX: :width .83\linewidth
+[[file:./figs/12_4.svg]]
+
+* Productivity Ratio
+:PROPERTIES:
+:BEAMER_ENV: frame
+:BEAMER_SUBFRAME: Innovators/Imitators productivity ratio
+:END:
+
+#+ATTR_LATEX: :width .83\linewidth
+[[file:./figs/12_5.svg]]
+
+* Cost Margins & Equity
+
+#+begin_export latex
+\begin{columns}[T]
+\begin{column}{\dimexpr\paperwidth-10pt}
+\begin{figure}
+\centering
+\subfloat[\% Cost margin]{\includesvg[width=.45\paperwidth]{./figs/12_6.svg}}
+\subfloat[Net worth]{\includesvg[width=.45\paperwidth]{./figs/12_7.svg}}
+\end{figure}
+\end{column}
+\end{columns}
+#+end_export
+
+* Price Dynamics
+:PROPERTIES:
+:BEAMER_ENV: frame
+:END:
+
+#+ATTR_LATEX: :width .83\linewidth
+[[file:./figs/12_8.svg]]
+
+* Innovation Recovery
+
+#+begin_export latex
+\begin{columns}[T]
+\begin{column}{\dimexpr\paperwidth-10pt}
+\begin{figure}
+\centering
+\subfloat[Innovation recovery rate]{\includesvg[width=.45\paperwidth]{./figs/12_9.svg}}
+\subfloat[Net worth: Imitators-Innovators]{\includesvg[width=.45\paperwidth]{./figs/12_10.svg}}
+\end{figure}
+\end{column}
+\end{columns}
+#+end_export
+
+* Market Structure
+:PROPERTIES:
+:BEAMER_ENV: frame
+:BEAMER_SUBFRAME: Innovators' capital share
+:END:
+
+#+ATTR_LATEX: :width .83\linewidth
+[[file:./figs/12_11.svg]]
+
+* Concentration Index
+:PROPERTIES:
+:BEAMER_ENV: frame
+:BEAMER_SUBFRAME: Herfindahl equivalent index
+:END:
+
+#+ATTR_LATEX: :width .83\linewidth
+[[file:./figs/12_12.svg]]
+
+
+* Taking stock
+
+
+- Schumpeterian hypothesis with distinct causal nexus (closure)
+- Average productivity shows positive correlation with concentration level
+- Innovator firms demonstrate higher productivity than imitators
+  - This advantage diminishes in more competitive market structures
+- Production costs are higher in more competitive markets
+  - Corresponds to relatively lower average productivity
+
+** Rivalry effects
+
+  Increased rivalry \(\to\) More firms lose market relevance

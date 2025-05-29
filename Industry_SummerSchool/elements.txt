@@ -1,0 +1,3 @@
+a aAvg exit_decision exit_entry HHI init s
+A A0 beta1 beta2 eta Nfirm sMin
+Firm Market

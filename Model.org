@@ -1,0 +1,133 @@
+* The Industry model
+
+[cite/t:@dosi_2017_footprint] design objective: simplest industrial dynamics model capturing most *stylized facts*:
+- Persistent heterogeneity in productivity and all other performance variables
+- Persistent market share and entry-exit turbulence
+- Skewed size distributions
+- Fat-tailed distribution of growth rates
+- Scaling of the growth-variance relationship
+
+* Equations
+
+
+#+begin_export latex
+\[ \begin{array}{lrl}
+\mbox{Idiosyncratic learning process:} & a_{i,t} = &a_{i,t-1}\cdot (1 + \theta_{i,t})\\
+\mbox{Learning shocks} & \theta_{i,t} \sim  & Beta(\beta_1, \beta_2)\\
+\mbox{Market selection} & s_{i,t} =  & s_{i,t-1} \cdot \left( 1 + A\cdot\frac{a_{i,t} - \bar{a}_{t}}{\bar{a}_{t}}\right) \\
+\mbox{Average productivity} & \bar{a}_{t} =  & \sum_{i=1}^{NF} s_{i, t-1}\cdot a_{i,t} \\
+\mbox{Exit condition} & s_{i,t} < & s_{min}\\
+\mbox{Entrant productivity} & a_{j,t} =&  \bar{a}_{t}\cdot (1 + \theta_{i,t})\\
+\mbox{Entrant market-share} & s_{j,t} =& 1/NF \\
+\mbox{Market concentration index} & HHI_{t} =& \sum_{i=1}^{NF} (s_{i})^2 \\
+\mbox{Market-share adjustment} &  s_{i} \mapsto & s_{i}\cdot \frac{1}{\sum_{i=1}^{NF} s_{i}} \Rightarrow \sum_{i=1}^{NF} s_{i} = 1 \\
+\mbox{Fixed number of firms} & \#\{1, \ldots, n\} =& NF
+\end{array}\]
+#+end_export
+
+
+* DAG of industry model
+
+#+begin_export latex
+\resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}[
+    node distance=.1cm and 0.5cm,
+    every node/.style={draw, rounded corners, minimum height=1.2em, inner sep=4pt, align=center},
+    arrow/.style={-{Stealth}, thick}
+    ]
+
+    % Nodes
+    \node (theta)        {$\theta_{i,t}$};
+    \node (ai_tm1)       [above left=of theta] {$a_{i,t-1}$};
+    \node (ai_t)         [below=of theta] {$a_{i,t}$};
+    \node (si_tm1)       [left=1.5cm of ai_t] {$s_{i,t-1}$};
+    \node (abar_t)       [right=2cm of ai_t] {$\bar{a}_t$};
+    \node (si_t)         [below=of ai_t] {$s_{i,t}$};
+    \node (exit)         [below=of si_t] {$s_{i,t} < s_{min}$};
+
+    \node (aj_t)         [right=of abar_t] {$a_{j,t}$};
+    \node (sj_t)         [below=of aj_t] {$s_{j,t} = 1/NF$};
+
+    \node (norm_s)       [below=of exit] {$s_i \mapsto \frac{s_i}{\sum s_i}$};
+    \node (HHI_t)        [right=of norm_s] {$HHI_t = \sum s_i^2$};
+
+    \node (NF)           [right=of sj_t] {NF};
+
+    % Arrows
+    \draw[arrow] (ai_tm1) -- (ai_t);
+    \draw[arrow] (theta) -- (ai_t);
+    \draw[arrow] (ai_t) -- (abar_t);
+    \draw[arrow] (si_tm1) -- (si_t);
+    \draw[arrow] (ai_t) -- (si_t);
+    \draw[arrow] (abar_t) -- (si_t);
+    \draw[arrow] (si_t) -- (exit);
+
+    \draw[arrow] (abar_t) -- (aj_t);
+    \draw[arrow] (theta) -- (aj_t);
+    \draw[arrow] (NF) -- (sj_t);
+    \draw[arrow] (NF) -- (HHI_t);
+    \draw[arrow] (si_t) -- (norm_s);
+    \draw[arrow] (sj_t) -- (norm_s);
+    \draw[arrow] (norm_s) -- (HHI_t);
+
+    % Optional: Labels or braces could be added if needed
+  \end{tikzpicture}
+}
+#+end_export
+
+
+* Sequence of events
+
+At time \(t = 0\), there are \(NF\) identical incumbent firms with equal \(a_{i,t=0}\) and \(s_{i,0}\).
+At each time step \(t = 1, 2, \ldots, T\):
+1. Firms learn (updates (\(a_{i}\))
+2. Firms computes market share (updates \(s_{i}\))
+3. Market concentration index (\(HHI\)) is computed
+4. Firms exits the market if \(s_{i} < s_{min}\)
+5. Firms enter to keep \(NF\) firms in the market
+6. Incumbents variables (\(a_{j}\), \(s_{j}\)) are set
+7. Market shares are re-scaled proportionally to ensure \(\sum s_{i} = 1\)
+
+** Model logical order (later)
+
+The exit-entry process is time-coordinated during each simulated time step by the technical variable =exit_entry=: =HHI= > =exit_decision= > =s= rescaling
+
+* Parameters and initial values
+
+#+caption: Baseline parameters
+|-------------+---------------------------------------------+----------|
+|             |                    Desc                     |  Value   |
+|-------------+---------------------------------------------+----------|
+|     <c>     |                     <c>                     |   <c>    |
+|    \(\eta\)    |       Innovation opportunity support        |   0.3    |
+| \(\beta_{1}, \beta_{2}\)  |        beta distribution parameters         | 1.0; 5.0 |
+|    \(A\)    |        replicator dynamics intensity        |    1     |
+|  \(s_{min}\)   |      minimum market share to not exit       |   0.01   |
+|   \(NF\)    |               number of firms               |    10    |
+|-------------+---------------------------------------------+----------|
+|   \(a_{i}_{}\)    |       Initial Firm-level productivity       |   1.0    |
+|   \(s_{i}\)    |          Initial Firm market-share          | \(1/NF\) |
+|-------------+---------------------------------------------+----------|
+
+* Model structure and data organization I
+
+Besides the equation files (=.cpp= or =.h=), LSD defines the model structures on a different file (extension =.lsd=).
+This special file has:
+
+- Variables and parameters names
+- Model structure (where elements are)
+- Initial and parameter values
+- Simulation settings
+- Number of objects
+- Variables to plot, analyse, debug, etc
+
+** LSD and OOP
+
+This structure ensure the modeler to think in terms of data structure.
+
+* Model structure and data organization II
+
+#+caption: Structure of industry model
+#+ATTR_LATEX: :width .8\textwidth :height .75\textheight :float t :options [clip,trim=0 0 0 0]
+[[file:figs/Structure_Industry_LSD.png]]
+

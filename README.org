@@ -3,14 +3,10 @@
 
 * About these lectures
 
-* Presentations
+#+include: "Presentation.org::*Introduction" :only-contents t
 
-- Model introdution and LSD familiarization
-- Writing equations on LSD
-- Visualizing results in R and a primer on sensitivity analysis
+* Model's code
 
-* Codes
-
-- Final code: sample.cpp
-- Coding01: NW.cpp
-- Coding02: NW.R
+- Linear Model :: [[file:Linear_Model/]]
+- Logistic Chaotic Model :: [[file:Chaotic_Model/]]
+- Industry Model  :: [[file:Industry_SummerSchool/]]

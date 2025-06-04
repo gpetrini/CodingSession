@@ -3,7 +3,7 @@
 
 * About these lectures
 
-#+include: "Presentation.org::*Introduction" :only-contents t
+#+transclude: [[file:Presentation.org::*Objectives]] :level 2 :only-contents
 
 * Model's code
 

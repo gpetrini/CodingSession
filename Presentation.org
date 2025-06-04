@@ -158,7 +158,7 @@ void close_sim(void)
 
 ** Objectives
 
-In all blocks, we will
+Throughout the sessions, we will
 
 1. Understand how LSD works
 2. Implement a linear and chaotic model[fn::Based on the slides of LSD manual folder]

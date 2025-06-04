@@ -1,4 +1,4 @@
-% Created 2025-06-04 Wed 18:32
+% Created 2025-06-04 Wed 18:41
 % Intended LaTeX compiler: pdflatex
 \documentclass[bigger,aspectratio=169]{beamer}
   \usepackage{caption, subcaption, csquotes, amssymb, xcolor}
@@ -43,10 +43,10 @@
 \end{frame}
 
 \section{Introduction}
-\label{sec:org471b907}
+\label{sec:orgf154752}
 
-\begin{frame}[label={sec:orgb0caee0}]{Objectives}
-In all blocks, we will
+\begin{frame}[label={sec:org06b5ac6}]{Objectives}
+Throughout the sessions, we will
 
 \begin{enumerate}
 \item Understand how LSD works
@@ -55,14 +55,14 @@ In all blocks, we will
 \item Analyse the model results on LSD
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:org2a74590}]{Structure of the sessions}
+\begin{frame}[label={sec:orgfc9d8cd}]{Structure of the sessions}
 \begin{description}
 \item[{Session 1}] Presents the general structure of LSD and perform some simulations
 \item[{Session 2}] Write the industry model equations on LSD
 \item[{Session 3}] Complete the scripts (if necessary), run the simulation and the analysis of results
 \end{description}
 \end{frame}
-\begin{frame}[label={sec:org374de56},fragile]{Repository structure}
+\begin{frame}[label={sec:org4a0b7e3},fragile]{Repository structure}
  This presentation can be found on this \href{https://github.com/gpetrini/CodingSession}{repository}.\footnote{URL: \url{https://github.com/gpetrini/CodingSession}} In addition:
 
 \begin{description}
@@ -78,9 +78,9 @@ In all blocks, we will
 \end{block}
 \end{frame}
 \section{Session 1}
-\label{sec:org4ebc62e}
+\label{sec:org254e9e6}
 
-\begin{frame}[label={sec:org3b477a1},fragile]{C++ for LSD I}
+\begin{frame}[label={sec:org02bc575},fragile]{C++ for LSD I}
  LSD adds macros to \texttt{C++}.
 As a consequence, some basic knowledge on \texttt{C++} is usefull.
 What we need to know here?
@@ -109,7 +109,7 @@ object *agent; // Latter
 Different from python and R, we need to \alert{compile} our code before using it.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org5179518},fragile]{C++ for LSD II}
+\begin{frame}[label={sec:org0aae2f3},fragile]{C++ for LSD II}
  To avoid initializing everything, LSD has some already initialized variables:
 
 \begin{verbatim}
@@ -125,7 +125,7 @@ Those are \alert{local variables} that we can use on equations.
 LSD has an internal debbuger that allow us to look to local variables on the fly.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org340934a},fragile]{Macros I}
+\begin{frame}[label={sec:orgff2e929},fragile]{Macros I}
  \begin{figure}[htbp]
 \centering
 \includegraphics[width=.9\linewidth]{./figs/Macros_LSD.pdf}
@@ -140,14 +140,14 @@ Examples:
 \item[{WRITES(POS, ``NAME'', 1)}] Overwrites variable \texttt{NAME} at lag \texttt{1} at position \texttt{POS}
 \end{description}
 \end{frame}
-\begin{frame}[label={sec:orgb598100}]{Macros II}
+\begin{frame}[label={sec:org1e96188}]{Macros II}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.9\linewidth]{figs/LSD_Macros_ScreenShot.png}
 \caption{Other LSD macros}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:org157b415},fragile]{Macro example I}
+\begin{frame}[label={sec:orgd63c1a5},fragile]{Macro example I}
  How can we write the following equation using LSD syntax?
 
 \[X_{t} = X_{t-1} + m\]
@@ -166,7 +166,7 @@ RESULT(v[2]) // Specify the output of the function
 As a rule of thumb, variables have an \texttt{EQUATION} associated, parameters do not.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgcab8c22},fragile]{Macro example II}
+\begin{frame}[label={sec:orgc966413},fragile]{Macro example II}
  How can we write the following equation using LSD syntax?
 
 \[Y_{t} = \sum_{i=1}^{n} X_{n,t} + W_{n,t}\]
@@ -184,7 +184,7 @@ CYCLE(cur, "Firm") { // Similar to a for-loop in other languages
 RESULT(v[0])
 \end{verbatim}
 \end{frame}
-\begin{frame}[label={sec:orge62625c},fragile]{Equation file}
+\begin{frame}[label={sec:org184628f},fragile]{Equation file}
  Any equation file (\texttt{.cpp}) must contain the following text:
 \begin{verbatim}
 // File created using org-mode tangle feature.
@@ -200,7 +200,7 @@ void close_sim(void) {}
 
 In our session, we will copy-and-paste the initialization equation and continue from there.
 \end{frame}
-\begin{frame}[label={sec:org1b9f325},fragile]{Model structure and data organization I}
+\begin{frame}[label={sec:org4c8505b},fragile]{Model structure and data organization I}
  Besides the equation files (\texttt{.cpp} or \texttt{.h}), LSD defines the model structures on a different file (extension \texttt{.lsd}).
 This special file has:
 
@@ -216,7 +216,7 @@ This special file has:
 This structure ensure the modeler to think in terms of data structure.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org0b9c37f},fragile]{Linear model I}
+\begin{frame}[label={sec:orgc762ba0},fragile]{Linear model I}
  Let's start with the file on \url{Linear\_Model/fun\_linear.cpp}
 
 
@@ -231,7 +231,7 @@ MODELEND
 void close_sim(void) {}
 \end{verbatim}
 \end{frame}
-\begin{frame}[label={sec:orgbfe076f},fragile]{Linear model II}
+\begin{frame}[label={sec:org4898ffe},fragile]{Linear model II}
  Next, we will write the following equation:
 
 \[X_{t} = X_{t-1} + m\]
@@ -249,7 +249,7 @@ v[2] = v[0] + v[1]; // v[n] are local variables
 RESULT(v[2]) // Specify the output of the function
 \end{verbatim}
 \end{frame}
-\begin{frame}[label={sec:orgbe1f67c},fragile]{Linear model III}
+\begin{frame}[label={sec:org5065df7},fragile]{Linear model III}
  \begin{itemize}
 \item Compile (\texttt{Model > Compile and run ...}).
 \item Wait to open a new window.
@@ -261,12 +261,12 @@ RESULT(v[2]) // Specify the output of the function
 \item Analyze the results
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org13ca237}]{Linear model IV}
+\begin{frame}[label={sec:org0a653b0}]{Linear model IV}
 \begin{center}
 \includesvg[width=.83\linewidth]{./figs/Linear_X}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org5e73cc7},fragile]{Linear model V}
+\begin{frame}[label={sec:org4156bd5},fragile]{Linear model V}
  We can adjust the previous equation in order to get a Random Walk.
 First, we need to specify the distribution for \(m\):
 
@@ -282,7 +282,7 @@ v[2] = uniform(v[0], v[1]);
 RESULT(v[2])
 \end{verbatim}
 \end{frame}
-\begin{frame}[label={sec:org61e766a},fragile]{Linear model VI}
+\begin{frame}[label={sec:org406e5bb},fragile]{Linear model VI}
  Now, we need to adjust the \texttt{.lsd} file:
 
 \begin{itemize}
@@ -296,12 +296,12 @@ RESULT(v[2])
 \end{itemize}
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orgc8b50f5}]{Linear model VII}
+\begin{frame}[label={sec:orge0d54a4}]{Linear model VII}
 \begin{center}
 \includesvg[width=.83\linewidth]{./figs/RW_X}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orge85e9df},fragile]{Linear model VIII}
+\begin{frame}[label={sec:org53642d2},fragile]{Linear model VIII}
  So far, there is nothing new if you use other programming language.
 However, we can leverage from the fact that LSD is OOP.
 
@@ -315,12 +315,12 @@ The source code remains untouched, while we produced a completelly different str
 This is the benefit of isolating the code and the structure.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgc388213}]{Linear model IX}
+\begin{frame}[label={sec:org3c8f736}]{Linear model IX}
 \begin{center}
 \includesvg[width=.83\linewidth]{./figs/Multi_RW_X}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgab9ff5d},fragile]{Logistic chaotic model 0}
+\begin{frame}[label={sec:org7ce7139},fragile]{Logistic chaotic model 0}
  Let's start with the file on \url{Chaotic\_Model/fun\_chaos.cpp}
 
 
@@ -335,7 +335,7 @@ MODELEND
 void close_sim(void) {}
 \end{verbatim}
 \end{frame}
-\begin{frame}[label={sec:org1f9da32}]{Logistic chaotic model I}
+\begin{frame}[label={sec:orgde047a7}]{Logistic chaotic model I}
 Consider the model made of the single equation
 
 \[X_{t} = m\cdot X_{t-1}\cdot (1 - X_{t-1})\]
@@ -347,7 +347,7 @@ To implement this model follow the usual steps:
 \item Using the Lsd model program generate one object and place in it variable \(X\) with 1 lag and parameter \(m\).
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:orga9bbf9c},fragile]{Logistic chaotic model II}
+\begin{frame}[label={sec:orgddf58eb},fragile]{Logistic chaotic model II}
  The model equation can be written as follows:
 
 
@@ -360,7 +360,7 @@ v[2] = v[1]*v[0]*(1-v[0]);
 RESULT(v[2])
 \end{verbatim}
 \end{frame}
-\begin{frame}[label={sec:org0d536a7},fragile]{Logistic chaotic model III}
+\begin{frame}[label={sec:org6eb61c4},fragile]{Logistic chaotic model III}
  Let's adjust the configuration file (\texttt{.lsd}):
 
 \begin{itemize}
@@ -370,12 +370,12 @@ RESULT(v[2])
 \item Run and plot \(X\)
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org7e9e8ba}]{Logistic chaotic model IV}
+\begin{frame}[label={sec:orgdf8cde3}]{Logistic chaotic model IV}
 \begin{center}
 \includesvg[width=.83\linewidth]{./figs/chaos_X}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org489383f}]{Logistic chaotic model V}
+\begin{frame}[label={sec:orge959f9d}]{Logistic chaotic model V}
 The function produces \alert{extremely} different results depending on the value of \alert{\(m\)}.
 
 \begin{itemize}
@@ -384,7 +384,7 @@ The function produces \alert{extremely} different results depending on the value
 \item We will set the \alert{initial} points for the \(X\) to random values.
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org6ef69e4},fragile]{Logistic chaotic model VI}
+\begin{frame}[label={sec:orgd654b2f},fragile]{Logistic chaotic model VI}
  \begin{itemize}
 \item Load \texttt{Sim2.lsd} and save it as \texttt{Sim3.lsd}
 \item Generate \alert{10000} copies of \texttt{Obj1}
@@ -399,7 +399,7 @@ The function produces \alert{extremely} different results depending on the value
 \item Save, run, analyze
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org66aca9c}]{Logistic chaotic model VII}
+\begin{frame}[label={sec:org3b95322}]{Logistic chaotic model VII}
 \begin{itemize}
 \item Open Analysis of results
 \item Select all \(m\) and \(X\) series
@@ -413,15 +413,15 @@ Once again, the code remains \alert{untouched}.
 Later, we will check other features of LSD that benefit from this design principle.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org08837ed}]{Logistic chaotic model VIII}
+\begin{frame}[label={sec:org32b88da}]{Logistic chaotic model VIII}
 \begin{center}
 \includesvg[width=.83\linewidth]{figs/chaotic_bifurcation}
 \end{center}
 \end{frame}
 \section{Session 2}
-\label{sec:org90365af}
+\label{sec:orge13e013}
 
-\begin{frame}[label={sec:org9dd420d}]{Simulation pipeline}
+\begin{frame}[label={sec:orgac56ca7}]{Simulation pipeline}
 As a recap, whenever running a model on LSD, we need to:
 
 \begin{enumerate}
@@ -436,7 +436,7 @@ In the previous session, we implemented two different small models.
 Now, we will focus on a economic model.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org2a4746f}]{The Industry model}
+\begin{frame}[label={sec:orgf28a8cb}]{The Industry model}
 \textcite{dosi_2017_footprint} design objective: simplest industrial dynamics model capturing most \alert{stylized facts}:
 \begin{itemize}
 \item Persistent heterogeneity in productivity and all other performance variables
@@ -446,7 +446,7 @@ Now, we will focus on a economic model.
 \item Scaling of the growth-variance relationship
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orgd65d403}]{Equations}
+\begin{frame}[label={sec:org19d5eb9}]{Equations}
 \[ \begin{array}{lrl}
 \mbox{Idiosyncratic learning process:} & a_{i,t} = &a_{i,t-1}\cdot (1 + \theta_{i,t})\\
 \mbox{Learning shocks} & \theta_{i,t} \sim  & Beta(\beta_1, \beta_2)\\
@@ -460,7 +460,7 @@ Now, we will focus on a economic model.
 \mbox{Fixed number of firms} & \#\{1, \ldots, n\} =& NF
 \end{array}\]
 \end{frame}
-\begin{frame}[label={sec:orgabeadb1}]{DAG of industry model}
+\begin{frame}[label={sec:org801cef8}]{DAG of industry model}
 \resizebox{\linewidth}{!}{%
   \begin{tikzpicture}[
     node distance=.1cm and 0.5cm,
@@ -506,7 +506,7 @@ Now, we will focus on a economic model.
   \end{tikzpicture}
 }
 \end{frame}
-\begin{frame}[label={sec:orgc2df65d},fragile]{Sequence of events}
+\begin{frame}[label={sec:org6962cce},fragile]{Sequence of events}
  At time \(t = 0\), there are \(NF\) identical incumbent firms with equal \(a_{i,t=0}\) and \(s_{i,0}\).
 At each time step \(t = 1, 2, \ldots, T\):
 \begin{enumerate}
@@ -522,7 +522,7 @@ At each time step \(t = 1, 2, \ldots, T\):
 The exit-entry process is time-coordinated during each simulated time step by the technical variable \texttt{exit\_entry}: \texttt{HHI} > \texttt{exit\_decision} > \texttt{s} rescaling
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgaae137e}]{Parameters and initial values}
+\begin{frame}[label={sec:org1c21ee4}]{Parameters and initial values}
 \begin{table}[htbp]
 \caption{Baseline parameters}
 \centering
@@ -542,14 +542,14 @@ The exit-entry process is time-coordinated during each simulated time step by th
 \end{tabular}
 \end{table}
 \end{frame}
-\begin{frame}[label={sec:org437047a}]{Model structure and data organization II}
+\begin{frame}[label={sec:orgd71a035}]{Model structure and data organization II}
 \begin{figure}[htbp]
 \centering
 \includegraphics[clip,trim=0 0 0 0,width=.8\textwidth,height=.75\textheight]{figs/Structure_Industry_LSD.png}
 \caption{Structure of industry model}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:orga3b622c}]{Memo: Equations}
+\begin{frame}[label={sec:org19f84b9}]{Memo: Equations}
 \[ \begin{array}{lrl}
 \mbox{Idiosyncratic learning process:} & a_{i,t} = &a_{i,t-1}\cdot (1 + \theta_{i,t})\\
 \mbox{Learning shocks} & \theta_{i,t} \sim  & Beta(\beta_1, \beta_2)\\
@@ -563,7 +563,7 @@ The exit-entry process is time-coordinated during each simulated time step by th
 \mbox{Fixed number of firms} & \#\{1, \ldots, n\} =& NF
 \end{array}\]
 \end{frame}
-\begin{frame}[label={sec:org1ee8174},fragile]{Firm-level productivity (\(a_{i}\)\textsubscript{nil})}
+\begin{frame}[label={sec:orgd62ae82},fragile]{Firm-level productivity (\(a_{i}\)\textsubscript{nil})}
  \begin{equation}
 a_{i,t} = a_{i,t-1}\cdot (1 + \theta_{i,t})
 \end{equation}
@@ -580,7 +580,7 @@ v[5] = v[0] * (1 + v[1] * v[4]);
 RESULT(v[5])
 \end{verbatim}
 \end{frame}
-\begin{frame}[label={sec:orgc092b69},fragile]{Market-share (\(s_{i}\))}
+\begin{frame}[label={sec:orgf250f4f},fragile]{Market-share (\(s_{i}\))}
  \begin{equation}
 s_{i,t} = s_{i,t-1} \cdot \left( 1 + A\cdot\frac{a_{i,t} - \bar{a}_{t}}{\bar{a}_{t}}\right)
 \end{equation}
@@ -598,7 +598,7 @@ v[5] = v[0] * (1 + v[1] * v[4]);
 RESULT(v[5])
 \end{verbatim}
 \end{frame}
-\begin{frame}[label={sec:org8d8b8a8},fragile]{Exit condition}
+\begin{frame}[label={sec:org7e8f296},fragile]{Exit condition}
  \begin{verbatim}
 EQUATION("exit_decision")
 
@@ -615,7 +615,7 @@ if (v[0] < v[1]) {
 RESULT(0)
 \end{verbatim}
 \end{frame}
-\begin{frame}[label={sec:org04399f6},fragile]{Market-level Productivity (Weighted) Average (\(\bar{a_{t}}\))}
+\begin{frame}[label={sec:org15dd1fa},fragile]{Market-level Productivity (Weighted) Average (\(\bar{a_{t}}\))}
  \begin{equation}
 \bar{a}_{t} =  \sum_{i=1}^{NF} s_{i, t-1}\cdot a_{i,t}
 \end{equation}
@@ -635,7 +635,7 @@ CYCLE(cur, "Firm") {
 RESULT( v[0] )
 \end{verbatim}
 \end{frame}
-\begin{frame}[label={sec:org48ad696},fragile]{Entry-Exit condition}
+\begin{frame}[label={sec:orgce23354},fragile]{Entry-Exit condition}
  \begin{verbatim}
 EQUATION( "exit_entry" )
 // Trigger market-wise exit-entry dynamics and re-scale shares
@@ -653,7 +653,7 @@ CYCLE(cur, "Firm") { // third, rescale market shares after exits
 RESULT( SUM("s") )
 \end{verbatim}
 \end{frame}
-\begin{frame}[label={sec:orgf1f3d52},fragile]{Herfindahl-Hirschman concentration index (\(HHI\))}
+\begin{frame}[label={sec:org8ca5686},fragile]{Herfindahl-Hirschman concentration index (\(HHI\))}
  \begin{equation}
 HHI_{t} = \sum_{i=1}^{NF} (s_{i})^2
 \end{equation}
@@ -669,7 +669,7 @@ RESULT( v[0] )
 \texttt{WHTAVE} (weighed average, not used here in the strict sense) computes the sum of \(s\times s\) over every firm
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgb86ce9a},fragile]{Initialization I}
+\begin{frame}[label={sec:orge0669e9},fragile]{Initialization I}
  Firm-level initialization can be set for every \(NF\) objects on the LSD browser.
 The same applies for every other initial condition.
 
@@ -682,7 +682,7 @@ ADDNOBJ_EX("TypeOfAgent", number, *pointer);
 By doing this, we automate the model initialization to test different model configurations (next lecture)
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org6280194},fragile]{Initialization II}
+\begin{frame}[label={sec:orgd53ff66},fragile]{Initialization II}
  \begin{verbatim}
 EQUATION( "init" )
 PARAMETER;                  // turn into parameter (run once)
@@ -701,27 +701,27 @@ RESULT( 1 )
 \end{verbatim}
 \end{frame}
 \section{Session 3}
-\label{sec:org136b8bf}
+\label{sec:org1171afa}
 
-\begin{frame}[label={sec:org6fe4d7e}]{Where we are and to where we go?}
+\begin{frame}[label={sec:orgeadb3b8}]{Where we are and to where we go?}
 \begin{description}
 \item[{Session I}] Basics of LSD and small models implementation
 \item[{Session II}] Presentation of the Industry model and implementation
 \item[{Session III (Today)}] Q\&A, bug fixes, analysis of results and Monte Carlo Experiment
 \end{description}
 \end{frame}
-\begin{frame}[label={sec:orgfc7ad79}]{Analyze the model results}
+\begin{frame}[label={sec:org5ed352f}]{Analyze the model results}
 \end{frame}
 
-\begin{frame}[label={sec:org679ba43}]{Exploring the single run results}
+\begin{frame}[label={sec:org7f23b7b}]{Exploring the single run results}
 \end{frame}
 
-\begin{frame}[label={sec:org972c234}]{Activity I}
+\begin{frame}[label={sec:org86fafd4}]{Activity I}
 \end{frame}
 
-\begin{frame}[label={sec:orgbad9db4}]{A simple Monte Carlo experiment}
+\begin{frame}[label={sec:orgfe8eac7}]{A simple Monte Carlo experiment}
 \end{frame}
 
-\begin{frame}[label={sec:org4f4e607}]{Activity II}
+\begin{frame}[label={sec:org5041fb4}]{Activity II}
 \end{frame}
 \end{document}

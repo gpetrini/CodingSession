@@ -7,17 +7,17 @@ MODELBEGIN
 
 EQUATION( "init" )
 PARAMETER;                  // turn into parameter (run once)
-
+// finds the agent on memory
 cur = SEARCH( "Market" ); cur1 = SEARCHS(cur, "Firm" );
 
-v[0] = V("A0");
-v[1] = V("Nfirm");
-v[2] = 1 / v[1];
-WRITELLS(cur1, "s", v[2], 1, 1);
+v[0] = V("A0"); // We define
+v[1] = V("Nfirm"); // We define
+v[2] = 1 / v[1]; // Fair share
+// Overwrites the lag 1 of "a" to v[0] at time 1
 WRITELLS(cur1, "a", v[0], 1, 1);
-// Adds N - 1 copies of cur agent
+WRITELLS(cur1, "s", v[2], 1, 1);
+// Adds N - 1 copies of cur1 agent located under cur
 ADDNOBJ_EXS(cur, "Firm", v[1] - 1, cur1);
-
 RESULT( 1 )
 
 EQUATION("a")
@@ -59,11 +59,11 @@ EQUATION( "aAvg" )
 
 v[0] = 0;        // accumulator
 CYCLE(cur, "Firm") {
-  v[1] = VLS( cur, "s", 1 ); v[2] = VS( cur, "a" );
+  v[1] = VLS( cur, "s", 1 );
+  v[2] = VS( cur, "a" );
   v[3] = v[1] * v[2];
   v[0] += v[3] ;
 }
-
 RESULT( v[0] )
 
 EQUATION( "exit_entry" )

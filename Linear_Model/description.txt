@@ -1,0 +1,5 @@
+ABM Macro Lab Agent-based modelling tools Hands-on sessions.
+
+Linear Model:
+
+\[X_{t} = X_{t-1} + m\]

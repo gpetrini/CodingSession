@@ -109,22 +109,6 @@ The exit-entry process is time-coordinated during each simulated time step by th
 |   \(s_{i}\)    |          Initial Firm market-share          | \(1/NF\) |
 |-------------+---------------------------------------------+----------|
 
-* Model structure and data organization I
-
-Besides the equation files (=.cpp= or =.h=), LSD defines the model structures on a different file (extension =.lsd=).
-This special file has:
-
-- Variables and parameters names
-- Model structure (where elements are)
-- Initial and parameter values
-- Simulation settings
-- Number of objects
-- Variables to plot, analyse, debug, etc
-
-** LSD and OOP
-
-This structure ensure the modeler to think in terms of data structure.
-
 * Model structure and data organization II
 
 #+caption: Structure of industry model

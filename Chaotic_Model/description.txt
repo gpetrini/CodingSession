@@ -1,0 +1,5 @@
+ABM Macro Lab Agent-based modelling tools Hands-on sessions.
+
+Chaotic Model:
+
+\[X_{t} = m * X_{t-1} * (1 - X_{t-1})\]

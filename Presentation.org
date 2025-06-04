@@ -1,6 +1,6 @@
 #+OPTIONS: H:2 toc: ':t |: t
-#+TITLE: Coding session
-#+SUBTITLE: Nelson and Winter (1982) Dynamic competition and technological progress
+#+TITLE: ABM Macro Lab: Agent-based modelling tools
+#+SUBTITLE: Coding session
 #+AUTHOR: Gabriel Petrini
 #+DATE: July, 2025
 #+email: gpetrinidasilveira@gmail.com
@@ -8,7 +8,8 @@
 #+CITE_EXPORT: biblatex authoryear
 #+language: en
 
-* Main cpp file :noexport:
+
+* Industry cpp file :noexport:
 
 
 #+name: main-cpp
@@ -42,6 +43,75 @@ void close_sim(void)
 
 }
 #+end_src
+
+* Linear cpp file :noexport:
+
+
+#+name: linear-cpp
+#+begin_src cpp :eval no :noweb yes :main no :tangle ./Linear_Model/fun_linear_determ.cpp
+// Script created using tangle and noweb features of org-mode
+
+#include "fun_head_fast.h"
+
+MODELBEGIN
+
+<<linear-X-EQ>>
+
+MODELEND
+
+
+void close_sim(void)
+{
+
+}
+#+end_src
+
+* Linear Random walk cpp file :noexport:
+
+
+#+name: linear-cpp
+#+begin_src cpp :eval no :noweb yes :main no :tangle ./Linear_Model/fun_linear_complete.cpp
+// Script created using tangle and noweb features of org-mode
+
+#include "fun_head_fast.h"
+
+MODELBEGIN
+
+<<linear-X-EQ>>
+
+<<linear-m-EQ>>
+
+MODELEND
+
+
+void close_sim(void)
+{
+
+}
+#+end_src
+
+* Chaotic cpp file :noexport:
+
+
+#+name: linear-cpp
+#+begin_src cpp :eval no :noweb yes :main no :tangle ./Chaotic_Model/fun_chaos_complete.cpp
+// Script created using tangle and noweb features of org-mode
+
+#include "fun_head_fast.h"
+
+MODELBEGIN
+
+<<chaos-X-EQ>>
+
+MODELEND
+
+
+void close_sim(void)
+{
+
+}
+#+end_src
+
 
 * Beamer specific settings :ignore:noexport:
 
@@ -90,45 +160,36 @@ void close_sim(void)
 
 In all blocks, we will
 
-1. Understand the overall structure of [cite/t:@dosi_2017_footprint]  model
-2. Understand how LSD works
-3. Implement the theoretical model on LSD
+1. Understand how LSD works
+2. Implement a linear and chaotic model[fn::Based on the slides of LSD manual folder]
+3. Understand and implement [cite/t:@dosi_2017_footprint] model on LSD
 4. Analyse the model results on LSD
 
 ** Structure of the sessions
 
-- Session 1 :: Presents the general structure of the model and of LSD
-- Session 2 :: Write model equations on LSD
-- Session 3 :: Analysis of results
+- Session 1 :: Presents the general structure of LSD and perform some simulations
+- Session 2 :: Write the industry model equations on LSD
+- Session 3 :: Complete the scripts (if necessary), run the simulation and the analysis of results
 
 ** Repository structure
 
 This presentation can be found on this (LINK) repository. In addition:
 
-- Final.cpp :: Complete equation file for reference
-- Coding.cpp :: Script to start with for LSD coding
-- Coding.lsd :: Model structure file
-- Coding.sa :: Sensitvity Analysis file
-- Coding.R :: R script for generating plots
+- Linear_Model/fun_linear.cpp :: Starting script for the linear model
+- Chaotic_Model/fun_choatic.cpp :: Starting script for the choatic model
+- Industry_SummerSchool/fun_industry.cpp :: Starting script for the industry model
+- Sim*.lsd :: Are the configuration files
 
-*Important:* Clone this folder under =LSD/Work/SummerSchool/=
+*Important:* Clone/Download this folder under =LSD/Work/=
 
 *** Missed something?
 
-=Final.cpp= contains the complete equation file for reference.
+=*_complete.cpp= contains the complete equation file for reference.
 
 
 * Session 1
-** Theoretical model :ignore:
 
-#+include: "Model.org" :level 2
-
-
-* Session 2
-
-** Where we are and to where we go?
-
-** Technicals :ignore:
+** Technical :ignore:
 
 ** C++ for LSD I
 
@@ -184,6 +245,8 @@ Those are *local variables* that we can use on equations.
 *** Debbuging
 
 LSD has an internal debbuger that allow us to look to local variables on the fly.
+
+
 
 ** Macros I
 
@@ -297,7 +360,7 @@ Examples:
 #+caption: Other LSD macros
 [[file:figs/LSD_Macros_ScreenShot.png]]
 
-** Simple example I
+** Macro example I
 
 How can we write the following equation using LSD syntax?
 
@@ -319,7 +382,7 @@ RESULT(v[2]) // Specify the output of the function
 As a rule of thumb, variables have an =EQUATION= associated, parameters do not.
 
 
-** Simple example II
+** Macro example II
 
 How can we write the following equation using LSD syntax?
 
@@ -338,6 +401,7 @@ CYCLE(cur, "Firm") { // Similar to a for-loop in other languages
 RESULT(v[0])
 #+end_src
 
+
 ** Equation file
 
 Any equation file (=.cpp=) must contain the following text:
@@ -355,7 +419,7 @@ void close_sim(void) {}
 
 In our session, we will copy-and-paste the initialization equation and continue from there.
 
-** Other files
+** Model structure and data organization I
 
 Besides the equation files (=.cpp= or =.h=), LSD defines the model structures on a different file (extension =.lsd=).
 This special file has:
@@ -372,19 +436,255 @@ This special file has:
 This structure ensure the modeler to think in terms of data structure.
 
 
-** Structure of NW model
 
-[[file:figs/NW_Structure.png]]
+
+** Linear model I
+
+Let's start with the file on [[file:Linear_Model/fun_linear.cpp]]
+
+
+#+begin_src cpp :eval no :tangle ./Linear_Model/fun_linear.cpp :main no
+#include "fun_head.h" // This is mandatory
+
+MODELBEGIN
+
+// Your code goes here
+
+MODELEND
+void close_sim(void) {}
+#+end_src
+
+** Linear model II
+
+Next, we will write the following equation:
+
+\[X_{t} = X_{t-1} + m\]
+
+
+#+name: linear-X-EQ
+#+begin_src cpp :eval no :main no
+
+EQUATION("X") // This is a one line comment
+/*
+This is a long comment
+*/
+v[0] = VL("X",1); //past value of X, lagged of 1 period
+v[1] = V("m"); //current value of m (variable or parameter)
+v[2] = v[0] + v[1]; // v[n] are local variables
+RESULT(v[2]) // Specify the output of the function
+#+end_src
+
+
+** Linear model III
+
+- Compile (=Model > Compile and run ...=).
+- Wait to open a new window.
+- Create a descending object called =Obj1= (=Model > Add Object=)
+- Double click on =Obj1=
+- Add the Variable \(X\) (max. lags = 1, \(X_{0} = 0.5\)) and Parameter (\(m = 2\))
+- Save this configuration as =Sim1.lsd=
+- Mark \(X\) to be saved (=F5=) and run
+- Analyze the results
+
+
+** Linear model IV
+
+#+ATTR_LATEX: :width .83\linewidth :heigth .8\paperheight
+[[file:./figs/Linear_X.svg]]
+
+** Linear model V
+
+We can adjust the previous equation in order to get a Random Walk.
+First, we need to specify the distribution for \(m\):
+
+\[m \sim U(\min, \max)\]
+
+
+
+#+name: linear-m-EQ
+#+begin_src cpp :eval no :main no
+EQUATION("m")
+v[0] = V("min");
+v[1] = V("max");
+v[2] = uniform(v[0], v[1]);
+RESULT(v[2])
+#+end_src
+
+
+** Linear model VI
+
+
+Now, we need to adjust the =.lsd= file:
+
+- Make a copy of =Sim1.lsd= and save it as =Sim2.lsd=
+- =m= should become an =EQUATION= on =.lsd=
+- Create an equation for =m= (on =.cpp=) (done)
+- Add new parameters on =.lsd=
+  - =min= = -10
+  - =max= = 10
+
+
+** Linear model VII
+
+#+ATTR_LATEX: :width .83\linewidth :heigth .8\paperheight
+[[file:./figs/RW_X.svg]]
+
+** Linear model VIII
+
+So far, there is nothing new if you use other programming language.
+However, we can leverage from the fact that LSD is OOP.
+
+- Load =Sim2= and save it as =Sim3=
+- Use menu =Data/Set Number of Objects= and set to 10 the copies of =Obj1=
+- Run and plot
+
+*** Key takeaways
+
+The source code remains untouched, while we produced a completelly different structure.
+This is the benefit of isolating the code and the structure.
+
+** Linear model IX
+
+#+ATTR_LATEX: :width .83\linewidth :heigth .8\paperheight
+[[file:./figs/Multi_RW_X.svg]]
+
+
+** Logistic chaotic model 0
+
+Let's start with the file on [[file:Chaotic_Model/fun_chaos.cpp]]
+
+
+#+begin_src cpp :eval no :tangle ./Chaotic_Model/fun_chaos.cpp :main no
+#include "fun_head.h" // This is mandatory
+
+MODELBEGIN
+
+// Your code goes here
+
+MODELEND
+void close_sim(void) {}
+#+end_src
+
+
+** Logistic chaotic model I
+
+Consider the model made of the single equation
+
+\[X_{t} = m\cdot X_{t-1}\cdot (1 - X_{t-1})\]
+
+To implement this model follow the usual steps:
+1. Insert the equation’s code for the model.
+2. Compile and run the model (menu *Model/Run*).
+3. Using the Lsd model program generate one object and place in it variable \(X\) with 1 lag and parameter \(m\).
+
+** Logistic chaotic model II
+
+The model equation can be written as follows:
+
+
+#+name: chaos-X-EQ
+#+begin_src cpp :eval no :main no
+
+EQUATION("X")
+v[0] = VL("X",1);
+v[1] = V("m");
+v[2] = v[1]*v[0]*(1-v[0]);
+RESULT(v[2])
+#+end_src
+
+
+** Logistic chaotic model III
+
+Let's adjust the configuration file (=.lsd=):
+
+- Load =Sim1.lsd= and save it as =Sim2.lsd=[fn::Sim1.lsd is a copy of the linear example]
+- Make *10* copies of =Obj1=
+- Select \(m\) and click on =Data>Initial Values ...= and set different values for each instance from \((1 \ldots 3.99)_{}\)
+- Run and plot \(X\)
+
+** Logistic chaotic model IV
+
+
+#+ATTR_LATEX: :width .83\linewidth :heigth .8\paperheight
+[[file:./figs/chaos_X.svg]]
+
+** Logistic chaotic model V
+
+The function produces *extremely* different results depending on the value of *\(m\)*.
+
+- We will create a large number of series computed independently.
+- We will set \(m\) to a slightly different value for each series.
+- We will set the *initial* points for the \(X\) to random values.
+
+
+** Logistic chaotic model VI
+
+- Load =Sim2.lsd= and save it as =Sim3.lsd=
+- Generate *10000* copies of =Obj1=
+- Open the initial values interface with =Data/Initial Values...=
+- Use the buttons =Set All= on the side of \(m\) and \(X\) to assign values to all the elements.
+  - \(m\): *Range* between 2.8 and 3.99.
+  - \(X\): Random (Uniform) between 0.01 and 0.99.
+- =Run>Simulation Settings...= to set 1000 time steps.
+- Mark \(m\) to be saved
+- Save, run, analyze
+
+
+** Logistic chaotic model VII
+
+- Open Analysis of results
+- Select all \(m\) and \(X\) series
+- On the bottom right, select *Cross section* and *XY plot*
+- Select *Points*
+- Plot for the last timestep (1000, default)
+- Hit continue and wait
+
+*** Key takeaways
+
+Once again, the code remains *untouched*.
+Later, we will check other features of LSD that benefit from this design principle.
+
+
+** Logistic chaotic model VIII
+
+#+ATTR_LATEX: :width .83\linewidth :heigth .8\paperheight
+[[file:figs/chaotic_bifurcation.svg]]
+
+
+
+** Logistic chaotic model IX :noexport:
+
+The graph contains one point for each value of \(X_{1000}\) with the coordinate of the corresponding \(m\) value on the horizontal axis.
+
+The graph shows that, for increasing values of \(m\), we see firstly the convergence of the series to a unique point.
+
+For larger values of \(m\) the series oscillate indefinitely between two points, generating a biforcation in the plot because the series will be differently located at the two poles of their oscillations.
+
+For a short span of \(m\), the function generates a cycle across 4 points.
+Subsequently it becomes chaotic, although in some areas the density of the points seem to be very thin.
+
+* Session 2
 
 ** Simulation pipeline
 
-Whenever running a model on LSD, we need to:
+As a recap, whenever running a model on LSD, we need to:
 
 1. Design a model (on paper);
 2. Write the code implementing the equation;
 3. Define the model structure and initialization;
 4. Run the simulation;
 5. Analyse the results.
+
+*** Where we are and to where we go?
+
+In the previous session, we implemented two different small models.
+Now, we will focus on a economic model.
+
+
+** Theoretical model :ignore:
+
+#+include: "Model.org" :level 2
+
 
 
 ** Main equations :ignore:
@@ -568,7 +868,16 @@ RESULT( 1 )
 
 ** Where we are and to where we go?
 
-** Required packages
+- Session I :: Basics of LSD and small models implementation
+- Session II :: Presentation of the Industry model and implementation
+- Session III (Today) :: Q&A, bug fixes, analysis of results and Monte Carlo Experiment
 
-** Required files
+** Analyze the model results
 
+** Exploring the single run results
+
+** Activity I
+
+** A simple Monte Carlo experiment
+
+** Activity II

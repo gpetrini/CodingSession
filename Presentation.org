@@ -386,7 +386,8 @@ As a rule of thumb, variables have an =EQUATION= associated, parameters do not.
 
 How can we write the following equation using LSD syntax?
 
-\[Y_{t} = \sum_{i=1}^{n} X_{n,t} + W_{n,t}\]
+\[Y_{t} = \sum_{i=1}^{n} X_{n,t} + W_{n,t-1}\]
+
 
 
 #+begin_src cpp :eval no
@@ -394,7 +395,7 @@ EQUATION("Y")
 v[0] = 0; // Initialize the Accumulation
 CYCLE(cur, "Firm") { // Similar to a for-loop in other languages
     v[1] = VS(cur, "X"); // cur points to a "Firm" object
-    v[2] = VS(cur, "W"); // cur is a locally defined pointer
+    v[2] = VLS(cur, "W", 1); // cur is a locally defined pointer
     v[3] = v[1] + v[2];
     v[0] = v[0] + v[3];
 }

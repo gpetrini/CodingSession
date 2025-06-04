@@ -351,7 +351,7 @@ Examples:
 - VLS(POS, "NAME", 1) :: Returns the value of variable =NAME= at lag =1= at position =POS=
 - SUMS(POS, "NAME") :: Sums the value of variable =NAME= at position =POS=
 - SEARCHS(PARENT, "AGT") :: Searches for agent =AGT= starting from =PARENT=
-- WRITES(POS, "NAME", 1) :: Overwrites variable =NAME= at lag =1= at position =POS=
+- WRITELS(POS, "NAME", 1) :: Overwrites variable =NAME= at lag =1= at position =POS=
 
 
 ** Macros II

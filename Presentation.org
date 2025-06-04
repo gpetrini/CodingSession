@@ -173,7 +173,7 @@ In all blocks, we will
 
 ** Repository structure
 
-This presentation can be found on this (LINK) repository. In addition:
+This presentation can be found on this [[https://github.com/gpetrini/CodingSession][repository]].[fn::URL: https://github.com/gpetrini/CodingSession] In addition:
 
 - Linear_Model/fun_linear.cpp :: Starting script for the linear model
 - Chaotic_Model/fun_choatic.cpp :: Starting script for the choatic model

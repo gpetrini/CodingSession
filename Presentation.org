@@ -1,5 +1,5 @@
 #+OPTIONS: H:2 toc: ':t |: t
-#+TITLE: ABM Macro Lab: Agent-based modelling tools
+#+TITLE: ABM Macro Lab: Agent-based Modelling Tools
 #+SUBTITLE: Coding session
 #+AUTHOR: Gabriel Petrini
 #+DATE: July, 2025
@@ -161,15 +161,15 @@ void close_sim(void)
 
 Throughout the sessions, we will
 
-1. Understand how LSD works
-2. Implement a linear and chaotic model[fn::Based on the slides of LSD manual folder]
-3. Understand and implement [cite/t:@dosi_2017_footprint] model on LSD
-4. Analyse the model results on LSD
+1. Understand how LSD works.
+2. Implement a linear and a chaotic model[fn::Based on the slides of LSD manual folder]
+3. Understand and implement the [cite/t:@dosi_2017_footprint] model on LSD
+4. Analyze the model results on LSD
 
 ** Structure of the sessions
 
 - Session 1 :: Presents the general structure of LSD and perform some simulations
-- Session 2 :: Write the industry model equations on LSD
+- Session 2 :: Write the industry model equations in LSD
 - Session 3 :: Complete the scripts (if necessary), run the simulation and the analysis of results
 - Bonus :: A primer on sensitivity analysis
 
@@ -178,7 +178,7 @@ Throughout the sessions, we will
 This presentation can be found on this [[https://github.com/gpetrini/CodingSession][repository]].[fn::URL: https://github.com/gpetrini/CodingSession] In addition:
 
 - Linear_Model/fun_linear.cpp :: Starting script for the linear model
-- Chaotic_Model/fun_choatic.cpp :: Starting script for the choatic model
+- Chaotic_Model/fun_chaotic.cpp :: Starting script for the chaotic model
 - Industry_SummerSchool/fun_industry.cpp :: Starting script for the industry model
 - Sim*.lsd :: Are the configuration files
 
@@ -197,7 +197,7 @@ This presentation can be found on this [[https://github.com/gpetrini/CodingSessi
 
 LSD adds macros to =C++=.
 As a consequence, some basic knowledge on =C++= is usefull.
-What we need to know here?
+What do we need to know here?
 
 *** In python
     :PROPERTIES:
@@ -209,7 +209,7 @@ What we need to know here?
 x = 5 # A comment
 y = 2.5
 ## We do not need to
-## look at pointers
+## work with pointers
 #+end_example
 
 
@@ -369,9 +369,9 @@ How can we write the following equation using LSD syntax?
 \[X_{t} = X_{t-1} + m\]
 
 #+begin_src cpp :eval no
-EQUATION("X") // This is a one line comment
+EQUATION("X") // This is a single-line comment
 /*
-This is a long comment
+This is a multi-line comment
 */
 v[0] = VL("X",1); //past value of X, lagged of 1 period
 v[1] = V("m"); //current value of m (variable or parameter)
@@ -450,7 +450,7 @@ This special file has:
 - Initial and parameter values
 - Simulation settings
 - Number of objects
-- Variables to plot, analyse, debug, etc
+- Variables to plot, analyze, debug, etc
 
 *** LSD and OOP
 
@@ -485,9 +485,9 @@ Next, we will write the following equation:
 #+name: linear-X-EQ
 #+begin_src cpp :eval no :main no
 
-EQUATION("X") // This is a one line comment
+EQUATION("X") // This is a single-line comment
 /*
-This is a long comment
+This is a multi-line comment
 */
 v[0] = VL("X",1); //past value of X, lagged of 1 period
 v[1] = V("m"); //current value of m (variable or parameter)
@@ -632,7 +632,7 @@ Let's adjust the configuration file (=.lsd=):
 
 ** Logistic chaotic model V
 
-The function produces *extremely* different results depending on the value of *\(m\)*.
+The function produces *extremely* different outcomes depending on the value of *\(m\)*.
 
 - We will create a large number of series computed independently.
 - We will set \(m\) to a slightly different value for each series.
@@ -695,12 +695,12 @@ As a recap, whenever running a model on LSD, we need to:
 2. Write the code implementing the equation;
 3. Define the model structure and initialization;
 4. Run the simulation;
-5. Analyse the results.
+5. Analyze the results.
 
-*** Where we are and to where we go?
+*** Where are we and where are we going?
 
 In the previous session, we implemented two different small models.
-Now, we will focus on a economic model.
+Now, we will focus on a economic ABM.
 
 
 ** Theoretical model :ignore:
@@ -853,14 +853,14 @@ RESULT( v[0] )
 Firm-level initialization can be set for every \(NF\) objects on the LSD browser.
 The same applies for every other initial condition.
 
-On the following slide, we will see an alternative way in which we control some few parameters and create \(NF-1\) copies of a example object.
+In the following slide, we will see an alternative way in which we control some few parameters and create \(NF-1\) copies of a example object.
 
 #+begin_example cpp
 ADDNOBJ_EX("TypeOfAgent", number, *pointer);
 #+end_example
 
 
-*** Semi-automatic initialization and sensitivity analysis
+*** Semi-automated initialization and sensitivity analysis
 
 By doing this, we automate the model initialization to test different model configurations (next lecture)
 
@@ -888,11 +888,11 @@ RESULT( 1 )
 
 * Session 3
 
-** Where we are and to where we go?
+** Where are we are where are we going?
 
 - Session I :: Basics of LSD and small models implementation
 - Session II :: Presentation of the Industry model and implementation
-- Session III (Today) :: Q&A, bug fixes, analysis of results and Monte Carlo Experiment
+- Session III (Today) :: Q&A, bug fixes, and analysis of results and Monte Carlo Experiment
 
 ** Analyzing the model results
 
@@ -946,7 +946,7 @@ RESULT( 1 )
 
 1. Show that average productivity (=aAvg=) is always between than maximum and minimum productivities
 2. Check that the total market share of firms is constant and equal to 1
-3. Increase the number of firms to 150, the exit threshold =sMin= to 0.001, and the number of simulation steps.
+3. Increase (1) the number of firms to 150, (2) the exit threshold =sMin= to 0.001, and the number of simulation steps.
 4. Run and analyze the results. What are the main differences?
 5. Using this new configuration, produce a *histogram* of the firm log-size distribution at \(t = 200\)
 
@@ -979,7 +979,7 @@ RESULT( 1 )
 
 ** Model sensitivity to parameters
 
-How can we investigate how parameters and initial conditions *jointly* affect a variable?
+How do parameters and initial conditions *jointly* affect variables?
 
 - The most common approach is to perform a one-variable at a time change
   - In this small-scale model, we can play with different parameters and check
@@ -997,7 +997,7 @@ Sensitivity analysis requires many steps:
 5. Compute the sensitivity analysis *statistics*
 6. Explore the *response surfaces*
 
-*Good news:* LSD (+R) can handle them on a NNF approach
+*Good news:* LSD (+R) can handle this through a NNF approach
 
 *** Note on screening
 
@@ -1037,7 +1037,7 @@ Load [[file:Industry_SummerSchool/R/data/Sim-Sobol.lsd][R/data/Sim-Sobol.lsd]] f
 
 *** Before checking the results
 
-Which parameters do you expect to be the most relevant for *HHI*? And for *aAvg*?
+Which parameters do you expect to most influence *HHI*? What about *aAvg*?
 
 ** Sobol decomposition indexes (HHI)
 
@@ -1087,7 +1087,7 @@ Which parameters do you expect to be the most relevant for *HHI*? And for *aAvg*
 
 #+begin_export latex
 
-Our papers are at:
+Our papers are available at:
 
 \faNewspaper\ \texttt{http://www.lem.sssup.it/wplem.html}\\
 

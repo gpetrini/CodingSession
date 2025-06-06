@@ -130,7 +130,7 @@ void close_sim(void)
 #+LATEX_HEADER:   \end{frame}
 #+LATEX_HEADER: }
 
-* Pacotes :noexport:ignore:
+* LaTex packages :noexport:ignore:
 
 
 #+LATEX_HEADER: \usepackage[utf8]{inputenc}
@@ -151,6 +151,7 @@ void close_sim(void)
 #+latex_header: \usepackage{minted}
 #+latex_header: \usepackage{tikz}
 #+latex_header: \usetikzlibrary{arrows.meta, positioning, shapes}
+#+LATEX_HEADER: \usepackage{fontawesome5}
 
 
 
@@ -170,6 +171,7 @@ Throughout the sessions, we will
 - Session 1 :: Presents the general structure of LSD and perform some simulations
 - Session 2 :: Write the industry model equations on LSD
 - Session 3 :: Complete the scripts (if necessary), run the simulation and the analysis of results
+- Bonus :: A primer on sensitivity analysis
 
 ** Repository structure
 
@@ -403,6 +405,24 @@ RESULT(v[0])
 #+end_src
 
 
+** Macro example III
+
+We can also write on an alternative way
+
+\[Y_{t} = \sum_{i=1}^{n} X_{n,t} + W_{n,t-1}\]
+
+
+
+#+begin_src cpp :eval no
+EQUATION("Y")
+// If X and W are bellow Y on the tree (later)
+v[0] = SUM("X");
+v[1] = SUML("W", 1);
+v[2] = v[0] + v[1];
+RESULT(v[2])
+#+end_src
+
+
 ** Equation file
 
 Any equation file (=.cpp=) must contain the following text:
@@ -582,6 +602,7 @@ To implement this model follow the usual steps:
 
 The model equation can be written as follows:
 
+\[X_{t} = m\cdot X_{t-1}\cdot (1 - X_{t-1})\]
 
 #+name: chaos-X-EQ
 #+begin_src cpp :eval no :main no
@@ -873,12 +894,208 @@ RESULT( 1 )
 - Session II :: Presentation of the Industry model and implementation
 - Session III (Today) :: Q&A, bug fixes, analysis of results and Monte Carlo Experiment
 
-** Analyze the model results
+** Analyzing the model results
+
+- After a successful simulation run, in *Browser* click on menu *Data > Analysis of Results*
+- To analyze the /saved/ data time series, select the desired variables from the *Series available* list to include them in the *Series selected* list
+- Click on *Plot* button to show the selected variable(s) time series plot
+- Click on *Statistics* button to show the selected time series descriptive statistics in *LSD Log*
+- Plots and analysis data can be /saved/ pressing the *Save Plot* and *Save Data* buttons
+
 
 ** Exploring the single run results
 
+#+begin_export latex
+\begin{figure}[ht]
+    % First row: Market-level data
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includesvg[width=\linewidth, height=.3\textheight]{./figs/single_avg_log_productivity.svg}
+        \caption{Average log-productivity ($a$)}
+        \label{fig:avg_prod}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includesvg[width=\linewidth, height=.3\textheight]{./figs/single_firm_log_productivity.svg}
+        \caption{Firm log-productivity ($a$)}
+        \label{fig:firm_prod}
+    \end{subfigure}
+
+    % Second row: Firm-level data
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includesvg[width=\linewidth, height=.3\textheight]{./figs/single_HHI.svg}
+        \caption{Herfindahl-Hirschman Index (HHI)}
+        \label{fig:hhi}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includesvg[width=\linewidth, height=.3\textheight]{./figs/single_firm_market_share.svg}
+        \caption{Firm market share ($s$)}
+        \label{fig:market_share}
+    \end{subfigure}
+    \label{single-run-industry}
+\end{figure}
+#+end_export
+
+
 ** Activity I
 
-** A simple Monte Carlo experiment
+
+1. Show that average productivity (=aAvg=) is always between than maximum and minimum productivities
+2. Check that the total market share of firms is constant and equal to 1
+3. Increase the number of firms to 150, the exit threshold =sMin= to 0.001, and the number of simulation steps.
+4. Run and analyze the results. What are the main differences?
+5. Using this new configuration, produce a *histogram* of the firm log-size distribution at \(t = 200\)
+
+** Histogram of firm log-size distribution (\(t = 200\))
+
+[[file:./figs/150_firms_log_size_histogram.svg]]
+** A simple Monte Carlo experiment I
+
+1. Close Analysis of Results window
+2. Re-open the baseline configuration
+3. Set the simulation runs to *20* (*Run > Simulation*)
+4. Save as a new configuration
+5. Run the new configuration (*Run > Run*)
+6. Choose *Data > Analysis of MC Experiment*, accept using last results, and mark to create *Average* and *Maximum and minimum* series, and to include confidence intervals
+7. Analyze the Monte Carlo experiment results
+
+** A simple Monte Carlo experiment II
+
+
+[[file:./figs/HHI_MC.svg]]
 
 ** Activity II
+
+1. Show the max-min intervals for the average log-productivity (*aAvg*) and the *HHI* in the MC experiment
+2. Why the MC confidence width is not comparable for the two variables?
+3. Show the distribution of the productivity (*a*) considering all MC runs (tip: select *Keep original series in Monte Carlo options*)
+4. The Monte Carlo analysis uncovers a potential problem with this simplified version of the model, try to identify it, and to reason if it can invalidate the results obtained
+
+* Bonus
+
+** Model sensitivity to parameters
+
+How can we investigate how parameters and initial conditions *jointly* affect a variable?
+
+- The most common approach is to perform a one-variable at a time change
+  - In this small-scale model, we can play with different parameters and check
+- However, even with this small parametric space, the number of combinations can get quickly large
+- We will briefly check some Design of Experiments Techniques that helps with this situations
+
+** Sensitivity analysis
+
+Sensitivity analysis requires many steps:
+
+1. Screening: Filter down unimportant factors (elementary effects)
+2. Select a *Design of Experiments* (DoE) strategy
+3. Evaluate multiple runs per configuration
+4. If required, fit a *meta-model*
+5. Compute the sensitivity analysis *statistics*
+6. Explore the *response surfaces*
+
+*Good news:* LSD (+R) can handle them on a NNF approach
+
+*** Note on screening
+
+As the model is small, we will skip screening and jump directly to metamodels
+
+
+** Parametric space
+
+
+|------------+----------------------------------+----------+--------+------|
+|            |               Desc               | Baseline |  Min   | Max  |
+|------------+----------------------------------+----------+--------+------|
+|    <c>     |               <c>                |   <c>    |  <c>   | <c>  |
+|   \(\eta\)    |  Innovation opportunity support  |   0.3    |  0.0   | 0.7  |
+| \(\beta_{1}, \beta_{2}\) |   beta distribution parameters   | 1.0; 5.0 |  1; 3  | 3;10 |
+|   \(A\)    |  replicator dynamics intensity   |    1     |  0.2   |  5   |
+|  \(s_{min}\)  | minimum market share to not exit |   0.01   | 0.0001 | 0.01 |
+|   \(NF\)   |         number of firms          |    10    |   10   | 350  |
+|------------+----------------------------------+----------+--------+------|
+
+*** Monte Carlo vs Near Orthogonal Latin Hypercube
+
+- All combinations possible (MC): 64 (x 5)
+- NOLH: 43 (x 5)
+
+
+** Exploring the industry model
+
+Load [[file:Industry_SummerSchool/R/data/Sim-Sobol.lsd][R/data/Sim-Sobol.lsd]] file in LSD
+   1. This is a copy of [[file:Industry_SummerSchool/Sim1.lsd][Sim1.lsd]] with 5 simulation runs
+2. Load sensitivity analysis configuration (*File > Load sensitivity...*) and choose [[file:Industry_SummerSchool/R/Sim-Sobol.sa][R/Sim-Sobol.sa]]
+3. Set the DoE (*Data > Sensitivity Analysis > NOHL sampling*)
+   1. Select *Extended number of samples*, hit *OK* and accepts the default
+4. Run a *parallel batch* (Run > Parallel Batch) to produce the results files (accept the defaults)
+5. Let's jump into R(studio) and create a project under the *R* folder
+6. Select the *sobol-SA.R* and hit source
+
+*** Before checking the results
+
+Which parameters do you expect to be the most relevant for *HHI*? And for *aAvg*?
+
+** Sobol decomposition indexes (HHI)
+
+#+begin_export latex
+\begin{center}
+\includegraphics[height=.875\textheight,page=4]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
+\end{center}
+#+end_export
+
+
+** Meta-model response I
+
+#+begin_export latex
+\begin{center}
+\includegraphics[height=.85\textheight,page=5]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
+\end{center}
+#+end_export
+
+** Meta-model response II
+
+#+begin_export latex
+\begin{center}
+\includegraphics[height=.85\textheight,page=6]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
+\end{center}
+#+end_export
+
+** Meta-model response III
+
+#+begin_export latex
+\begin{center}
+\includegraphics[height=.85\textheight,page=7]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
+\end{center}
+#+end_export
+
+
+** Bonus Activity
+
+- In the Rscript, uncomment =varName   <- "aAvg"= and source the file again
+- Open the resulting PDF file
+- Analyze the results and contrast with your expectations
+- What are the economic intuition associated with these parameters?
+
+
+** Phew!
+
+
+
+#+begin_export latex
+
+Our papers are at:
+
+\faNewspaper\ \texttt{http://www.lem.sssup.it/wplem.html}\\
+
+You can reach me at:
+
+\faEnvelope\ \texttt{gpetrinidasilveira@gmail.com} \\
+\faGithub\ \texttt{github.com/gpetrini} \\
+\faOrcid & \texttt{https://orcid.org/0000-0002-3523-9826} \\
+
+\\\Huge{Thank you!}
+#+end_export

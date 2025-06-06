@@ -1,0 +1,60 @@
+	
+Label Root
+{
+	Son: Market
+	Label Market
+	{
+		Son: Firm
+		Label Firm
+		{
+			Var: a
+			Var: s
+			Var: exit_decision
+
+		}
+
+		Param: eta
+		Param: beta1
+		Param: beta2
+		Param: A
+		Param: sMin
+		Var: exit_entry
+		Var: HHI
+		Var: aAvg
+
+	}
+
+	Param: A0
+	Param: Nfirm
+	Var: init
+
+}
+
+
+DATA
+
+Object: Root C	1
+Param: A0 0 n + n n	1
+Param: Nfirm 0 n + n n	350
+Var: init 0 n + n n
+
+Object: Market C	1
+Param: eta 0 n + n n	0.175
+Param: beta1 0 n + n n	1.125
+Param: beta2 0 n + n n	6.9375
+Param: A 0 n + n n	4.4
+Param: sMin 0 n + n n	0.00690625
+Var: exit_entry 0 n + n n
+Var: HHI 0 s + n n
+Var: aAvg 0 s + n n
+
+Object: Firm C	1
+Var: a 1 s + n n	0
+Var: s 1 s + n n	0
+Var: exit_decision 0 n + n n
+
+SIM_NUM 5
+SEED 66
+MAX_STEP 100
+EQUATION Industry.cpp
+MODELREPORT report_Sim1.html

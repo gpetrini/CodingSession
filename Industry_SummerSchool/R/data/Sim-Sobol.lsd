@@ -1,0 +1,258 @@
+	
+Label Root
+{
+	Son: Market
+	Label Market
+	{
+		Son: Firm
+		Label Firm
+		{
+			Var: a
+			Var: s
+			Var: exit_decision
+
+		}
+
+		Param: eta
+		Param: beta1
+		Param: beta2
+		Param: A
+		Param: sMin
+		Var: exit_entry
+		Var: HHI
+		Var: aAvg
+
+	}
+
+	Param: A0
+	Param: Nfirm
+	Var: init
+
+}
+
+
+DATA
+
+Object: Root C	1
+Param: A0 0 n + n n	1
+Param: Nfirm 0 n + n n	10
+Var: init 0 n + n n
+
+Object: Market C	1
+Param: eta 0 n + n n	0.3
+Param: beta1 0 n + n n	1
+Param: beta2 0 n + n n	5
+Param: A 0 n + n n	1
+Param: sMin 0 n + n n	0.01
+Var: exit_entry 0 n + n n
+Var: HHI 0 s + n n
+Var: aAvg 0 s + n n
+
+Object: Firm C	1
+Var: a 1 s + n n	0
+Var: s 1 s + n n	0
+Var: exit_decision 0 n + n n
+
+SIM_NUM 5
+SEED 1
+MAX_STEP 100
+EQUATION Industry.cpp
+MODELREPORT report_Sim1.html
+
+DESCRIPTION
+
+Object_Root
+
+END_DESCRIPTION
+
+Parameter_A0
+
+_INIT_
+All 1 instances equal to 1
+END_DESCRIPTION
+
+Parameter_Nfirm
+
+_INIT_
+All 1 instances equal to 10
+END_DESCRIPTION
+
+Variable_init
+
+END_DESCRIPTION
+
+Object_Market
+
+END_DESCRIPTION
+
+Parameter_eta
+
+_INIT_
+All 1 instances equal to 0.3
+END_DESCRIPTION
+
+Parameter_beta1
+
+_INIT_
+All 1 instances equal to 1
+END_DESCRIPTION
+
+Parameter_beta2
+
+_INIT_
+All 1 instances equal to 5
+END_DESCRIPTION
+
+Parameter_A
+
+_INIT_
+All 1 instances equal to 1
+END_DESCRIPTION
+
+Parameter_sMin
+
+_INIT_
+All 1 instances equal to 0.01
+END_DESCRIPTION
+
+Variable_exit_entry
+Trigger market-wise exit-entry dynamics and re-scale shares
+END_DESCRIPTION
+
+Variable_HHI
+Herfindahl-Hirschman concentration index
+END_DESCRIPTION
+
+Variable_aAvg
+Mean knowledge/productivity
+END_DESCRIPTION
+
+Object_Firm
+
+END_DESCRIPTION
+
+Variable_a
+Firm knowledge/productivity
+_INIT_
+All 1 instances equal to 0
+END_DESCRIPTION
+
+Variable_s
+Firm size/market share
+_INIT_
+All 1 instances equal to 0
+END_DESCRIPTION
+
+Variable_exit_decision
+
+END_DESCRIPTION
+
+
+DOCUOBSERVE
+
+END_DOCUOBSERVE
+
+
+DOCUINITIAL
+
+END_DOCUINITIAL
+
+
+EQ_FILE
+// Script created using tangle and noweb features of org-mode
+
+#include "fun_head_fast.h"
+
+MODELBEGIN
+
+
+EQUATION( "init" )
+PARAMETER;                  // turn into parameter (run once)
+// finds the agent on memory
+cur = SEARCH( "Market" ); cur1 = SEARCHS(cur, "Firm" );
+
+v[0] = V("A0"); // We define
+v[1] = V("Nfirm"); // We define
+v[2] = 1 / v[1]; // Fair share
+// Overwrites the lag 1 of "a" to v[0] at time 1
+WRITELLS(cur1, "a", v[0], 1, 1);
+WRITELLS(cur1, "s", v[2], 1, 1);
+// Adds N - 1 copies of cur1 agent located under cur
+ADDNOBJ_EXS(cur, "Firm", v[1] - 1, cur1);
+RESULT( 1 )
+
+EQUATION("a")
+// Firm knowledge/productivity
+v[0] = CURRENT;
+v[1] = V("eta");
+v[2] = V("beta1");
+v[3] = V("beta2");
+v[4] = beta(v[2], v[3]);
+v[5] = v[0] * (1 + v[1] * v[4]);
+RESULT(v[5])
+
+EQUATION("s")
+// Firm size/market share
+v[0] = CURRENT;
+v[1] = V("A");
+v[2] = V("a");
+v[3] = V("aAvg");
+v[4] = (v[2] - v[3])/v[3];
+v[5] = v[0] * (1 + v[1] * v[4]);
+RESULT(v[5])
+
+EQUATION("exit_decision")
+
+v[0] = V("s"); v[1] = V("sMin");
+// update entrant firm productivity and market share
+if (v[0] < v[1]) {
+  v[2] = V("eta"); v[3] = V("beta1"); v[4] = V("beta2");
+  v[5] = beta(v[3], v[4]);
+  v[6] = V("aAvg");
+  v[7] = v[6] * (1 + v[2] * v[5]);
+  WRITE( "a", v[7] );
+  WRITE( "s", 1 / COUNT( "Firm" ) );
+}
+RESULT(0)
+
+EQUATION( "aAvg" )
+// Mean knowledge/productivity
+
+v[0] = 0;        // accumulator
+CYCLE(cur, "Firm") {
+  v[1] = VLS( cur, "s", 1 );
+  v[2] = VS( cur, "a" );
+  v[3] = v[1] * v[2];
+  v[0] += v[3] ;
+}
+RESULT( v[0] )
+
+EQUATION( "exit_entry" )
+// Trigger market-wise exit-entry dynamics and re-scale shares
+V( "HHI" ); // first, compute HH index before exits
+
+// second, ensure firms have decided on exit
+CYCLE(cur, "Firm") {VS( cur, "exit_decision" );}
+
+v[0] = 1 / SUM( "s" ); // factor to scale back to sum = 1
+CYCLE(cur, "Firm") { // third, rescale market shares after exits
+  v[1] = VS( cur, "s" );
+  v[2] = v[0] * v[1];
+  WRITES( cur, "s", v[2]);
+}
+RESULT( SUM("s") )
+
+EQUATION( "HHI" )
+// Herfindahl-Hirschman concentration index
+v[0] = WHTAVE( "s", "s" );
+RESULT( v[0] )
+
+MODELEND
+
+
+void close_sim(void)
+{
+
+}
+
+END_EQ_FILE

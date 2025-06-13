@@ -122,7 +122,8 @@ void close_sim(void)
 #+startup: beamer
 #+latex_class_options: [bigger,aspectratio=169]
 # #+BEAMER_THEME: Dresden
-#+BEAMER_THEME: Pittsburgh
+# #+BEAMER_THEME: Pittsburgh
+#+BEAMER_THEME: metropolis
 #+BEAMER_COLOR_THEME: beaver
 #+LATEX_HEADER: \titlegraphic{\includesvg[height=1cm]{./figs/IE_Unicamp}\hspace*{1.25cm}\includesvg[height=1cm]{./figs/SSSA}\hspace*{1.25cm} \includesvg[height=1cm]{./figs/YSI}}
 #+LATEX_HEADER: \AtBeginSection[]{
@@ -179,7 +180,9 @@ Throughout the sessions, we will
 
 ** Repository structure
 
-This presentation can be found on this [[https://github.com/gpetrini/CodingSession][repository]].[fn::URL: https://github.com/gpetrini/CodingSession] In addition:
+This presentation can be found on this [[https://github.com/gpetrini/CodingSession][repository]]:
+
+[[https://github.com/gpetrini/CodingSession]]
 
 - Linear_Model/fun_linear.cpp :: Starting script for the linear model
 - Chaotic_Model/fun_chaotic.cpp :: Starting script for the chaotic model
@@ -353,11 +356,10 @@ plt.tight_layout()
 #+RESULTS:
 [[file:./figs/Macros_LSD.pdf]]
 
-Examples:
-- VLS(POS, "NAME", 1) :: Returns the value of variable =NAME= at lag =1= at position =POS=
-- SUMS(POS, "NAME") :: Sums the value of variable =NAME= at position =POS=
-- SEARCHS(PARENT, "AGT") :: Searches for agent =AGT= starting from =PARENT=
-- WRITELS(POS, "NAME", 1) :: Overwrites variable =NAME= at lag =1= at position =POS=
+- src_cpp{VLS(POS, "NAME", 1)} Returns the value of =NAME= at lag =1=, position =POS=
+- src_cpp{SUMS(POS, "NAME")} Sums the value of variable =NAME= at position =POS=
+- src_cpp{SEARCHS(PARENT, "AGT")} Searches for agent =AGT= starting from =PARENT=
+- src_cpp{WRITELS(POS, "NAME", 1)} Overwrites =NAME= at lag =1= at position =POS=
 
 
 ** Macros II
@@ -369,9 +371,7 @@ Examples:
 ** Macro example I
 
 How can we write the following equation using LSD syntax?
-
 \[X_{t} = X_{t-1} + m\]
-
 #+begin_src cpp :eval no
 EQUATION("X") // This is a single-line comment
 /*
@@ -796,7 +796,6 @@ RESULT(0)
 #+begin_src cpp :eval no :noweb yes
 EQUATION( "aAvg" )
 // Mean knowledge/productivity
-
 v[0] = 0;        // accumulator
 CYCLE(cur, "Firm") {
   v[1] = VLS( cur, "s", 1 );
@@ -1079,7 +1078,7 @@ Which parameters do you expect to most influence *HHI*? What about *aAvg*?
 
 ** Bonus Activity
 
-- In the Rscript, uncomment =varName   <- "aAvg"= and source the file again
+- In the Rscript, uncomment src_R{varName <- "aAvg"} and source the file again
 - Open the resulting PDF file
 - Analyze the results and contrast with your expectations
 - What are the economic intuition associated with these parameters?

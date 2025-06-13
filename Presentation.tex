@@ -1,8 +1,7 @@
-% Created 2025-06-13 Fri 11:48
+% Created 2025-06-13 Fri 12:42
 % Intended LaTeX compiler: pdflatex
 \documentclass[bigger,aspectratio=169]{beamer}
- \usepackage{minted}
- \usepackage{caption, subcaption, csquotes, amssymb, xcolor}
+  \usepackage{caption, subcaption, csquotes, amssymb, xcolor}
 \usepackage[english]{babel}
 \titlegraphic{\includesvg[height=1cm]{./figs/IE_Unicamp}\hspace*{1.25cm}\includesvg[height=1cm]{./figs/SSSA}\hspace*{1.25cm} \includesvg[height=1cm]{./figs/YSI}}
 \AtBeginSection[]{
@@ -25,9 +24,6 @@
 \usepackage{epstopdf}
 \epstopdfsetup{update} % only regenerate if changed
 \DeclareGraphicsRule{.eps}{pdf}{.pdf}{`epstopdf #1}
-\usepackage{minted}
-\setminted{autogobble,fontsize=\footnotesize}
-\usemintedstyle{perldoc}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning, shapes}
 \usepackage{fontawesome5}
@@ -37,6 +33,203 @@
 \date{July, 2025}
 \title{ABM Macro Lab: Agent-based Modelling Tools}
 \subtitle{Coding session}
+\hypersetup{
+ pdfauthor={Gabriel Petrini},
+ pdftitle={ABM Macro Lab: Agent-based Modelling Tools},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 29.3 (Org mode 9.7.29)}, 
+ pdflang={English}}
+
+% Setup for code blocks [1/2]
+
+\usepackage{fvextra}
+
+\fvset{%
+  commandchars=\\\{\},
+  highlightcolor=white!95!black!80!blue,
+  breaklines=true,
+  breaksymbol=\color{white!60!black}\tiny\ensuremath{\hookrightarrow}}
+
+% Make line numbers smaller and grey.
+\renewcommand\theFancyVerbLine{\footnotesize\color{black!40!white}\arabic{FancyVerbLine}}
+
+\usepackage{xcolor}
+
+% In case engrave-faces-latex-gen-preamble has not been run.
+\providecolor{EfD}{HTML}{f7f7f7}
+\providecolor{EFD}{HTML}{28292e}
+
+% Define a Code environment to prettily wrap the fontified code.
+\usepackage[breakable,xparse]{tcolorbox}
+\DeclareTColorBox[]{Code}{o}%
+{colback=EfD!98!EFD, colframe=EfD!95!EFD,
+  fontupper=\footnotesize\setlength{\fboxsep}{0pt},
+  colupper=EFD,
+  IfNoValueTF={#1}%
+  {boxsep=2pt, arc=2.5pt, outer arc=2.5pt,
+    boxrule=0.5pt, left=2pt}%
+  {boxsep=2.5pt, arc=0pt, outer arc=0pt,
+    boxrule=0pt, leftrule=1.5pt, left=0.5pt},
+  right=2pt, top=1pt, bottom=0.5pt,
+  breakable}
+
+% Support listings with captions
+\usepackage{float}
+\floatstyle{plain}
+\newfloat{listing}{htbp}{lst}
+\newcommand{\listingsname}{Listing}
+\floatname{listing}{\listingsname}
+\newcommand{\listoflistingsname}{List of Listings}
+\providecommand{\listoflistings}{\listof{listing}{\listoflistingsname}}
+
+
+% Setup for code blocks [2/2]: syntax highlighting colors
+
+\newcommand\efstrut{\vrule height 2.1ex depth 0.8ex width 0pt}
+\definecolor{EFD}{HTML}{383a42}
+\definecolor{EfD}{HTML}{fafafa}
+\newcommand{\EFD}[1]{\textcolor{EFD}{#1}} % default
+\newcommand{\EFvp}[1]{#1} % variable-pitch
+\definecolor{EFh}{HTML}{9ca0a4}
+\newcommand{\EFh}[1]{\textcolor{EFh}{#1}} % shadow
+\definecolor{EFsc}{HTML}{50a14f}
+\newcommand{\EFsc}[1]{\textcolor{EFsc}{#1}} % success
+\definecolor{EFw}{HTML}{986801}
+\newcommand{\EFw}[1]{\textcolor{EFw}{#1}} % warning
+\definecolor{EFe}{HTML}{e45649}
+\newcommand{\EFe}[1]{\textcolor{EFe}{#1}} % error
+\definecolor{Efl}{HTML}{c6c7c7}
+\newcommand{\EFl}[1]{\colorbox{Efl}{\efstrut{}\textbf{#1}}} % link
+\definecolor{EFlv}{HTML}{8b008b}
+\definecolor{Eflv}{HTML}{c6c7c7}
+\newcommand{\EFlv}[1]{\colorbox{Eflv}{\efstrut{}\textcolor{EFlv}{\textbf{#1}}}} % link-visited
+\definecolor{EFhi}{HTML}{f0f0f0}
+\definecolor{Efhi}{HTML}{4078f2}
+\newcommand{\EFhi}[1]{\colorbox{Efhi}{\efstrut{}\textcolor{EFhi}{#1}}} % highlight
+\definecolor{EFc}{HTML}{9ca0a4}
+\newcommand{\EFc}[1]{\textcolor{EFc}{#1}} % font-lock-comment-face
+\definecolor{EFcd}{HTML}{9ca0a4}
+\newcommand{\EFcd}[1]{\textcolor{EFcd}{#1}} % font-lock-comment-delimiter-face
+\definecolor{EFs}{HTML}{50a14f}
+\newcommand{\EFs}[1]{\textcolor{EFs}{#1}} % font-lock-string-face
+\definecolor{EFd}{HTML}{84888b}
+\newcommand{\EFd}[1]{\textcolor{EFd}{\textit{#1}}} % font-lock-doc-face
+\definecolor{EFm}{HTML}{b751b6}
+\newcommand{\EFm}[1]{\textcolor{EFm}{#1}} % font-lock-doc-markup-face
+\definecolor{EFk}{HTML}{e45649}
+\newcommand{\EFk}[1]{\textcolor{EFk}{#1}} % font-lock-keyword-face
+\definecolor{EFb}{HTML}{a626a4}
+\newcommand{\EFb}[1]{\textcolor{EFb}{#1}} % font-lock-builtin-face
+\definecolor{EFf}{HTML}{a626a4}
+\newcommand{\EFf}[1]{\textcolor{EFf}{#1}} % font-lock-function-name-face
+\definecolor{EFv}{HTML}{6a1868}
+\newcommand{\EFv}[1]{\textcolor{EFv}{#1}} % font-lock-variable-name-face
+\definecolor{EFt}{HTML}{986801}
+\newcommand{\EFt}[1]{\textcolor{EFt}{#1}} % font-lock-type-face
+\definecolor{EFo}{HTML}{b751b6}
+\newcommand{\EFo}[1]{\textcolor{EFo}{#1}} % font-lock-constant-face
+\definecolor{EFwr}{HTML}{986801}
+\newcommand{\EFwr}[1]{\textcolor{EFwr}{#1}} % font-lock-warning-face
+\definecolor{EFnc}{HTML}{4078f2}
+\newcommand{\EFnc}[1]{\textcolor{EFnc}{\textbf{#1}}} % font-lock-negation-char-face
+\definecolor{EFpp}{HTML}{4078f2}
+\newcommand{\EFpp}[1]{\textcolor{EFpp}{\textbf{#1}}} % font-lock-preprocessor-face
+\definecolor{EFrc}{HTML}{4078f2}
+\newcommand{\EFrc}[1]{\textcolor{EFrc}{\textbf{#1}}} % font-lock-regexp-grouping-construct
+\definecolor{EFrb}{HTML}{4078f2}
+\newcommand{\EFrb}[1]{\textcolor{EFrb}{\textbf{#1}}} % font-lock-regexp-grouping-backslash
+\definecolor{EFob}{HTML}{bd93f9}
+\definecolor{Efob}{HTML}{e7e7e7}
+\newcommand{\EFob}[1]{\colorbox{Efob}{\efstrut{}\textcolor{EFob}{#1}}} % org-block
+\definecolor{Efobb}{HTML}{23242f}
+\newcommand{\EFobb}[1]{\colorbox{Efobb}{\efstrut{}\textit{#1}}} % org-block-begin-line
+\definecolor{Efobe}{HTML}{23242f}
+\newcommand{\EFobe}[1]{\colorbox{Efobe}{\efstrut{}\textit{#1}}} % org-block-end-line
+\definecolor{EFOa}{HTML}{e45649}
+\newcommand{\EFOa}[1]{\textcolor{EFOa}{\textbf{#1}}} % outline-1
+\definecolor{EFOb}{HTML}{da8548}
+\newcommand{\EFOb}[1]{\textcolor{EFOb}{\textbf{#1}}} % outline-2
+\definecolor{EFOc}{HTML}{b751b6}
+\newcommand{\EFOc}[1]{\textcolor{EFOc}{\textbf{#1}}} % outline-3
+\definecolor{EFOd}{HTML}{6f99f5}
+\newcommand{\EFOd}[1]{\textcolor{EFOd}{\textbf{#1}}} % outline-4
+\definecolor{EFOe}{HTML}{bc5cba}
+\newcommand{\EFOe}[1]{\textcolor{EFOe}{\textbf{#1}}} % outline-5
+\definecolor{EFOf}{HTML}{9fbbf8}
+\newcommand{\EFOf}[1]{\textcolor{EFOf}{\textbf{#1}}} % outline-6
+\definecolor{EFOg}{HTML}{d292d1}
+\newcommand{\EFOg}[1]{\textcolor{EFOg}{\textbf{#1}}} % outline-7
+\definecolor{EFOh}{HTML}{d8e4fc}
+\newcommand{\EFOh}[1]{\textcolor{EFOh}{\textbf{#1}}} % outline-8
+\definecolor{EFhn}{HTML}{da8548}
+\newcommand{\EFhn}[1]{\textcolor{EFhn}{\textbf{#1}}} % highlight-numbers-number
+\newcommand{\EFhq}[1]{#1} % highlight-quoted-quote
+\newcommand{\EFhs}[1]{#1} % highlight-quoted-symbol
+\definecolor{EFrda}{HTML}{4078f2}
+\newcommand{\EFrda}[1]{\textcolor{EFrda}{#1}} % rainbow-delimiters-depth-1-face
+\definecolor{EFrdb}{HTML}{a626a4}
+\newcommand{\EFrdb}[1]{\textcolor{EFrdb}{#1}} % rainbow-delimiters-depth-2-face
+\definecolor{EFrdc}{HTML}{50a14f}
+\newcommand{\EFrdc}[1]{\textcolor{EFrdc}{#1}} % rainbow-delimiters-depth-3-face
+\definecolor{EFrdd}{HTML}{b751b6}
+\newcommand{\EFrdd}[1]{\textcolor{EFrdd}{#1}} % rainbow-delimiters-depth-4-face
+\definecolor{EFrde}{HTML}{4db5bd}
+\newcommand{\EFrde}[1]{\textcolor{EFrde}{#1}} % rainbow-delimiters-depth-5-face
+\definecolor{EFrdf}{HTML}{4078f2}
+\newcommand{\EFrdf}[1]{\textcolor{EFrdf}{#1}} % rainbow-delimiters-depth-6-face
+\definecolor{EFrdg}{HTML}{a626a4}
+\newcommand{\EFrdg}[1]{\textcolor{EFrdg}{#1}} % rainbow-delimiters-depth-7-face
+\definecolor{EFrdh}{HTML}{50a14f}
+\newcommand{\EFrdh}[1]{\textcolor{EFrdh}{#1}} % rainbow-delimiters-depth-8-face
+\definecolor{EFrdi}{HTML}{b751b6}
+\newcommand{\EFrdi}[1]{\textcolor{EFrdi}{#1}} % rainbow-delimiters-depth-9-face
+\definecolor{EFany}{HTML}{986801}
+\definecolor{Efany}{HTML}{986801}
+\newcommand{\EFany}[1]{\colorbox{Efany}{\efstrut{}\textcolor{EFany}{#1}}} % ansi-color-yellow
+\definecolor{EFanr}{HTML}{e45649}
+\definecolor{Efanr}{HTML}{e45649}
+\newcommand{\EFanr}[1]{\colorbox{Efanr}{\efstrut{}\textcolor{EFanr}{#1}}} % ansi-color-red
+\definecolor{EFanb}{HTML}{fafafa}
+\newcommand{\EFanb}[1]{\textcolor{EFanb}{#1}} % ansi-color-black
+\definecolor{EFang}{HTML}{50a14f}
+\definecolor{Efang}{HTML}{50a14f}
+\newcommand{\EFang}[1]{\colorbox{Efang}{\efstrut{}\textcolor{EFang}{#1}}} % ansi-color-green
+\definecolor{EFanB}{HTML}{4078f2}
+\definecolor{EfanB}{HTML}{4078f2}
+\newcommand{\EFanB}[1]{\colorbox{EfanB}{\efstrut{}\textcolor{EFanB}{#1}}} % ansi-color-blue
+\definecolor{EFanc}{HTML}{0184bc}
+\definecolor{Efanc}{HTML}{0184bc}
+\newcommand{\EFanc}[1]{\colorbox{Efanc}{\efstrut{}\textcolor{EFanc}{#1}}} % ansi-color-cyan
+\definecolor{Efanw}{HTML}{383a42}
+\newcommand{\EFanw}[1]{\colorbox{Efanw}{\efstrut{}#1}} % ansi-color-white
+\definecolor{EFanm}{HTML}{a626a4}
+\definecolor{Efanm}{HTML}{a626a4}
+\newcommand{\EFanm}[1]{\colorbox{Efanm}{\efstrut{}\textcolor{EFanm}{#1}}} % ansi-color-magenta
+\definecolor{EFANy}{HTML}{a77e27}
+\definecolor{EfANy}{HTML}{a77e27}
+\newcommand{\EFANy}[1]{\colorbox{EfANy}{\efstrut{}\textcolor{EFANy}{#1}}} % ansi-color-bright-yellow
+\definecolor{EFANr}{HTML}{e86f64}
+\definecolor{EfANr}{HTML}{e86f64}
+\newcommand{\EFANr}[1]{\colorbox{EfANr}{\efstrut{}\textcolor{EFANr}{#1}}} % ansi-color-bright-red
+\definecolor{EFANb}{HTML}{9ca0a4}
+\definecolor{EfANb}{HTML}{9ca0a4}
+\newcommand{\EFANb}[1]{\colorbox{EfANb}{\efstrut{}\textcolor{EFANb}{#1}}} % ansi-color-bright-black
+\definecolor{EFANg}{HTML}{6aaf69}
+\definecolor{EfANg}{HTML}{6aaf69}
+\newcommand{\EFANg}[1]{\colorbox{EfANg}{\efstrut{}\textcolor{EFANg}{#1}}} % ansi-color-bright-green
+\definecolor{EFANB}{HTML}{5c8cf3}
+\definecolor{EfANB}{HTML}{5c8cf3}
+\newcommand{\EFANB}[1]{\colorbox{EfANB}{\efstrut{}\textcolor{EFANB}{#1}}} % ansi-color-bright-blue
+\definecolor{EFANc}{HTML}{2796c6}
+\definecolor{EfANc}{HTML}{2796c6}
+\newcommand{\EFANc}[1]{\colorbox{EfANc}{\efstrut{}\textcolor{EFANc}{#1}}} % ansi-color-bright-cyan
+\definecolor{EFANw}{HTML}{1b2229}
+\definecolor{EfANw}{HTML}{1b2229}
+\newcommand{\EFANw}[1]{\colorbox{EfANw}{\efstrut{}\textcolor{EFANw}{#1}}} % ansi-color-bright-white
+\definecolor{EFANm}{HTML}{b346b1}
+\definecolor{EfANm}{HTML}{b346b1}
+\newcommand{\EFANm}[1]{\colorbox{EfANm}{\efstrut{}\textcolor{EFANm}{#1}}} % ansi-color-bright-magenta
 \usepackage[style=authoryear]{biblatex}
 \addbibresource{~/Org/zotero_refs.bib}
 \begin{document}
@@ -47,9 +240,9 @@
 \end{frame}
 
 \section{Introduction}
-\label{sec:org52c243f}
+\label{sec:org2f0d2ea}
 
-\begin{frame}[label={sec:org2acfe90}]{Objectives}
+\begin{frame}[label={sec:org7ff8389}]{Objectives}
 Throughout the sessions, we will
 
 \begin{enumerate}
@@ -59,7 +252,7 @@ Throughout the sessions, we will
 \item Analyze the model results on LSD
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:orgc32d983}]{Structure of the sessions}
+\begin{frame}[label={sec:org3cf3ddc}]{Structure of the sessions}
 \begin{description}
 \item[{Session 1}] Presents the general structure of LSD and perform some simulations
 \item[{Session 2}] Write the industry model equations in LSD
@@ -67,7 +260,7 @@ Throughout the sessions, we will
 \item[{Bonus}] A primer on sensitivity analysis
 \end{description}
 \end{frame}
-\begin{frame}[label={sec:orgaf3a216},fragile]{Repository structure}
+\begin{frame}[label={sec:org488f75e},fragile]{Repository structure}
  This presentation can be found on this \href{https://github.com/gpetrini/CodingSession}{repository}.\footnote{URL: \url{https://github.com/gpetrini/CodingSession}} In addition:
 
 \begin{description}
@@ -83,30 +276,34 @@ Throughout the sessions, we will
 \end{block}
 \end{frame}
 \section{Session 1}
-\label{sec:org9ff7e66}
+\label{sec:org495b2f6}
 
-\begin{frame}[label={sec:orgdd658fe},fragile]{C++ for LSD I}
+\begin{frame}[label={sec:org5998fa6},fragile]{C++ for LSD I}
  LSD adds macros to \texttt{C++}.
 As a consequence, some basic knowledge on \texttt{C++} is usefull.
 What do we need to know here?
 \begin{columns}
 \begin{column}{0.4\columnwidth}
 \begin{block}{In python}
-\begin{minted}[]{python}
-x = 5 # A comment
-y = 2.5
-## We do not need to
-## work with pointers
-\end{minted}
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFv{x} = \EFhn{5} \EFcd{\#} \EFc{A comment}
+\EFv{y} = \EFhn{2.5}
+\EFcd{\#\#} \EFc{We do not need to}
+\EFcd{\#\#} \EFc{work with pointers}
+\end{Verbatim}
+\end{Code}
 \end{block}
 \end{column}
 \begin{column}{0.4\columnwidth}
 \begin{block}{In C++}
-\begin{minted}[]{cpp}
-int x = 5; // A comment
-double y = 2.5;
-object *agent; // Latter
-\end{minted}
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFt{int} \EFv{x} = \EFhn{5}; \EFcd{//} \EFc{A comment}
+\EFt{double} \EFv{y} = \EFhn{2.5};
+\EFt{object} *\EFv{agent}; \EFcd{//} \EFc{Latter}
+\end{Verbatim}
+\end{Code}
 \end{block}
 \end{column}
 \end{columns}
@@ -114,23 +311,25 @@ object *agent; // Latter
 Different from python and R, we need to \alert{compile} our code before using it.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org6dba465},fragile]{C++ for LSD II}
+\begin{frame}[label={sec:orgf2c6ed4},fragile]{C++ for LSD II}
  To avoid initializing everything, LSD has some already initialized variables:
 
-\begin{minted}[]{cpp}
-v[0] = 10; // We can assing number to
-v[1] = 50; // a vector (always available)
-T; // Current simulation time
-i = 1; // i,h,j,k can be used for integers
-cur; cur1; // Pre-allocated pointers
-\end{minted}
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}v\EFrda{[}\EFhn{0}\EFrda{]} = \EFhn{10}; \EFcd{//} \EFc{We can assing number to}
+v\EFrda{[}\EFhn{1}\EFrda{]} = \EFhn{50}; \EFcd{//} \EFc{a vector (always available)}
+T; \EFcd{//} \EFc{Current simulation time}
+i = \EFhn{1}; \EFcd{//} \EFc{i,h,j,k can be used for integers}
+cur; cur1; \EFcd{//} \EFc{Pre-allocated pointers}
+\end{Verbatim}
+\end{Code}
 
 Those are \alert{local variables} that we can use on equations.
 \begin{block}{Debbuging}
 LSD has an internal debbuger that allow us to look to local variables on the fly.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org928d8d9},fragile]{Macros I}
+\begin{frame}[label={sec:org02e2c9a},fragile]{Macros I}
  \begin{figure}[htbp]
 \centering
 \includegraphics[width=.9\linewidth]{./figs/Macros_LSD.pdf}
@@ -145,84 +344,92 @@ Examples:
 \item[{WRITELS(POS, ``NAME'', 1)}] Overwrites variable \texttt{NAME} at lag \texttt{1} at position \texttt{POS}
 \end{description}
 \end{frame}
-\begin{frame}[label={sec:org869b2c2}]{Macros II}
+\begin{frame}[label={sec:org7f4cffd}]{Macros II}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.9\linewidth]{figs/LSD_Macros_ScreenShot.png}
 \caption{Other LSD macros}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:orgd02ebf4},fragile]{Macro example I}
+\begin{frame}[label={sec:org2e52cb0},fragile]{Macro example I}
  How can we write the following equation using LSD syntax?
 
 \[X_{t} = X_{t-1} + m\]
 
-\begin{minted}[]{cpp}
-EQUATION("X") // This is a single-line comment
-/*
-This is a multi-line comment
-*/
-v[0] = VL("X",1); //past value of X, lagged of 1 period
-v[1] = V("m"); //current value of m (variable or parameter)
-v[2] = v[0] + v[1]; // v[n] are local variables
-RESULT(v[2]) // Specify the output of the function
-\end{minted}
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}\EFrda{(}\EFs{"X"}\EFrda{)} \EFcd{//} \EFc{This is a single-line comment}
+\EFcd{/*}
+\EFc{This is a multi-line comment}
+\EFcd{*/}
+v\EFrda{[}\EFhn{0}\EFrda{]} = VL\EFrda{(}\EFs{"X"},\EFhn{1}\EFrda{)}; \EFcd{//}\EFc{past value of X, lagged of 1 period}
+v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"m"}\EFrda{)}; \EFcd{//}\EFc{current value of m (variable or parameter)}
+v\EFrda{[}\EFhn{2}\EFrda{]} = v\EFrda{[}\EFhn{0}\EFrda{]} + v\EFrda{[}\EFhn{1}\EFrda{]}; \EFcd{//} \EFc{v[n] are local variables}
+\EFo{RESULT}\EFrda{(}v\EFrdb{[}\EFhn{2}\EFrdb{]}\EFrda{)} \EFcd{//} \EFc{Specify the output of the function}
+\end{Verbatim}
+\end{Code}
 \begin{block}{Variable or parameter?}
 As a rule of thumb, variables have an \texttt{EQUATION} associated, parameters do not.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org722cbb5},fragile]{Macro example II}
+\begin{frame}[label={sec:orgbe21d23},fragile]{Macro example II}
  How can we write the following equation using LSD syntax?
 
 \[Y_{t} = \sum_{i=1}^{n} X_{n,t} + W_{n,t-1}\]
 
 
 
-\begin{minted}[]{cpp}
-EQUATION("Y")
-v[0] = 0; // Initialize the Accumulation
-CYCLE(cur, "Firm") { // Similar to a for-loop in other languages
-    v[1] = VS(cur, "X"); // cur points to a "Firm" object
-    v[2] = VLS(cur, "W", 1); // cur is a locally defined pointer
-    v[3] = v[1] + v[2];
-    v[0] = v[0] + v[3];
-}
-RESULT(v[0])
-\end{minted}
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}\EFrda{(}\EFs{"Y"}\EFrda{)}
+v\EFrda{[}\EFhn{0}\EFrda{]} = \EFhn{0}; \EFcd{//} \EFc{Initialize the Accumulation}
+\EFv{CYCLE}\EFrda{(}cur, \EFs{"Firm"}\EFrda{)} \EFrda{\{} \EFcd{//} \EFc{Similar to a for-loop in other languages}
+    v\EFrdb{[}\EFhn{1}\EFrdb{]} = VS\EFrdb{(}cur, \EFs{"X"}\EFrdb{)}; \EFcd{//} \EFc{cur points to a "Firm" object}
+    v\EFrdb{[}\EFhn{2}\EFrdb{]} = \EFo{VLS}\EFrdb{(}cur, \EFs{"W"}, \EFhn{1}\EFrdb{)}; \EFcd{//} \EFc{cur is a locally defined pointer}
+    v\EFrdb{[}\EFhn{3}\EFrdb{]} = v\EFrdb{[}\EFhn{1}\EFrdb{]} + v\EFrdb{[}\EFhn{2}\EFrdb{]};
+    v\EFrdb{[}\EFhn{0}\EFrdb{]} = v\EFrdb{[}\EFhn{0}\EFrdb{]} + v\EFrdb{[}\EFhn{3}\EFrdb{]};
+\EFrda{\}}
+\EFo{RESULT}\EFrda{(}v\EFrdb{[}\EFhn{0}\EFrdb{]}\EFrda{)}
+\end{Verbatim}
+\end{Code}
 \end{frame}
-\begin{frame}[label={sec:org9bcd15e},fragile]{Macro example III}
+\begin{frame}[label={sec:org92576fe},fragile]{Macro example III}
  We can also write on an alternative way
 
 \[Y_{t} = \sum_{i=1}^{n} X_{n,t} + W_{n,t-1}\]
 
 
 
-\begin{minted}[]{cpp}
-EQUATION("Y")
-// If X and W are bellow Y on the tree (later)
-v[0] = SUM("X");
-v[1] = SUML("W", 1);
-v[2] = v[0] + v[1];
-RESULT(v[2])
-\end{minted}
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}\EFrda{(}\EFs{"Y"}\EFrda{)}
+\EFcd{//} \EFc{If X and W are bellow Y on the tree (later)}
+v\EFrda{[}\EFhn{0}\EFrda{]} = \EFo{SUM}\EFrda{(}\EFs{"X"}\EFrda{)};
+v\EFrda{[}\EFhn{1}\EFrda{]} = \EFo{SUML}\EFrda{(}\EFs{"W"}, \EFhn{1}\EFrda{)};
+v\EFrda{[}\EFhn{2}\EFrda{]} = v\EFrda{[}\EFhn{0}\EFrda{]} + v\EFrda{[}\EFhn{1}\EFrda{]};
+\EFo{RESULT}\EFrda{(}v\EFrdb{[}\EFhn{2}\EFrdb{]}\EFrda{)}
+\end{Verbatim}
+\end{Code}
 \end{frame}
-\begin{frame}[label={sec:orga00e2dd},fragile]{Equation file}
+\begin{frame}[label={sec:org9730f49},fragile]{Equation file}
  Any equation file (\texttt{.cpp}) must contain the following text:
-\begin{minted}[]{cpp}
-// File created using org-mode tangle feature.
-#include "fun_head.h" // This is mandatory
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFcd{//} \EFc{File created using org-mode tangle feature.}
+\EFpp{\#include} \EFs{"fun\_head.h"} \EFcd{//} \EFc{This is mandatory}
 
-MODELBEGIN
+\EFo{MODELBEGIN}
 
-// Your code goes here
+\EFcd{//} \EFc{Your code goes here}
 
-MODELEND
-void close_sim(void) {}
-\end{minted}
+\EFo{MODELEND}
+\EFt{void} \EFf{close\_sim}\EFrda{(}\EFt{void}\EFrda{)} \EFrda{\{}\EFrda{\}}
+\end{Verbatim}
+\end{Code}
 
 In our session, we will copy-and-paste the initialization equation and continue from there.
 \end{frame}
-\begin{frame}[label={sec:org135c0f9},fragile]{Model structure and data organization I}
+\begin{frame}[label={sec:orgc4cf5da},fragile]{Model structure and data organization I}
  Besides the equation files (\texttt{.cpp} or \texttt{.h}), LSD defines the model structures on a different file (extension \texttt{.lsd}).
 This special file has:
 
@@ -238,40 +445,44 @@ This special file has:
 This structure ensure the modeler to think in terms of data structure.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orge29a142},fragile]{Linear model I}
+\begin{frame}[label={sec:org8406dd5},fragile]{Linear model I}
  Let's start with the file on \url{Linear\_Model/fun\_linear.cpp}
 
 
-\begin{minted}[]{cpp}
-#include "fun_head.h" // This is mandatory
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFpp{\#include} \EFs{"fun\_head.h"} \EFcd{//} \EFc{This is mandatory}
 
-MODELBEGIN
+\EFo{MODELBEGIN}
 
-// Your code goes here
+\EFcd{//} \EFc{Your code goes here}
 
-MODELEND
-void close_sim(void) {}
-\end{minted}
+\EFo{MODELEND}
+\EFt{void} \EFf{close\_sim}\EFrda{(}\EFt{void}\EFrda{)} \EFrda{\{}\EFrda{\}}
+\end{Verbatim}
+\end{Code}
 \end{frame}
-\begin{frame}[label={sec:orge038a3c},fragile]{Linear model II}
+\begin{frame}[label={sec:org7bae191},fragile]{Linear model II}
  Next, we will write the following equation:
 
 \[X_{t} = X_{t-1} + m\]
 
 
-\begin{minted}[]{cpp}
-
-EQUATION("X") // This is a single-line comment
-/*
-This is a multi-line comment
-*/
-v[0] = VL("X",1); //past value of X, lagged of 1 period
-v[1] = V("m"); //current value of m (variable or parameter)
-v[2] = v[0] + v[1]; // v[n] are local variables
-RESULT(v[2]) // Specify the output of the function
-\end{minted}
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}
+\EFo{EQUATION}\EFrda{(}\EFs{"X"}\EFrda{)} \EFcd{//} \EFc{This is a single-line comment}
+\EFcd{/*}
+\EFc{This is a multi-line comment}
+\EFcd{*/}
+v\EFrda{[}\EFhn{0}\EFrda{]} = VL\EFrda{(}\EFs{"X"},\EFhn{1}\EFrda{)}; \EFcd{//}\EFc{past value of X, lagged of 1 period}
+v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"m"}\EFrda{)}; \EFcd{//}\EFc{current value of m (variable or parameter)}
+v\EFrda{[}\EFhn{2}\EFrda{]} = v\EFrda{[}\EFhn{0}\EFrda{]} + v\EFrda{[}\EFhn{1}\EFrda{]}; \EFcd{//} \EFc{v[n] are local variables}
+\EFo{RESULT}\EFrda{(}v\EFrdb{[}\EFhn{2}\EFrdb{]}\EFrda{)} \EFcd{//} \EFc{Specify the output of the function}
+\end{Verbatim}
+\end{Code}
 \end{frame}
-\begin{frame}[label={sec:org1577ec6},fragile]{Linear model III}
+\begin{frame}[label={sec:org803a9e8},fragile]{Linear model III}
  \begin{itemize}
 \item Compile (\texttt{Model > Compile and run ...}).
 \item Wait to open a new window.
@@ -283,12 +494,12 @@ RESULT(v[2]) // Specify the output of the function
 \item Analyze the results
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org010954e}]{Linear model IV}
+\begin{frame}[label={sec:org2534e65}]{Linear model IV}
 \begin{center}
 \includesvg[width=.83\linewidth]{./figs/Linear_X}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org9353286},fragile]{Linear model V}
+\begin{frame}[label={sec:org7ee8e91},fragile]{Linear model V}
  We can adjust the previous equation in order to get a Random Walk.
 First, we need to specify the distribution for \(m\):
 
@@ -296,15 +507,17 @@ First, we need to specify the distribution for \(m\):
 
 
 
-\begin{minted}[]{cpp}
-EQUATION("m")
-v[0] = V("min");
-v[1] = V("max");
-v[2] = uniform(v[0], v[1]);
-RESULT(v[2])
-\end{minted}
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}\EFrda{(}\EFs{"m"}\EFrda{)}
+v\EFrda{[}\EFhn{0}\EFrda{]} = V\EFrda{(}\EFs{"min"}\EFrda{)};
+v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"max"}\EFrda{)};
+v\EFrda{[}\EFhn{2}\EFrda{]} = uniform\EFrda{(}v\EFrdb{[}\EFhn{0}\EFrdb{]}, v\EFrdb{[}\EFhn{1}\EFrdb{]}\EFrda{)};
+\EFo{RESULT}\EFrda{(}v\EFrdb{[}\EFhn{2}\EFrdb{]}\EFrda{)}
+\end{Verbatim}
+\end{Code}
 \end{frame}
-\begin{frame}[label={sec:org34d3654},fragile]{Linear model VI}
+\begin{frame}[label={sec:org3743d9c},fragile]{Linear model VI}
  Now, we need to adjust the \texttt{.lsd} file:
 
 \begin{itemize}
@@ -318,12 +531,12 @@ RESULT(v[2])
 \end{itemize}
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org2f88f87}]{Linear model VII}
+\begin{frame}[label={sec:orge4fd50e}]{Linear model VII}
 \begin{center}
 \includesvg[width=.83\linewidth]{./figs/RW_X}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgb5f84e5},fragile]{Linear model VIII}
+\begin{frame}[label={sec:orgbbef8d6},fragile]{Linear model VIII}
  So far, there is nothing new if you use other programming language.
 However, we can leverage from the fact that LSD is OOP.
 
@@ -337,27 +550,29 @@ The source code remains untouched, while we produced a completelly different str
 This is the benefit of isolating the code and the structure.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org8be347a}]{Linear model IX}
+\begin{frame}[label={sec:org2cb69c7}]{Linear model IX}
 \begin{center}
 \includesvg[width=.83\linewidth]{./figs/Multi_RW_X}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgce7ee04},fragile]{Logistic chaotic model 0}
+\begin{frame}[label={sec:org230a76f},fragile]{Logistic chaotic model 0}
  Let's start with the file on \url{Chaotic\_Model/fun\_chaos.cpp}
 
 
-\begin{minted}[]{cpp}
-#include "fun_head.h" // This is mandatory
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFpp{\#include} \EFs{"fun\_head.h"} \EFcd{//} \EFc{This is mandatory}
 
-MODELBEGIN
+\EFo{MODELBEGIN}
 
-// Your code goes here
+\EFcd{//} \EFc{Your code goes here}
 
-MODELEND
-void close_sim(void) {}
-\end{minted}
+\EFo{MODELEND}
+\EFt{void} \EFf{close\_sim}\EFrda{(}\EFt{void}\EFrda{)} \EFrda{\{}\EFrda{\}}
+\end{Verbatim}
+\end{Code}
 \end{frame}
-\begin{frame}[label={sec:orgd579d94}]{Logistic chaotic model I}
+\begin{frame}[label={sec:org104f2c7}]{Logistic chaotic model I}
 Consider the model made of the single equation
 
 \[X_{t} = m\cdot X_{t-1}\cdot (1 - X_{t-1})\]
@@ -369,21 +584,23 @@ To implement this model follow the usual steps:
 \item Using the Lsd model program generate one object and place in it variable \(X\) with 1 lag and parameter \(m\).
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:org6c37b49},fragile]{Logistic chaotic model II}
+\begin{frame}[label={sec:org83a2336},fragile]{Logistic chaotic model II}
  The model equation can be written as follows:
 
 \[X_{t} = m\cdot X_{t-1}\cdot (1 - X_{t-1})\]
 
-\begin{minted}[]{cpp}
-
-EQUATION("X")
-v[0] = VL("X",1);
-v[1] = V("m");
-v[2] = v[1]*v[0]*(1-v[0]);
-RESULT(v[2])
-\end{minted}
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}
+\EFo{EQUATION}\EFrda{(}\EFs{"X"}\EFrda{)}
+v\EFrda{[}\EFhn{0}\EFrda{]} = VL\EFrda{(}\EFs{"X"},\EFhn{1}\EFrda{)};
+v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"m"}\EFrda{)};
+v\EFrda{[}\EFhn{2}\EFrda{]} = v\EFrda{[}\EFhn{1}\EFrda{]}*v\EFrda{[}\EFhn{0}\EFrda{]}*\EFrda{(}\EFhn{1}-v\EFrdb{[}\EFhn{0}\EFrdb{]}\EFrda{)};
+\EFo{RESULT}\EFrda{(}v\EFrdb{[}\EFhn{2}\EFrdb{]}\EFrda{)}
+\end{Verbatim}
+\end{Code}
 \end{frame}
-\begin{frame}[label={sec:orgffee4af},fragile]{Logistic chaotic model III}
+\begin{frame}[label={sec:orgdbaa584},fragile]{Logistic chaotic model III}
  Let's adjust the configuration file (\texttt{.lsd}):
 
 \begin{itemize}
@@ -393,12 +610,12 @@ RESULT(v[2])
 \item Run and plot \(X\)
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org2499772}]{Logistic chaotic model IV}
+\begin{frame}[label={sec:org05d56c5}]{Logistic chaotic model IV}
 \begin{center}
 \includesvg[width=.83\linewidth]{./figs/chaos_X}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org87a8cb4}]{Logistic chaotic model V}
+\begin{frame}[label={sec:org538ed43}]{Logistic chaotic model V}
 The function produces \alert{extremely} different outcomes depending on the value of \alert{\(m\)}.
 
 \begin{itemize}
@@ -407,7 +624,7 @@ The function produces \alert{extremely} different outcomes depending on the valu
 \item We will set the \alert{initial} points for the \(X\) to random values.
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org3a0a6ec},fragile]{Logistic chaotic model VI}
+\begin{frame}[label={sec:orga81117e},fragile]{Logistic chaotic model VI}
  \begin{itemize}
 \item Load \texttt{Sim2.lsd} and save it as \texttt{Sim3.lsd}
 \item Generate \alert{10000} copies of \texttt{Obj1}
@@ -422,7 +639,7 @@ The function produces \alert{extremely} different outcomes depending on the valu
 \item Save, run, analyze
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org95aa84a}]{Logistic chaotic model VII}
+\begin{frame}[label={sec:org687a470}]{Logistic chaotic model VII}
 \begin{itemize}
 \item Open Analysis of results
 \item Select all \(m\) and \(X\) series
@@ -436,15 +653,15 @@ Once again, the code remains \alert{untouched}.
 Later, we will check other features of LSD that benefit from this design principle.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgfb803d7}]{Logistic chaotic model VIII}
+\begin{frame}[label={sec:orgca24fa3}]{Logistic chaotic model VIII}
 \begin{center}
 \includesvg[width=.83\linewidth]{figs/chaotic_bifurcation}
 \end{center}
 \end{frame}
 \section{Session 2}
-\label{sec:orgb5c5d0a}
+\label{sec:org66c2633}
 
-\begin{frame}[label={sec:org9f90e5e}]{Simulation pipeline}
+\begin{frame}[label={sec:orgc74b714}]{Simulation pipeline}
 As a recap, whenever running a model on LSD, we need to:
 
 \begin{enumerate}
@@ -459,7 +676,7 @@ In the previous session, we implemented two different small models.
 Now, we will focus on a economic ABM.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org562d3f6}]{The Industry model}
+\begin{frame}[label={sec:org0211152}]{The Industry model}
 \textcite{dosi_2017_footprint} design objective: simplest industrial dynamics model capturing most \alert{stylized facts}:
 \begin{itemize}
 \item Persistent heterogeneity in productivity and all other performance variables
@@ -469,7 +686,7 @@ Now, we will focus on a economic ABM.
 \item Scaling of the growth-variance relationship
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org695d0f4}]{Equations}
+\begin{frame}[label={sec:org71dba71}]{Equations}
 \[ \begin{array}{lrl}
 \mbox{Idiosyncratic learning process:} & a_{i,t} = &a_{i,t-1}\cdot (1 + \theta_{i,t})\\
 \mbox{Learning shocks} & \theta_{i,t} \sim  & Beta(\beta_1, \beta_2)\\
@@ -483,7 +700,7 @@ Now, we will focus on a economic ABM.
 \mbox{Fixed number of firms} & \#\{1, \ldots, n\} =& NF
 \end{array}\]
 \end{frame}
-\begin{frame}[label={sec:org2e5a735}]{DAG of industry model}
+\begin{frame}[label={sec:org159ef83}]{DAG of industry model}
 \resizebox{\linewidth}{!}{%
   \begin{tikzpicture}[
     node distance=.1cm and 0.5cm,
@@ -529,7 +746,7 @@ Now, we will focus on a economic ABM.
   \end{tikzpicture}
 }
 \end{frame}
-\begin{frame}[label={sec:org0e6eba3},fragile]{Sequence of events}
+\begin{frame}[label={sec:orgad09580},fragile]{Sequence of events}
  At time \(t = 0\), there are \(NF\) identical incumbent firms with equal \(a_{i,t=0}\) and \(s_{i,0}\).
 At each time step \(t = 1, 2, \ldots, T\):
 \begin{enumerate}
@@ -545,7 +762,7 @@ At each time step \(t = 1, 2, \ldots, T\):
 The exit-entry process is time-coordinated during each simulated time step by the technical variable \texttt{exit\_entry}: \texttt{HHI} > \texttt{exit\_decision} > \texttt{s} rescaling
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org7caa6d1}]{Parameters and initial values}
+\begin{frame}[label={sec:orgdbb4c01}]{Parameters and initial values}
 \begin{table}[htbp]
 \caption{Baseline parameters}
 \centering
@@ -565,14 +782,14 @@ The exit-entry process is time-coordinated during each simulated time step by th
 \end{tabular}
 \end{table}
 \end{frame}
-\begin{frame}[label={sec:orgd060fbb}]{Model structure and data organization II}
+\begin{frame}[label={sec:org7b2611b}]{Model structure and data organization II}
 \begin{figure}[htbp]
 \centering
 \includegraphics[clip,trim=0 0 0 0,width=.8\textwidth,height=.75\textheight]{figs/Structure_Industry_LSD.png}
 \caption{Structure of industry model}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:orgd9c21f3}]{Memo: Equations}
+\begin{frame}[label={sec:orgb39095e}]{Memo: Equations}
 \[ \begin{array}{lrl}
 \mbox{Idiosyncratic learning process:} & a_{i,t} = &a_{i,t-1}\cdot (1 + \theta_{i,t})\\
 \mbox{Learning shocks} & \theta_{i,t} \sim  & Beta(\beta_1, \beta_2)\\
@@ -586,154 +803,170 @@ The exit-entry process is time-coordinated during each simulated time step by th
 \mbox{Fixed number of firms} & \#\{1, \ldots, n\} =& NF
 \end{array}\]
 \end{frame}
-\begin{frame}[label={sec:org0403772},fragile]{Firm-level productivity (\(a_{i}\)\textsubscript{nil})}
+\begin{frame}[label={sec:org5014a62},fragile]{Firm-level productivity (\(a_{i}\)\textsubscript{nil})}
  \begin{equation}
 a_{i,t} = a_{i,t-1}\cdot (1 + \theta_{i,t})
 \end{equation}
 
-\begin{minted}[]{cpp}
-EQUATION("a")
-// Firm knowledge/productivity
-v[0] = CURRENT;
-v[1] = V("eta");
-v[2] = V("beta1");
-v[3] = V("beta2");
-v[4] = beta(v[2], v[3]);
-v[5] = v[0] * (1 + v[1] * v[4]);
-RESULT(v[5])
-\end{minted}
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}\EFrda{(}\EFs{"a"}\EFrda{)}
+\EFcd{//} \EFc{Firm knowledge/productivity}
+v\EFrda{[}\EFhn{0}\EFrda{]} = \EFo{CURRENT};
+v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"eta"}\EFrda{)};
+v\EFrda{[}\EFhn{2}\EFrda{]} = V\EFrda{(}\EFs{"beta1"}\EFrda{)};
+v\EFrda{[}\EFhn{3}\EFrda{]} = V\EFrda{(}\EFs{"beta2"}\EFrda{)};
+v\EFrda{[}\EFhn{4}\EFrda{]} = beta\EFrda{(}v\EFrdb{[}\EFhn{2}\EFrdb{]}, v\EFrdb{[}\EFhn{3}\EFrdb{]}\EFrda{)};
+v\EFrda{[}\EFhn{5}\EFrda{]} = v\EFrda{[}\EFhn{0}\EFrda{]} * \EFrda{(}\EFhn{1} + v\EFrdb{[}\EFhn{1}\EFrdb{]} * v\EFrdb{[}\EFhn{4}\EFrdb{]}\EFrda{)};
+\EFo{RESULT}\EFrda{(}v\EFrdb{[}\EFhn{5}\EFrdb{]}\EFrda{)}
+\end{Verbatim}
+\end{Code}
 \end{frame}
-\begin{frame}[label={sec:org558b14b},fragile]{Market-share (\(s_{i}\))}
+\begin{frame}[label={sec:org6600218},fragile]{Market-share (\(s_{i}\))}
  \begin{equation}
 s_{i,t} = s_{i,t-1} \cdot \left( 1 + A\cdot\frac{a_{i,t} - \bar{a}_{t}}{\bar{a}_{t}}\right)
 \end{equation}
 
 
-\begin{minted}[]{cpp}
-EQUATION("s")
-// Firm size/market share
-v[0] = CURRENT;
-v[1] = V("A");
-v[2] = V("a");
-v[3] = V("aAvg");
-v[4] = (v[2] - v[3])/v[3];
-v[5] = v[0] * (1 + v[1] * v[4]);
-RESULT(v[5])
-\end{minted}
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}\EFrda{(}\EFs{"s"}\EFrda{)}
+\EFcd{//} \EFc{Firm size/market share}
+v\EFrda{[}\EFhn{0}\EFrda{]} = \EFo{CURRENT};
+v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"A"}\EFrda{)};
+v\EFrda{[}\EFhn{2}\EFrda{]} = V\EFrda{(}\EFs{"a"}\EFrda{)};
+v\EFrda{[}\EFhn{3}\EFrda{]} = V\EFrda{(}\EFs{"aAvg"}\EFrda{)};
+v\EFrda{[}\EFhn{4}\EFrda{]} = \EFrda{(}v\EFrdb{[}\EFhn{2}\EFrdb{]} - v\EFrdb{[}\EFhn{3}\EFrdb{]}\EFrda{)}/v\EFrda{[}\EFhn{3}\EFrda{]};
+v\EFrda{[}\EFhn{5}\EFrda{]} = v\EFrda{[}\EFhn{0}\EFrda{]} * \EFrda{(}\EFhn{1} + v\EFrdb{[}\EFhn{1}\EFrdb{]} * v\EFrdb{[}\EFhn{4}\EFrdb{]}\EFrda{)};
+\EFo{RESULT}\EFrda{(}v\EFrdb{[}\EFhn{5}\EFrdb{]}\EFrda{)}
+\end{Verbatim}
+\end{Code}
 \end{frame}
-\begin{frame}[label={sec:orge208efa},fragile]{Exit condition}
- \begin{minted}[]{cpp}
-EQUATION("exit_decision")
+\begin{frame}[label={sec:orgdc2f617},fragile]{Exit condition}
+ \begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}\EFrda{(}\EFs{"exit\_decision"}\EFrda{)}
 
-v[0] = V("s"); v[1] = V("sMin");
-// update entrant firm productivity and market share
-if (v[0] < v[1]) {
-  v[2] = V("eta"); v[3] = V("beta1"); v[4] = V("beta2");
-  v[5] = beta(v[3], v[4]);
-  v[6] = V("aAvg");
-  v[7] = v[6] * (1 + v[2] * v[5]);
-  WRITE( "a", v[7] );
-  WRITE( "s", 1 / COUNT( "Firm" ) );
-}
-RESULT(0)
-\end{minted}
+v\EFrda{[}\EFhn{0}\EFrda{]} = V\EFrda{(}\EFs{"s"}\EFrda{)}; v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"sMin"}\EFrda{)};
+\EFcd{//} \EFc{update entrant firm productivity and market share}
+\EFk{if} \EFrda{(}v\EFrdb{[}\EFhn{0}\EFrdb{]} < v\EFrdb{[}\EFhn{1}\EFrdb{]}\EFrda{)} \EFrda{\{}
+  v\EFrdb{[}\EFhn{2}\EFrdb{]} = V\EFrdb{(}\EFs{"eta"}\EFrdb{)}; v\EFrdb{[}\EFhn{3}\EFrdb{]} = V\EFrdb{(}\EFs{"beta1"}\EFrdb{)}; v\EFrdb{[}\EFhn{4}\EFrdb{]} = V\EFrdb{(}\EFs{"beta2"}\EFrdb{)};
+  v\EFrdb{[}\EFhn{5}\EFrdb{]} = beta\EFrdb{(}v\EFrdc{[}\EFhn{3}\EFrdc{]}, v\EFrdc{[}\EFhn{4}\EFrdc{]}\EFrdb{)};
+  v\EFrdb{[}\EFhn{6}\EFrdb{]} = V\EFrdb{(}\EFs{"aAvg"}\EFrdb{)};
+  v\EFrdb{[}\EFhn{7}\EFrdb{]} = v\EFrdb{[}\EFhn{6}\EFrdb{]} * \EFrdb{(}\EFhn{1} + v\EFrdc{[}\EFhn{2}\EFrdc{]} * v\EFrdc{[}\EFhn{5}\EFrdc{]}\EFrdb{)};
+  \EFo{WRITE}\EFrdb{(} \EFs{"a"}, v\EFrdc{[}\EFhn{7}\EFrdc{]} \EFrdb{)};
+  \EFo{WRITE}\EFrdb{(} \EFs{"s"}, \EFhn{1} / \EFo{COUNT}\EFrdc{(} \EFs{"Firm"} \EFrdc{)} \EFrdb{)};
+\EFrda{\}}
+\EFo{RESULT}\EFrda{(}\EFhn{0}\EFrda{)}
+\end{Verbatim}
+\end{Code}
 \end{frame}
-\begin{frame}[label={sec:org7e43ad3},fragile]{Market-level Productivity (Weighted) Average (\(\bar{a_{t}}\))}
+\begin{frame}[label={sec:orgd71174d},fragile]{Market-level Productivity (Weighted) Average (\(\bar{a_{t}}\))}
  \begin{equation}
 \bar{a}_{t} =  \sum_{i=1}^{NF} s_{i, t-1}\cdot a_{i,t}
 \end{equation}
 
 
-\begin{minted}[]{cpp}
-EQUATION( "aAvg" )
-// Mean knowledge/productivity
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}\EFrda{(} \EFs{"aAvg"} \EFrda{)}
+\EFcd{//} \EFc{Mean knowledge/productivity}
 
-v[0] = 0;        // accumulator
-CYCLE(cur, "Firm") {
-  v[1] = VLS( cur, "s", 1 );
-  v[2] = VS( cur, "a" );
-  v[3] = v[1] * v[2];
-  v[0] += v[3] ;
-}
-RESULT( v[0] )
-\end{minted}
+v\EFrda{[}\EFhn{0}\EFrda{]} = \EFhn{0};        \EFcd{//} \EFc{accumulator}
+\EFv{CYCLE}\EFrda{(}cur, \EFs{"Firm"}\EFrda{)} \EFrda{\{}
+  v\EFrdb{[}\EFhn{1}\EFrdb{]} = \EFo{VLS}\EFrdb{(} cur, \EFs{"s"}, \EFhn{1} \EFrdb{)};
+  v\EFrdb{[}\EFhn{2}\EFrdb{]} = VS\EFrdb{(} cur, \EFs{"a"} \EFrdb{)};
+  v\EFrdb{[}\EFhn{3}\EFrdb{]} = v\EFrdb{[}\EFhn{1}\EFrdb{]} * v\EFrdb{[}\EFhn{2}\EFrdb{]};
+  v\EFrdb{[}\EFhn{0}\EFrdb{]} += v\EFrdb{[}\EFhn{3}\EFrdb{]} ;
+\EFrda{\}}
+\EFo{RESULT}\EFrda{(} v\EFrdb{[}\EFhn{0}\EFrdb{]} \EFrda{)}
+\end{Verbatim}
+\end{Code}
 \end{frame}
-\begin{frame}[label={sec:org9463746},fragile]{Entry-Exit condition}
- \begin{minted}[]{cpp}
-EQUATION( "exit_entry" )
-// Trigger market-wise exit-entry dynamics and re-scale shares
-V( "HHI" ); // first, compute HH index before exits
+\begin{frame}[label={sec:orgbe3ff4b},fragile]{Entry-Exit condition}
+ \begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}\EFrda{(} \EFs{"exit\_entry"} \EFrda{)}
+\EFcd{//} \EFc{Trigger market-wise exit-entry dynamics and re-scale shares}
+V\EFrda{(} \EFs{"HHI"} \EFrda{)}; \EFcd{//} \EFc{first, compute HH index before exits}
 
-// second, ensure firms have decided on exit
-CYCLE(cur, "Firm") {VS( cur, "exit_decision" );}
+\EFcd{//} \EFc{second, ensure firms have decided on exit}
+\EFv{CYCLE}\EFrda{(}cur, \EFs{"Firm"}\EFrda{)} \EFrda{\{}VS\EFrdb{(} cur, \EFs{"exit\_decision"} \EFrdb{)};\EFrda{\}}
 
-v[0] = 1 / SUM( "s" ); // factor to scale back to sum = 1
-CYCLE(cur, "Firm") { // third, rescale market shares after exits
-  v[1] = VS( cur, "s" );
-  v[2] = v[0] * v[1];
-  WRITES( cur, "s", v[2]);
-}
-RESULT( SUM("s") )
-\end{minted}
+v\EFrda{[}\EFhn{0}\EFrda{]} = \EFhn{1} / \EFo{SUM}\EFrda{(} \EFs{"s"} \EFrda{)}; \EFcd{//} \EFc{factor to scale back to sum = 1}
+\EFv{CYCLE}\EFrda{(}cur, \EFs{"Firm"}\EFrda{)} \EFrda{\{} \EFcd{//} \EFc{third, rescale market shares after exits}
+  v\EFrdb{[}\EFhn{1}\EFrdb{]} = VS\EFrdb{(} cur, \EFs{"s"} \EFrdb{)};
+  v\EFrdb{[}\EFhn{2}\EFrdb{]} = v\EFrdb{[}\EFhn{0}\EFrdb{]} * v\EFrdb{[}\EFhn{1}\EFrdb{]};
+  \EFo{WRITES}\EFrdb{(} cur, \EFs{"s"}, v\EFrdc{[}\EFhn{2}\EFrdc{]}\EFrdb{)};
+\EFrda{\}}
+\EFo{RESULT}\EFrda{(} \EFo{SUM}\EFrdb{(}\EFs{"s"}\EFrdb{)} \EFrda{)}
+\end{Verbatim}
+\end{Code}
 \end{frame}
-\begin{frame}[label={sec:orgcf60d8c},fragile]{Herfindahl-Hirschman concentration index (\(HHI\))}
+\begin{frame}[label={sec:orgd3b3d37},fragile]{Herfindahl-Hirschman concentration index (\(HHI\))}
  \begin{equation}
 HHI_{t} = \sum_{i=1}^{NF} (s_{i})^2
 \end{equation}
 
 
-\begin{minted}[]{cpp}
-EQUATION( "HHI" )
-// Herfindahl-Hirschman concentration index
-v[0] = WHTAVE( "s", "s" );
-RESULT( v[0] )
-\end{minted}
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}\EFrda{(} \EFs{"HHI"} \EFrda{)}
+\EFcd{//} \EFc{Herfindahl-Hirschman concentration index}
+v\EFrda{[}\EFhn{0}\EFrda{]} = \EFo{WHTAVE}\EFrda{(} \EFs{"s"}, \EFs{"s"} \EFrda{)};
+\EFo{RESULT}\EFrda{(} v\EFrdb{[}\EFhn{0}\EFrdb{]} \EFrda{)}
+\end{Verbatim}
+\end{Code}
 \begin{block}{Note on WHTAVE(LS)}
 \texttt{WHTAVE} (weighed average, not used here in the strict sense) computes the sum of \(s\times s\) over every firm
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org39ce6a5},fragile]{Initialization I}
+\begin{frame}[label={sec:org5f66c0a},fragile]{Initialization I}
  Firm-level initialization can be set for every \(NF\) objects on the LSD browser.
 The same applies for every other initial condition.
 
 In the following slide, we will see an alternative way in which we control some few parameters and create \(NF-1\) copies of a example object.
 
-\begin{minted}[]{cpp}
-ADDNOBJ_EX("TypeOfAgent", number, *pointer);
-\end{minted}
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{ADDNOBJ\_EX}\EFrda{(}\EFs{"TypeOfAgent"}, number, *pointer\EFrda{)};
+\end{Verbatim}
+\end{Code}
 \begin{block}{Semi-automated initialization and sensitivity analysis}
 By doing this, we automate the model initialization to test different model configurations (next lecture)
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org5014c5f},fragile]{Initialization II}
- \begin{minted}[]{cpp}
-EQUATION( "init" )
-PARAMETER;                  // turn into parameter (run once)
-// finds the agent on memory
-cur = SEARCH( "Market" ); cur1 = SEARCHS(cur, "Firm" );
+\begin{frame}[label={sec:orgcbdd269},fragile]{Initialization II}
+ \begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}\EFrda{(} \EFs{"init"} \EFrda{)}
+\EFo{PARAMETER};                  \EFcd{//} \EFc{turn into parameter (run once)}
+\EFcd{//} \EFc{finds the agent on memory}
+cur = \EFo{SEARCH}\EFrda{(} \EFs{"Market"} \EFrda{)}; cur1 = \EFo{SEARCHS}\EFrda{(}cur, \EFs{"Firm"} \EFrda{)};
 
-v[0] = V("A0"); // We define
-v[1] = V("Nfirm"); // We define
-v[2] = 1 / v[1]; // Fair share
-// Overwrites the lag 1 of "a" to v[0] at time 1
-WRITELLS(cur1, "a", v[0], 1, 1);
-WRITELLS(cur1, "s", v[2], 1, 1);
-// Adds N - 1 copies of cur1 agent located under cur
-ADDNOBJ_EXS(cur, "Firm", v[1] - 1, cur1);
-RESULT( 1 )
-\end{minted}
+v\EFrda{[}\EFhn{0}\EFrda{]} = V\EFrda{(}\EFs{"A0"}\EFrda{)}; \EFcd{//} \EFc{We define}
+v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"Nfirm"}\EFrda{)}; \EFcd{//} \EFc{We define}
+v\EFrda{[}\EFhn{2}\EFrda{]} = \EFhn{1} / v\EFrda{[}\EFhn{1}\EFrda{]}; \EFcd{//} \EFc{Fair share}
+\EFcd{//} \EFc{Overwrites the lag 1 of "a" to v[0] at time 1}
+\EFo{WRITELLS}\EFrda{(}cur1, \EFs{"a"}, v\EFrdb{[}\EFhn{0}\EFrdb{]}, \EFhn{1}, \EFhn{1}\EFrda{)};
+\EFo{WRITELLS}\EFrda{(}cur1, \EFs{"s"}, v\EFrdb{[}\EFhn{2}\EFrdb{]}, \EFhn{1}, \EFhn{1}\EFrda{)};
+\EFcd{//} \EFc{Adds N - 1 copies of cur1 agent located under cur}
+\EFo{ADDNOBJ\_EXS}\EFrda{(}cur, \EFs{"Firm"}, v\EFrdb{[}\EFhn{1}\EFrdb{]} - \EFhn{1}, cur1\EFrda{)};
+\EFo{RESULT}\EFrda{(} \EFhn{1} \EFrda{)}
+\end{Verbatim}
+\end{Code}
 \end{frame}
 \section{Session 3}
-\label{sec:org37d8a22}
+\label{sec:orgebc3846}
 
-\begin{frame}[label={sec:org7ea30f9}]{Where are we are where are we going?}
+\begin{frame}[label={sec:orge16a112}]{Where are we are where are we going?}
 \begin{description}
 \item[{Session I}] Basics of LSD and small models implementation
 \item[{Session II}] Presentation of the Industry model and implementation
 \item[{Session III (Today)}] Q\&A, bug fixes, and analysis of results and Monte Carlo Experiment
 \end{description}
 \end{frame}
-\begin{frame}[label={sec:org580595d}]{Analyzing the model results}
+\begin{frame}[label={sec:org9e00981}]{Analyzing the model results}
 \begin{itemize}
 \item After a successful simulation run, in \alert{Browser} click on menu \alert{Data > Analysis of Results}
 \item To analyze the \emph{saved} data time series, select the desired variables from the \alert{Series available} list to include them in the \alert{Series selected} list
@@ -742,7 +975,7 @@ RESULT( 1 )
 \item Plots and analysis data can be \emph{saved} pressing the \alert{Save Plot} and \alert{Save Data} buttons
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org86cb44e}]{Exploring the single run results}
+\begin{frame}[label={sec:orge2fd7b7}]{Exploring the single run results}
 \begin{figure}[ht]
     % First row: Market-level data
     \begin{subfigure}{0.48\textwidth}
@@ -776,7 +1009,7 @@ RESULT( 1 )
     \label{single-run-industry}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:orgbb1502b},fragile]{Activity I}
+\begin{frame}[label={sec:org8c6c08f},fragile]{Activity I}
  \begin{enumerate}
 \item Show that average productivity (\texttt{aAvg}) is always between than maximum and minimum productivities
 \item Check that the total market share of firms is constant and equal to 1
@@ -785,12 +1018,12 @@ RESULT( 1 )
 \item Using this new configuration, produce a \alert{histogram} of the firm log-size distribution at \(t = 200\)
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:org2f3d552}]{Histogram of firm log-size distribution (\(t = 200\))}
+\begin{frame}[label={sec:org6d53f1e}]{Histogram of firm log-size distribution (\(t = 200\))}
 \begin{center}
 \includesvg[width=.9\linewidth]{./figs/150_firms_log_size_histogram}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org5fcbc00}]{A simple Monte Carlo experiment I}
+\begin{frame}[label={sec:org0ee5667}]{A simple Monte Carlo experiment I}
 \begin{enumerate}
 \item Close Analysis of Results window
 \item Re-open the baseline configuration
@@ -801,12 +1034,12 @@ RESULT( 1 )
 \item Analyze the Monte Carlo experiment results
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:org89959de}]{A simple Monte Carlo experiment II}
+\begin{frame}[label={sec:org99daec9}]{A simple Monte Carlo experiment II}
 \begin{center}
 \includesvg[width=.9\linewidth]{./figs/HHI_MC}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org47ff5fa}]{Activity II}
+\begin{frame}[label={sec:org4f56e1b}]{Activity II}
 \begin{enumerate}
 \item Show the max-min intervals for the average log-productivity (\alert{aAvg}) and the \alert{HHI} in the MC experiment
 \item Why the MC confidence width is not comparable for the two variables?
@@ -815,9 +1048,9 @@ RESULT( 1 )
 \end{enumerate}
 \end{frame}
 \section{Bonus}
-\label{sec:org8d25251}
+\label{sec:orgc15c1df}
 
-\begin{frame}[label={sec:org4ea45d2}]{Model sensitivity to parameters}
+\begin{frame}[label={sec:orge7fce65}]{Model sensitivity to parameters}
 How do parameters and initial conditions \alert{jointly} affect variables?
 
 \begin{itemize}
@@ -829,7 +1062,7 @@ How do parameters and initial conditions \alert{jointly} affect variables?
 \item We will briefly check some Design of Experiments Techniques that helps with this situations
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orgf583430}]{Sensitivity analysis}
+\begin{frame}[label={sec:org480372f}]{Sensitivity analysis}
 Sensitivity analysis requires many steps:
 
 \begin{enumerate}
@@ -846,7 +1079,7 @@ Sensitivity analysis requires many steps:
 As the model is small, we will skip screening and jump directly to metamodels
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org657924d}]{Parametric space}
+\begin{frame}[label={sec:orgecd3974}]{Parametric space}
 \begin{center}
 \begin{tabular}{ccccc}
 \hline
@@ -867,7 +1100,7 @@ As the model is small, we will skip screening and jump directly to metamodels
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org78d14f0}]{Exploring the industry model}
+\begin{frame}[label={sec:orgabcced0}]{Exploring the industry model}
 Load \href{Industry\_SummerSchool/R/data/Sim-Sobol.lsd}{R/data/Sim-Sobol.lsd} file in LSD
 \begin{enumerate}
 \item This is a copy of \href{Industry\_SummerSchool/Sim1.lsd}{Sim1.lsd} with 5 simulation runs
@@ -886,27 +1119,27 @@ Load \href{Industry\_SummerSchool/R/data/Sim-Sobol.lsd}{R/data/Sim-Sobol.lsd} fi
 Which parameters do you expect to most influence \alert{HHI}? What about \alert{aAvg}?
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgd89c35b}]{Sobol decomposition indexes (HHI)}
+\begin{frame}[label={sec:org2c79309}]{Sobol decomposition indexes (HHI)}
 \begin{center}
 \includegraphics[height=.875\textheight,page=4]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org2990028}]{Meta-model response I}
+\begin{frame}[label={sec:org3277d20}]{Meta-model response I}
 \begin{center}
 \includegraphics[height=.85\textheight,page=5]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org58979f0}]{Meta-model response II}
+\begin{frame}[label={sec:orgacababf}]{Meta-model response II}
 \begin{center}
 \includegraphics[height=.85\textheight,page=6]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orga4659fe}]{Meta-model response III}
+\begin{frame}[label={sec:orgff1dcfc}]{Meta-model response III}
 \begin{center}
 \includegraphics[height=.85\textheight,page=7]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org1eb72f8},fragile]{Bonus Activity}
+\begin{frame}[label={sec:org0b3db15},fragile]{Bonus Activity}
  \begin{itemize}
 \item In the Rscript, uncomment \texttt{varName   <- "aAvg"} and source the file again
 \item Open the resulting PDF file
@@ -914,7 +1147,7 @@ Which parameters do you expect to most influence \alert{HHI}? What about \alert{
 \item What are the economic intuition associated with these parameters?
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org5eec1cb}]{Phew!}
+\begin{frame}[label={sec:org7b62d64}]{Phew!}
 
 Our papers are available at:
 

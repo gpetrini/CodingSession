@@ -149,9 +149,9 @@ void close_sim(void)
 #+LATEX_HEADER: \usepackage{epstopdf}
 #+LATEX_HEADER: \epstopdfsetup{update} % only regenerate if changed
 #+LATEX_HEADER: \DeclareGraphicsRule{.eps}{pdf}{.pdf}{`epstopdf #1}
-#+latex_header: \usepackage{minted}
-#+latex_header: \setminted{autogobble,fontsize=\footnotesize}
-#+LATEX_HEADER: \usemintedstyle{perldoc}
+# #+latex_header: \usepackage{minted}
+# #+latex_header: \setminted{autogobble,fontsize=\footnotesize}
+# #+LATEX_HEADER: \usemintedstyle{perldoc}
 #+latex_header: \usepackage{tikz}
 #+latex_header: \usetikzlibrary{arrows.meta, positioning, shapes}
 #+LATEX_HEADER: \usepackage{fontawesome5}

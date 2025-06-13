@@ -1,7 +1,8 @@
-% Created 2025-06-06 Fri 19:43
+% Created 2025-06-13 Fri 11:48
 % Intended LaTeX compiler: pdflatex
 \documentclass[bigger,aspectratio=169]{beamer}
-  \usepackage{caption, subcaption, csquotes, amssymb, xcolor}
+ \usepackage{minted}
+ \usepackage{caption, subcaption, csquotes, amssymb, xcolor}
 \usepackage[english]{babel}
 \titlegraphic{\includesvg[height=1cm]{./figs/IE_Unicamp}\hspace*{1.25cm}\includesvg[height=1cm]{./figs/SSSA}\hspace*{1.25cm} \includesvg[height=1cm]{./figs/YSI}}
 \AtBeginSection[]{
@@ -25,6 +26,8 @@
 \epstopdfsetup{update} % only regenerate if changed
 \DeclareGraphicsRule{.eps}{pdf}{.pdf}{`epstopdf #1}
 \usepackage{minted}
+\setminted{autogobble,fontsize=\footnotesize}
+\usemintedstyle{perldoc}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning, shapes}
 \usepackage{fontawesome5}
@@ -44,9 +47,9 @@
 \end{frame}
 
 \section{Introduction}
-\label{sec:orgab91e8d}
+\label{sec:org52c243f}
 
-\begin{frame}[label={sec:org4e90649}]{Objectives}
+\begin{frame}[label={sec:org2acfe90}]{Objectives}
 Throughout the sessions, we will
 
 \begin{enumerate}
@@ -56,7 +59,7 @@ Throughout the sessions, we will
 \item Analyze the model results on LSD
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:org0ddea42}]{Structure of the sessions}
+\begin{frame}[label={sec:orgc32d983}]{Structure of the sessions}
 \begin{description}
 \item[{Session 1}] Presents the general structure of LSD and perform some simulations
 \item[{Session 2}] Write the industry model equations in LSD
@@ -64,7 +67,7 @@ Throughout the sessions, we will
 \item[{Bonus}] A primer on sensitivity analysis
 \end{description}
 \end{frame}
-\begin{frame}[label={sec:orgf64accd},fragile]{Repository structure}
+\begin{frame}[label={sec:orgaf3a216},fragile]{Repository structure}
  This presentation can be found on this \href{https://github.com/gpetrini/CodingSession}{repository}.\footnote{URL: \url{https://github.com/gpetrini/CodingSession}} In addition:
 
 \begin{description}
@@ -80,30 +83,30 @@ Throughout the sessions, we will
 \end{block}
 \end{frame}
 \section{Session 1}
-\label{sec:orgfe00c57}
+\label{sec:org9ff7e66}
 
-\begin{frame}[label={sec:orgdde9941},fragile]{C++ for LSD I}
+\begin{frame}[label={sec:orgdd658fe},fragile]{C++ for LSD I}
  LSD adds macros to \texttt{C++}.
 As a consequence, some basic knowledge on \texttt{C++} is usefull.
 What do we need to know here?
 \begin{columns}
 \begin{column}{0.4\columnwidth}
 \begin{block}{In python}
-\begin{verbatim}
+\begin{minted}[]{python}
 x = 5 # A comment
 y = 2.5
 ## We do not need to
 ## work with pointers
-\end{verbatim}
+\end{minted}
 \end{block}
 \end{column}
 \begin{column}{0.4\columnwidth}
 \begin{block}{In C++}
-\begin{verbatim}
+\begin{minted}[]{cpp}
 int x = 5; // A comment
 double y = 2.5;
 object *agent; // Latter
-\end{verbatim}
+\end{minted}
 \end{block}
 \end{column}
 \end{columns}
@@ -111,23 +114,23 @@ object *agent; // Latter
 Different from python and R, we need to \alert{compile} our code before using it.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org8283898},fragile]{C++ for LSD II}
+\begin{frame}[label={sec:org6dba465},fragile]{C++ for LSD II}
  To avoid initializing everything, LSD has some already initialized variables:
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 v[0] = 10; // We can assing number to
 v[1] = 50; // a vector (always available)
 T; // Current simulation time
 i = 1; // i,h,j,k can be used for integers
 cur; cur1; // Pre-allocated pointers
-\end{verbatim}
+\end{minted}
 
 Those are \alert{local variables} that we can use on equations.
 \begin{block}{Debbuging}
 LSD has an internal debbuger that allow us to look to local variables on the fly.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org3830c26},fragile]{Macros I}
+\begin{frame}[label={sec:org928d8d9},fragile]{Macros I}
  \begin{figure}[htbp]
 \centering
 \includegraphics[width=.9\linewidth]{./figs/Macros_LSD.pdf}
@@ -142,19 +145,19 @@ Examples:
 \item[{WRITELS(POS, ``NAME'', 1)}] Overwrites variable \texttt{NAME} at lag \texttt{1} at position \texttt{POS}
 \end{description}
 \end{frame}
-\begin{frame}[label={sec:org52b9b62}]{Macros II}
+\begin{frame}[label={sec:org869b2c2}]{Macros II}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.9\linewidth]{figs/LSD_Macros_ScreenShot.png}
 \caption{Other LSD macros}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:org2d96c4a},fragile]{Macro example I}
+\begin{frame}[label={sec:orgd02ebf4},fragile]{Macro example I}
  How can we write the following equation using LSD syntax?
 
 \[X_{t} = X_{t-1} + m\]
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 EQUATION("X") // This is a single-line comment
 /*
 This is a multi-line comment
@@ -163,19 +166,19 @@ v[0] = VL("X",1); //past value of X, lagged of 1 period
 v[1] = V("m"); //current value of m (variable or parameter)
 v[2] = v[0] + v[1]; // v[n] are local variables
 RESULT(v[2]) // Specify the output of the function
-\end{verbatim}
+\end{minted}
 \begin{block}{Variable or parameter?}
 As a rule of thumb, variables have an \texttt{EQUATION} associated, parameters do not.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org8ac1899},fragile]{Macro example II}
+\begin{frame}[label={sec:org722cbb5},fragile]{Macro example II}
  How can we write the following equation using LSD syntax?
 
 \[Y_{t} = \sum_{i=1}^{n} X_{n,t} + W_{n,t-1}\]
 
 
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 EQUATION("Y")
 v[0] = 0; // Initialize the Accumulation
 CYCLE(cur, "Firm") { // Similar to a for-loop in other languages
@@ -185,27 +188,27 @@ CYCLE(cur, "Firm") { // Similar to a for-loop in other languages
     v[0] = v[0] + v[3];
 }
 RESULT(v[0])
-\end{verbatim}
+\end{minted}
 \end{frame}
-\begin{frame}[label={sec:orge19f8c8},fragile]{Macro example III}
+\begin{frame}[label={sec:org9bcd15e},fragile]{Macro example III}
  We can also write on an alternative way
 
 \[Y_{t} = \sum_{i=1}^{n} X_{n,t} + W_{n,t-1}\]
 
 
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 EQUATION("Y")
 // If X and W are bellow Y on the tree (later)
 v[0] = SUM("X");
 v[1] = SUML("W", 1);
 v[2] = v[0] + v[1];
 RESULT(v[2])
-\end{verbatim}
+\end{minted}
 \end{frame}
-\begin{frame}[label={sec:org7d79342},fragile]{Equation file}
+\begin{frame}[label={sec:orga00e2dd},fragile]{Equation file}
  Any equation file (\texttt{.cpp}) must contain the following text:
-\begin{verbatim}
+\begin{minted}[]{cpp}
 // File created using org-mode tangle feature.
 #include "fun_head.h" // This is mandatory
 
@@ -215,11 +218,11 @@ MODELBEGIN
 
 MODELEND
 void close_sim(void) {}
-\end{verbatim}
+\end{minted}
 
 In our session, we will copy-and-paste the initialization equation and continue from there.
 \end{frame}
-\begin{frame}[label={sec:org68270f6},fragile]{Model structure and data organization I}
+\begin{frame}[label={sec:org135c0f9},fragile]{Model structure and data organization I}
  Besides the equation files (\texttt{.cpp} or \texttt{.h}), LSD defines the model structures on a different file (extension \texttt{.lsd}).
 This special file has:
 
@@ -235,11 +238,11 @@ This special file has:
 This structure ensure the modeler to think in terms of data structure.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org40e0a3e},fragile]{Linear model I}
+\begin{frame}[label={sec:orge29a142},fragile]{Linear model I}
  Let's start with the file on \url{Linear\_Model/fun\_linear.cpp}
 
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 #include "fun_head.h" // This is mandatory
 
 MODELBEGIN
@@ -248,15 +251,15 @@ MODELBEGIN
 
 MODELEND
 void close_sim(void) {}
-\end{verbatim}
+\end{minted}
 \end{frame}
-\begin{frame}[label={sec:org7a0c8bc},fragile]{Linear model II}
+\begin{frame}[label={sec:orge038a3c},fragile]{Linear model II}
  Next, we will write the following equation:
 
 \[X_{t} = X_{t-1} + m\]
 
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 
 EQUATION("X") // This is a single-line comment
 /*
@@ -266,9 +269,9 @@ v[0] = VL("X",1); //past value of X, lagged of 1 period
 v[1] = V("m"); //current value of m (variable or parameter)
 v[2] = v[0] + v[1]; // v[n] are local variables
 RESULT(v[2]) // Specify the output of the function
-\end{verbatim}
+\end{minted}
 \end{frame}
-\begin{frame}[label={sec:orgd0f9745},fragile]{Linear model III}
+\begin{frame}[label={sec:org1577ec6},fragile]{Linear model III}
  \begin{itemize}
 \item Compile (\texttt{Model > Compile and run ...}).
 \item Wait to open a new window.
@@ -280,12 +283,12 @@ RESULT(v[2]) // Specify the output of the function
 \item Analyze the results
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org103407e}]{Linear model IV}
+\begin{frame}[label={sec:org010954e}]{Linear model IV}
 \begin{center}
 \includesvg[width=.83\linewidth]{./figs/Linear_X}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org73e381d},fragile]{Linear model V}
+\begin{frame}[label={sec:org9353286},fragile]{Linear model V}
  We can adjust the previous equation in order to get a Random Walk.
 First, we need to specify the distribution for \(m\):
 
@@ -293,15 +296,15 @@ First, we need to specify the distribution for \(m\):
 
 
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 EQUATION("m")
 v[0] = V("min");
 v[1] = V("max");
 v[2] = uniform(v[0], v[1]);
 RESULT(v[2])
-\end{verbatim}
+\end{minted}
 \end{frame}
-\begin{frame}[label={sec:org4ee074d},fragile]{Linear model VI}
+\begin{frame}[label={sec:org34d3654},fragile]{Linear model VI}
  Now, we need to adjust the \texttt{.lsd} file:
 
 \begin{itemize}
@@ -315,12 +318,12 @@ RESULT(v[2])
 \end{itemize}
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org89b7f61}]{Linear model VII}
+\begin{frame}[label={sec:org2f88f87}]{Linear model VII}
 \begin{center}
 \includesvg[width=.83\linewidth]{./figs/RW_X}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org1a76611},fragile]{Linear model VIII}
+\begin{frame}[label={sec:orgb5f84e5},fragile]{Linear model VIII}
  So far, there is nothing new if you use other programming language.
 However, we can leverage from the fact that LSD is OOP.
 
@@ -334,16 +337,16 @@ The source code remains untouched, while we produced a completelly different str
 This is the benefit of isolating the code and the structure.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgf2e5f75}]{Linear model IX}
+\begin{frame}[label={sec:org8be347a}]{Linear model IX}
 \begin{center}
 \includesvg[width=.83\linewidth]{./figs/Multi_RW_X}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org6d19cd7},fragile]{Logistic chaotic model 0}
+\begin{frame}[label={sec:orgce7ee04},fragile]{Logistic chaotic model 0}
  Let's start with the file on \url{Chaotic\_Model/fun\_chaos.cpp}
 
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 #include "fun_head.h" // This is mandatory
 
 MODELBEGIN
@@ -352,9 +355,9 @@ MODELBEGIN
 
 MODELEND
 void close_sim(void) {}
-\end{verbatim}
+\end{minted}
 \end{frame}
-\begin{frame}[label={sec:orgd8baffa}]{Logistic chaotic model I}
+\begin{frame}[label={sec:orgd579d94}]{Logistic chaotic model I}
 Consider the model made of the single equation
 
 \[X_{t} = m\cdot X_{t-1}\cdot (1 - X_{t-1})\]
@@ -366,21 +369,21 @@ To implement this model follow the usual steps:
 \item Using the Lsd model program generate one object and place in it variable \(X\) with 1 lag and parameter \(m\).
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:org50ace02},fragile]{Logistic chaotic model II}
+\begin{frame}[label={sec:org6c37b49},fragile]{Logistic chaotic model II}
  The model equation can be written as follows:
 
 \[X_{t} = m\cdot X_{t-1}\cdot (1 - X_{t-1})\]
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 
 EQUATION("X")
 v[0] = VL("X",1);
 v[1] = V("m");
 v[2] = v[1]*v[0]*(1-v[0]);
 RESULT(v[2])
-\end{verbatim}
+\end{minted}
 \end{frame}
-\begin{frame}[label={sec:org61ef943},fragile]{Logistic chaotic model III}
+\begin{frame}[label={sec:orgffee4af},fragile]{Logistic chaotic model III}
  Let's adjust the configuration file (\texttt{.lsd}):
 
 \begin{itemize}
@@ -390,12 +393,12 @@ RESULT(v[2])
 \item Run and plot \(X\)
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org25db41c}]{Logistic chaotic model IV}
+\begin{frame}[label={sec:org2499772}]{Logistic chaotic model IV}
 \begin{center}
 \includesvg[width=.83\linewidth]{./figs/chaos_X}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgfaa307b}]{Logistic chaotic model V}
+\begin{frame}[label={sec:org87a8cb4}]{Logistic chaotic model V}
 The function produces \alert{extremely} different outcomes depending on the value of \alert{\(m\)}.
 
 \begin{itemize}
@@ -404,7 +407,7 @@ The function produces \alert{extremely} different outcomes depending on the valu
 \item We will set the \alert{initial} points for the \(X\) to random values.
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org12c9dcd},fragile]{Logistic chaotic model VI}
+\begin{frame}[label={sec:org3a0a6ec},fragile]{Logistic chaotic model VI}
  \begin{itemize}
 \item Load \texttt{Sim2.lsd} and save it as \texttt{Sim3.lsd}
 \item Generate \alert{10000} copies of \texttt{Obj1}
@@ -419,7 +422,7 @@ The function produces \alert{extremely} different outcomes depending on the valu
 \item Save, run, analyze
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org6cbf3cf}]{Logistic chaotic model VII}
+\begin{frame}[label={sec:org95aa84a}]{Logistic chaotic model VII}
 \begin{itemize}
 \item Open Analysis of results
 \item Select all \(m\) and \(X\) series
@@ -433,15 +436,15 @@ Once again, the code remains \alert{untouched}.
 Later, we will check other features of LSD that benefit from this design principle.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org02e7a05}]{Logistic chaotic model VIII}
+\begin{frame}[label={sec:orgfb803d7}]{Logistic chaotic model VIII}
 \begin{center}
 \includesvg[width=.83\linewidth]{figs/chaotic_bifurcation}
 \end{center}
 \end{frame}
 \section{Session 2}
-\label{sec:org09d419c}
+\label{sec:orgb5c5d0a}
 
-\begin{frame}[label={sec:org9413cad}]{Simulation pipeline}
+\begin{frame}[label={sec:org9f90e5e}]{Simulation pipeline}
 As a recap, whenever running a model on LSD, we need to:
 
 \begin{enumerate}
@@ -456,7 +459,7 @@ In the previous session, we implemented two different small models.
 Now, we will focus on a economic ABM.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org6ffb257}]{The Industry model}
+\begin{frame}[label={sec:org562d3f6}]{The Industry model}
 \textcite{dosi_2017_footprint} design objective: simplest industrial dynamics model capturing most \alert{stylized facts}:
 \begin{itemize}
 \item Persistent heterogeneity in productivity and all other performance variables
@@ -466,7 +469,7 @@ Now, we will focus on a economic ABM.
 \item Scaling of the growth-variance relationship
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org0c9f98f}]{Equations}
+\begin{frame}[label={sec:org695d0f4}]{Equations}
 \[ \begin{array}{lrl}
 \mbox{Idiosyncratic learning process:} & a_{i,t} = &a_{i,t-1}\cdot (1 + \theta_{i,t})\\
 \mbox{Learning shocks} & \theta_{i,t} \sim  & Beta(\beta_1, \beta_2)\\
@@ -480,7 +483,7 @@ Now, we will focus on a economic ABM.
 \mbox{Fixed number of firms} & \#\{1, \ldots, n\} =& NF
 \end{array}\]
 \end{frame}
-\begin{frame}[label={sec:org639055c}]{DAG of industry model}
+\begin{frame}[label={sec:org2e5a735}]{DAG of industry model}
 \resizebox{\linewidth}{!}{%
   \begin{tikzpicture}[
     node distance=.1cm and 0.5cm,
@@ -526,7 +529,7 @@ Now, we will focus on a economic ABM.
   \end{tikzpicture}
 }
 \end{frame}
-\begin{frame}[label={sec:org853b8e8},fragile]{Sequence of events}
+\begin{frame}[label={sec:org0e6eba3},fragile]{Sequence of events}
  At time \(t = 0\), there are \(NF\) identical incumbent firms with equal \(a_{i,t=0}\) and \(s_{i,0}\).
 At each time step \(t = 1, 2, \ldots, T\):
 \begin{enumerate}
@@ -542,7 +545,7 @@ At each time step \(t = 1, 2, \ldots, T\):
 The exit-entry process is time-coordinated during each simulated time step by the technical variable \texttt{exit\_entry}: \texttt{HHI} > \texttt{exit\_decision} > \texttt{s} rescaling
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgd81c8ae}]{Parameters and initial values}
+\begin{frame}[label={sec:org7caa6d1}]{Parameters and initial values}
 \begin{table}[htbp]
 \caption{Baseline parameters}
 \centering
@@ -562,14 +565,14 @@ The exit-entry process is time-coordinated during each simulated time step by th
 \end{tabular}
 \end{table}
 \end{frame}
-\begin{frame}[label={sec:orgf85dcb0}]{Model structure and data organization II}
+\begin{frame}[label={sec:orgd060fbb}]{Model structure and data organization II}
 \begin{figure}[htbp]
 \centering
 \includegraphics[clip,trim=0 0 0 0,width=.8\textwidth,height=.75\textheight]{figs/Structure_Industry_LSD.png}
 \caption{Structure of industry model}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:org9d93959}]{Memo: Equations}
+\begin{frame}[label={sec:orgd9c21f3}]{Memo: Equations}
 \[ \begin{array}{lrl}
 \mbox{Idiosyncratic learning process:} & a_{i,t} = &a_{i,t-1}\cdot (1 + \theta_{i,t})\\
 \mbox{Learning shocks} & \theta_{i,t} \sim  & Beta(\beta_1, \beta_2)\\
@@ -583,12 +586,12 @@ The exit-entry process is time-coordinated during each simulated time step by th
 \mbox{Fixed number of firms} & \#\{1, \ldots, n\} =& NF
 \end{array}\]
 \end{frame}
-\begin{frame}[label={sec:org501af80},fragile]{Firm-level productivity (\(a_{i}\)\textsubscript{nil})}
+\begin{frame}[label={sec:org0403772},fragile]{Firm-level productivity (\(a_{i}\)\textsubscript{nil})}
  \begin{equation}
 a_{i,t} = a_{i,t-1}\cdot (1 + \theta_{i,t})
 \end{equation}
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 EQUATION("a")
 // Firm knowledge/productivity
 v[0] = CURRENT;
@@ -598,15 +601,15 @@ v[3] = V("beta2");
 v[4] = beta(v[2], v[3]);
 v[5] = v[0] * (1 + v[1] * v[4]);
 RESULT(v[5])
-\end{verbatim}
+\end{minted}
 \end{frame}
-\begin{frame}[label={sec:org7d97491},fragile]{Market-share (\(s_{i}\))}
+\begin{frame}[label={sec:org558b14b},fragile]{Market-share (\(s_{i}\))}
  \begin{equation}
 s_{i,t} = s_{i,t-1} \cdot \left( 1 + A\cdot\frac{a_{i,t} - \bar{a}_{t}}{\bar{a}_{t}}\right)
 \end{equation}
 
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 EQUATION("s")
 // Firm size/market share
 v[0] = CURRENT;
@@ -616,10 +619,10 @@ v[3] = V("aAvg");
 v[4] = (v[2] - v[3])/v[3];
 v[5] = v[0] * (1 + v[1] * v[4]);
 RESULT(v[5])
-\end{verbatim}
+\end{minted}
 \end{frame}
-\begin{frame}[label={sec:org00d5d3d},fragile]{Exit condition}
- \begin{verbatim}
+\begin{frame}[label={sec:orge208efa},fragile]{Exit condition}
+ \begin{minted}[]{cpp}
 EQUATION("exit_decision")
 
 v[0] = V("s"); v[1] = V("sMin");
@@ -633,15 +636,15 @@ if (v[0] < v[1]) {
   WRITE( "s", 1 / COUNT( "Firm" ) );
 }
 RESULT(0)
-\end{verbatim}
+\end{minted}
 \end{frame}
-\begin{frame}[label={sec:orgf97e6d1},fragile]{Market-level Productivity (Weighted) Average (\(\bar{a_{t}}\))}
+\begin{frame}[label={sec:org7e43ad3},fragile]{Market-level Productivity (Weighted) Average (\(\bar{a_{t}}\))}
  \begin{equation}
 \bar{a}_{t} =  \sum_{i=1}^{NF} s_{i, t-1}\cdot a_{i,t}
 \end{equation}
 
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 EQUATION( "aAvg" )
 // Mean knowledge/productivity
 
@@ -653,10 +656,10 @@ CYCLE(cur, "Firm") {
   v[0] += v[3] ;
 }
 RESULT( v[0] )
-\end{verbatim}
+\end{minted}
 \end{frame}
-\begin{frame}[label={sec:orge3e4823},fragile]{Entry-Exit condition}
- \begin{verbatim}
+\begin{frame}[label={sec:org9463746},fragile]{Entry-Exit condition}
+ \begin{minted}[]{cpp}
 EQUATION( "exit_entry" )
 // Trigger market-wise exit-entry dynamics and re-scale shares
 V( "HHI" ); // first, compute HH index before exits
@@ -671,39 +674,39 @@ CYCLE(cur, "Firm") { // third, rescale market shares after exits
   WRITES( cur, "s", v[2]);
 }
 RESULT( SUM("s") )
-\end{verbatim}
+\end{minted}
 \end{frame}
-\begin{frame}[label={sec:org6ddcb36},fragile]{Herfindahl-Hirschman concentration index (\(HHI\))}
+\begin{frame}[label={sec:orgcf60d8c},fragile]{Herfindahl-Hirschman concentration index (\(HHI\))}
  \begin{equation}
 HHI_{t} = \sum_{i=1}^{NF} (s_{i})^2
 \end{equation}
 
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 EQUATION( "HHI" )
 // Herfindahl-Hirschman concentration index
 v[0] = WHTAVE( "s", "s" );
 RESULT( v[0] )
-\end{verbatim}
+\end{minted}
 \begin{block}{Note on WHTAVE(LS)}
 \texttt{WHTAVE} (weighed average, not used here in the strict sense) computes the sum of \(s\times s\) over every firm
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org9eaf743},fragile]{Initialization I}
+\begin{frame}[label={sec:org39ce6a5},fragile]{Initialization I}
  Firm-level initialization can be set for every \(NF\) objects on the LSD browser.
 The same applies for every other initial condition.
 
 In the following slide, we will see an alternative way in which we control some few parameters and create \(NF-1\) copies of a example object.
 
-\begin{verbatim}
+\begin{minted}[]{cpp}
 ADDNOBJ_EX("TypeOfAgent", number, *pointer);
-\end{verbatim}
+\end{minted}
 \begin{block}{Semi-automated initialization and sensitivity analysis}
 By doing this, we automate the model initialization to test different model configurations (next lecture)
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org6e9bbe4},fragile]{Initialization II}
- \begin{verbatim}
+\begin{frame}[label={sec:org5014c5f},fragile]{Initialization II}
+ \begin{minted}[]{cpp}
 EQUATION( "init" )
 PARAMETER;                  // turn into parameter (run once)
 // finds the agent on memory
@@ -718,19 +721,19 @@ WRITELLS(cur1, "s", v[2], 1, 1);
 // Adds N - 1 copies of cur1 agent located under cur
 ADDNOBJ_EXS(cur, "Firm", v[1] - 1, cur1);
 RESULT( 1 )
-\end{verbatim}
+\end{minted}
 \end{frame}
 \section{Session 3}
-\label{sec:orgd42fb21}
+\label{sec:org37d8a22}
 
-\begin{frame}[label={sec:orgbd35df0}]{Where are we are where are we going?}
+\begin{frame}[label={sec:org7ea30f9}]{Where are we are where are we going?}
 \begin{description}
 \item[{Session I}] Basics of LSD and small models implementation
 \item[{Session II}] Presentation of the Industry model and implementation
 \item[{Session III (Today)}] Q\&A, bug fixes, and analysis of results and Monte Carlo Experiment
 \end{description}
 \end{frame}
-\begin{frame}[label={sec:orgd2aac43}]{Analyzing the model results}
+\begin{frame}[label={sec:org580595d}]{Analyzing the model results}
 \begin{itemize}
 \item After a successful simulation run, in \alert{Browser} click on menu \alert{Data > Analysis of Results}
 \item To analyze the \emph{saved} data time series, select the desired variables from the \alert{Series available} list to include them in the \alert{Series selected} list
@@ -739,7 +742,7 @@ RESULT( 1 )
 \item Plots and analysis data can be \emph{saved} pressing the \alert{Save Plot} and \alert{Save Data} buttons
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org1f0d839}]{Exploring the single run results}
+\begin{frame}[label={sec:org86cb44e}]{Exploring the single run results}
 \begin{figure}[ht]
     % First row: Market-level data
     \begin{subfigure}{0.48\textwidth}
@@ -773,7 +776,7 @@ RESULT( 1 )
     \label{single-run-industry}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:org97432c8},fragile]{Activity I}
+\begin{frame}[label={sec:orgbb1502b},fragile]{Activity I}
  \begin{enumerate}
 \item Show that average productivity (\texttt{aAvg}) is always between than maximum and minimum productivities
 \item Check that the total market share of firms is constant and equal to 1
@@ -782,12 +785,12 @@ RESULT( 1 )
 \item Using this new configuration, produce a \alert{histogram} of the firm log-size distribution at \(t = 200\)
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:orgcc6c337}]{Histogram of firm log-size distribution (\(t = 200\))}
+\begin{frame}[label={sec:org2f3d552}]{Histogram of firm log-size distribution (\(t = 200\))}
 \begin{center}
 \includesvg[width=.9\linewidth]{./figs/150_firms_log_size_histogram}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgcee3747}]{A simple Monte Carlo experiment I}
+\begin{frame}[label={sec:org5fcbc00}]{A simple Monte Carlo experiment I}
 \begin{enumerate}
 \item Close Analysis of Results window
 \item Re-open the baseline configuration
@@ -798,12 +801,12 @@ RESULT( 1 )
 \item Analyze the Monte Carlo experiment results
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:org83f609f}]{A simple Monte Carlo experiment II}
+\begin{frame}[label={sec:org89959de}]{A simple Monte Carlo experiment II}
 \begin{center}
 \includesvg[width=.9\linewidth]{./figs/HHI_MC}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org5efb443}]{Activity II}
+\begin{frame}[label={sec:org47ff5fa}]{Activity II}
 \begin{enumerate}
 \item Show the max-min intervals for the average log-productivity (\alert{aAvg}) and the \alert{HHI} in the MC experiment
 \item Why the MC confidence width is not comparable for the two variables?
@@ -812,9 +815,9 @@ RESULT( 1 )
 \end{enumerate}
 \end{frame}
 \section{Bonus}
-\label{sec:orgf08e542}
+\label{sec:org8d25251}
 
-\begin{frame}[label={sec:org791d27a}]{Model sensitivity to parameters}
+\begin{frame}[label={sec:org4ea45d2}]{Model sensitivity to parameters}
 How do parameters and initial conditions \alert{jointly} affect variables?
 
 \begin{itemize}
@@ -826,7 +829,7 @@ How do parameters and initial conditions \alert{jointly} affect variables?
 \item We will briefly check some Design of Experiments Techniques that helps with this situations
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orgc11f40a}]{Sensitivity analysis}
+\begin{frame}[label={sec:orgf583430}]{Sensitivity analysis}
 Sensitivity analysis requires many steps:
 
 \begin{enumerate}
@@ -843,7 +846,7 @@ Sensitivity analysis requires many steps:
 As the model is small, we will skip screening and jump directly to metamodels
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org92c9846}]{Parametric space}
+\begin{frame}[label={sec:org657924d}]{Parametric space}
 \begin{center}
 \begin{tabular}{ccccc}
 \hline
@@ -864,7 +867,7 @@ As the model is small, we will skip screening and jump directly to metamodels
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org8c8f288}]{Exploring the industry model}
+\begin{frame}[label={sec:org78d14f0}]{Exploring the industry model}
 Load \href{Industry\_SummerSchool/R/data/Sim-Sobol.lsd}{R/data/Sim-Sobol.lsd} file in LSD
 \begin{enumerate}
 \item This is a copy of \href{Industry\_SummerSchool/Sim1.lsd}{Sim1.lsd} with 5 simulation runs
@@ -883,27 +886,27 @@ Load \href{Industry\_SummerSchool/R/data/Sim-Sobol.lsd}{R/data/Sim-Sobol.lsd} fi
 Which parameters do you expect to most influence \alert{HHI}? What about \alert{aAvg}?
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org22fb763}]{Sobol decomposition indexes (HHI)}
+\begin{frame}[label={sec:orgd89c35b}]{Sobol decomposition indexes (HHI)}
 \begin{center}
 \includegraphics[height=.875\textheight,page=4]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgaba2a33}]{Meta-model response I}
+\begin{frame}[label={sec:org2990028}]{Meta-model response I}
 \begin{center}
 \includegraphics[height=.85\textheight,page=5]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orge01a4ce}]{Meta-model response II}
+\begin{frame}[label={sec:org58979f0}]{Meta-model response II}
 \begin{center}
 \includegraphics[height=.85\textheight,page=6]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgac7c969}]{Meta-model response III}
+\begin{frame}[label={sec:orga4659fe}]{Meta-model response III}
 \begin{center}
 \includegraphics[height=.85\textheight,page=7]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org78e6166},fragile]{Bonus Activity}
+\begin{frame}[label={sec:org1eb72f8},fragile]{Bonus Activity}
  \begin{itemize}
 \item In the Rscript, uncomment \texttt{varName   <- "aAvg"} and source the file again
 \item Open the resulting PDF file
@@ -911,7 +914,7 @@ Which parameters do you expect to most influence \alert{HHI}? What about \alert{
 \item What are the economic intuition associated with these parameters?
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orga4d5631}]{Phew!}
+\begin{frame}[label={sec:org5eec1cb}]{Phew!}
 
 Our papers are available at:
 

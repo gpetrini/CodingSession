@@ -7,6 +7,7 @@
 #+BIBLIOGRAPHY: ~/Org/zotero_refs.bib
 #+CITE_EXPORT: biblatex authoryear
 #+language: en
+#+PROPERTY: header-args :eval never-export :exports code
 
 
 * Industry cpp file :noexport:
@@ -149,9 +150,12 @@ void close_sim(void)
 #+LATEX_HEADER: \epstopdfsetup{update} % only regenerate if changed
 #+LATEX_HEADER: \DeclareGraphicsRule{.eps}{pdf}{.pdf}{`epstopdf #1}
 #+latex_header: \usepackage{minted}
+#+latex_header: \setminted{autogobble,fontsize=\footnotesize}
+#+LATEX_HEADER: \usemintedstyle{perldoc}
 #+latex_header: \usepackage{tikz}
 #+latex_header: \usetikzlibrary{arrows.meta, positioning, shapes}
 #+LATEX_HEADER: \usepackage{fontawesome5}
+
 
 
 
@@ -205,12 +209,12 @@ What do we need to know here?
     :BEAMER_env: block
     :END:
 
-#+begin_example python
+#+begin_src python
 x = 5 # A comment
 y = 2.5
 ## We do not need to
 ## work with pointers
-#+end_example
+#+end_src
 
 
 *** In C++
@@ -219,11 +223,11 @@ y = 2.5
     :BEAMER_env: block
     :END:
 
-#+begin_example cpp
+#+begin_src cpp
 int x = 5; // A comment
 double y = 2.5;
 object *agent; // Latter
-#+end_example
+#+end_src
 
 *** Compilation
 
@@ -233,13 +237,13 @@ Different from python and R, we need to *compile* our code before using it.
 
 To avoid initializing everything, LSD has some already initialized variables:
 
-#+begin_example cpp
+#+begin_src cpp
 v[0] = 10; // We can assing number to
 v[1] = 50; // a vector (always available)
 T; // Current simulation time
 i = 1; // i,h,j,k can be used for integers
 cur; cur1; // Pre-allocated pointers
-#+end_example
+#+end_src
 
 Those are *local variables* that we can use on equations.
 
@@ -855,9 +859,9 @@ The same applies for every other initial condition.
 
 In the following slide, we will see an alternative way in which we control some few parameters and create \(NF-1\) copies of a example object.
 
-#+begin_example cpp
+#+begin_src cpp
 ADDNOBJ_EX("TypeOfAgent", number, *pointer);
-#+end_example
+#+end_src
 
 
 *** Semi-automated initialization and sensitivity analysis
@@ -1099,3 +1103,5 @@ You can reach me at:
 
 \\\Huge{Thank you!}
 #+end_export
+
+

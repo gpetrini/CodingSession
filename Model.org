@@ -12,12 +12,12 @@
 
 #+begin_export latex
 \[ \begin{array}{lrl}
-\mbox{Idiosyncratic learning process:} & a_{i,t} = &a_{i,t-1}\cdot (1 + \theta_{i,t})\\
+\mbox{Idiosyncratic learning process:} & a_{i,t} = &a_{i,t-1}\cdot (1 + \eta\cdot\theta_{i,t})\\
 \mbox{Learning shocks} & \theta_{i,t} \sim  & Beta(\beta_1, \beta_2)\\
 \mbox{Market selection} & s_{i,t} =  & s_{i,t-1} \cdot \left( 1 + A\cdot\frac{a_{i,t} - \bar{a}_{t}}{\bar{a}_{t}}\right) \\
 \mbox{Average productivity} & \bar{a}_{t} =  & \sum_{i=1}^{NF} s_{i, t-1}\cdot a_{i,t} \\
 \mbox{Exit condition} & s_{i,t} < & s_{min}\\
-\mbox{Entrant productivity} & a_{j,t} =&  \bar{a}_{t}\cdot (1 + \theta_{i,t})\\
+\mbox{Entrant productivity} & a_{j,t} =&  \bar{a}_{t}\cdot (1 + \eta\cdot\theta_{i,t})\\
 \mbox{Entrant market-share} & s_{j,t} =& 1/NF \\
 \mbox{Market concentration index} & HHI_{t} =& \sum_{i=1}^{NF} (s_{i})^2 \\
 \mbox{Market-share adjustment} &  s_{i} \mapsto & s_{i}\cdot \frac{1}{\sum_{i=1}^{NF} s_{i}} \Rightarrow \sum_{i=1}^{NF} s_{i} = 1 \\
@@ -26,7 +26,7 @@
 #+end_export
 
 
-* DAG of industry model
+* Graph of industry model
 
 #+begin_export latex
 \resizebox{\linewidth}{!}{%
@@ -80,7 +80,7 @@
 
 At time \(t = 0\), there are \(NF\) identical incumbent firms with equal \(a_{i,t=0}\) and \(s_{i,0}\).
 At each time step \(t = 1, 2, \ldots, T\):
-1. Firms learn (updates (\(a_{i}\))
+1. Firms learn (updates (\(a_{i}\)))
 2. Firms computes market share (updates \(s_{i}\))
 3. Market concentration index (\(HHI\)) is computed
 4. Firms exits the market if \(s_{i} < s_{min}\)

@@ -7,25 +7,22 @@ MODELBEGIN
 
 EQUATION( "init" )
 PARAMETER;                  // turn into parameter (run once)
-// finds the agent on memory
-cur = SEARCH( "Market" ); cur1 = SEARCHS(cur, "Firm" );
-
-v[0] = V("A0"); // We define
-v[1] = V("Nfirm"); // We define
+v[0] = V("A0"); v[1] = V("Nfirm");
 v[2] = 1 / v[1]; // Fair share
+CYCLE(cur, "Market"){
+    cur1 = SEARCHS(cur, "Firm" );
 // Overwrites the lag 1 of "a" to v[0] at time 1
-WRITELLS(cur1, "a", v[0], 1, 1);
-WRITELLS(cur1, "s", v[2], 1, 1);
+    WRITELLS(cur1, "a", v[0], 1, 1);
+    WRITELLS(cur1, "s", v[2], 1, 1);
 // Adds N - 1 copies of cur1 agent located under cur
-ADDNOBJ_EXS(cur, "Firm", v[1] - 1, cur1);
+    ADDNOBJ_EXS(cur, "Firm", v[1] - 1, cur1);
+}
 RESULT( 1 )
 
 EQUATION("a")
 // Firm knowledge/productivity
 v[0] = CURRENT;
-v[1] = V("eta");
-v[2] = V("beta1");
-v[3] = V("beta2");
+v[1] = V("eta"); v[2] = V("beta1"); v[3] = V("beta2");
 v[4] = beta(v[2], v[3]);
 v[5] = v[0] * (1 + v[1] * v[4]);
 RESULT(v[5])
@@ -33,9 +30,7 @@ RESULT(v[5])
 EQUATION("s")
 // Firm size/market share
 v[0] = CURRENT;
-v[1] = V("A");
-v[2] = V("a");
-v[3] = V("aAvg");
+v[1] = V("A"); v[2] = V("a"); v[3] = V("aAvg");
 v[4] = (v[2] - v[3])/v[3];
 v[5] = v[0] * (1 + v[1] * v[4]);
 RESULT(v[5])
@@ -56,7 +51,6 @@ RESULT(0)
 
 EQUATION( "aAvg" )
 // Mean knowledge/productivity
-
 v[0] = 0;        // accumulator
 CYCLE(cur, "Firm") {
   v[1] = VLS( cur, "s", 1 );

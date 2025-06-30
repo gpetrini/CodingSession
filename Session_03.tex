@@ -1,7 +1,7 @@
-% Created 2025-06-29 dom 08:41
+% Created 2025-06-30 Mon 15:33
 % Intended LaTeX compiler: pdflatex
 \documentclass[bigger,aspectratio=169]{beamer}
-  \usepackage{caption, subcaption, csquotes, amssymb, xcolor}
+  \usepackage{caption, subcaption, csquotes, amssymb, xcolor, svg}
 \usepackage[english]{babel}
 \titlegraphic{\includesvg[height=1cm]{./figs/IE_Unicamp}\hspace*{1.25cm}\includesvg[height=1cm]{./figs/SSSA}\hspace*{1.25cm} \includesvg[height=1cm]{./figs/YSI}}
 \AtBeginSection[]{
@@ -33,6 +33,13 @@
 \date{July, 2025}
 \title{ABM Macro Lab: Agent-based Modelling Tools}
 \subtitle{Session 03}
+\hypersetup{
+ pdfauthor={Gabriel Petrini},
+ pdftitle={ABM Macro Lab: Agent-based Modelling Tools},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 29.3 (Org mode 9.7.31)}, 
+ pdflang={English}}
 
 % Setup for code blocks [1/2]
 
@@ -132,12 +139,11 @@
 \newcommand{\EFrc}[1]{\textcolor{EFrc}{\textbf{#1}}} % font-lock-regexp-grouping-construct
 \definecolor{EFrb}{HTML}{4078f2}
 \newcommand{\EFrb}[1]{\textcolor{EFrb}{\textbf{#1}}} % font-lock-regexp-grouping-backslash
-\definecolor{EFob}{HTML}{bd93f9}
 \definecolor{Efob}{HTML}{e7e7e7}
-\newcommand{\EFob}[1]{\colorbox{Efob}{\efstrut{}\textcolor{EFob}{#1}}} % org-block
-\definecolor{Efobb}{HTML}{23242f}
+\newcommand{\EFob}[1]{\colorbox{Efob}{\efstrut{}#1}} % org-block
+\definecolor{Efobb}{HTML}{e7e7e7}
 \newcommand{\EFobb}[1]{\colorbox{Efobb}{\efstrut{}\textit{#1}}} % org-block-begin-line
-\definecolor{Efobe}{HTML}{23242f}
+\definecolor{Efobe}{HTML}{e7e7e7}
 \newcommand{\EFobe}[1]{\colorbox{Efobe}{\efstrut{}\textit{#1}}} % org-block-end-line
 \definecolor{EFOa}{HTML}{e45649}
 \newcommand{\EFOa}[1]{\textcolor{EFOa}{\textbf{#1}}} % outline-1
@@ -155,28 +161,18 @@
 \newcommand{\EFOg}[1]{\textcolor{EFOg}{\textbf{#1}}} % outline-7
 \definecolor{EFOh}{HTML}{d8e4fc}
 \newcommand{\EFOh}[1]{\textcolor{EFOh}{\textbf{#1}}} % outline-8
-\definecolor{EFhn}{HTML}{da8548}
-\newcommand{\EFhn}[1]{\textcolor{EFhn}{\textbf{#1}}} % highlight-numbers-number
+\newcommand{\EFhn}[1]{#1} % highlight-numbers-number
 \newcommand{\EFhq}[1]{#1} % highlight-quoted-quote
 \newcommand{\EFhs}[1]{#1} % highlight-quoted-symbol
-\definecolor{EFrda}{HTML}{4078f2}
-\newcommand{\EFrda}[1]{\textcolor{EFrda}{#1}} % rainbow-delimiters-depth-1-face
-\definecolor{EFrdb}{HTML}{a626a4}
-\newcommand{\EFrdb}[1]{\textcolor{EFrdb}{#1}} % rainbow-delimiters-depth-2-face
-\definecolor{EFrdc}{HTML}{50a14f}
-\newcommand{\EFrdc}[1]{\textcolor{EFrdc}{#1}} % rainbow-delimiters-depth-3-face
-\definecolor{EFrdd}{HTML}{b751b6}
-\newcommand{\EFrdd}[1]{\textcolor{EFrdd}{#1}} % rainbow-delimiters-depth-4-face
-\definecolor{EFrde}{HTML}{4db5bd}
-\newcommand{\EFrde}[1]{\textcolor{EFrde}{#1}} % rainbow-delimiters-depth-5-face
-\definecolor{EFrdf}{HTML}{4078f2}
-\newcommand{\EFrdf}[1]{\textcolor{EFrdf}{#1}} % rainbow-delimiters-depth-6-face
-\definecolor{EFrdg}{HTML}{a626a4}
-\newcommand{\EFrdg}[1]{\textcolor{EFrdg}{#1}} % rainbow-delimiters-depth-7-face
-\definecolor{EFrdh}{HTML}{50a14f}
-\newcommand{\EFrdh}[1]{\textcolor{EFrdh}{#1}} % rainbow-delimiters-depth-8-face
-\definecolor{EFrdi}{HTML}{b751b6}
-\newcommand{\EFrdi}[1]{\textcolor{EFrdi}{#1}} % rainbow-delimiters-depth-9-face
+\newcommand{\EFrda}[1]{#1} % rainbow-delimiters-depth-1-face
+\newcommand{\EFrdb}[1]{#1} % rainbow-delimiters-depth-2-face
+\newcommand{\EFrdc}[1]{#1} % rainbow-delimiters-depth-3-face
+\newcommand{\EFrdd}[1]{#1} % rainbow-delimiters-depth-4-face
+\newcommand{\EFrde}[1]{#1} % rainbow-delimiters-depth-5-face
+\newcommand{\EFrdf}[1]{#1} % rainbow-delimiters-depth-6-face
+\newcommand{\EFrdg}[1]{#1} % rainbow-delimiters-depth-7-face
+\newcommand{\EFrdh}[1]{#1} % rainbow-delimiters-depth-8-face
+\newcommand{\EFrdi}[1]{#1} % rainbow-delimiters-depth-9-face
 \definecolor{EFany}{HTML}{986801}
 \definecolor{Efany}{HTML}{986801}
 \newcommand{\EFany}[1]{\colorbox{Efany}{\efstrut{}\textcolor{EFany}{#1}}} % ansi-color-yellow
@@ -233,35 +229,89 @@
 \end{frame}
 
 \section{Introduction}
-\label{sec:orgadb271e}
+\label{sec:org6b671ff}
 
 
-\begin{frame}[label={sec:orge23ae08}]{Where are we and where are we going?}
+\begin{frame}[label={sec:org228244f}]{Where are we and where are we going?}
 \begin{description}
 \item[{Session I}] Basics of LSD and small models implementation
 \item[{Session II}] Presentation of the Industry model and implementation
 \item[{Session III (Today)}] Q\&A, bug fixes, and analysis of results and Monte Carlo Experiment
 \end{description}
 \end{frame}
+\begin{frame}[label={sec:orga5e5252},fragile]{Lost? I}
+ In case you are lost, here are some few-liner to catch up (code may differ)?
+
+\begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}( \EFs{"a"} )
+\EFcd{//} \EFc{Firm knowledge/productivity}
+\EFo{RESULT}( VL( \EFs{"a"}, 1 ) * ( 1 + V( \EFs{"eta"} ) * beta( V( \EFs{"beta1"} ), V( \EFs{"beta2"} ) ) ) )
+
+\EFo{EQUATION}( \EFs{"s"} )
+\EFcd{//} \EFc{Firm size/market share}
+\EFo{RESULT}( VL( \EFs{"s"}, 1 ) * ( 1 + V( \EFs{"A"} ) * ( V( \EFs{"a"} ) - V( \EFs{"aAvg"} ) ) / V( \EFs{"aAvg"} ) ) )
+
+\EFo{EQUATION}( \EFs{"HHI"} )
+\EFcd{//} \EFc{Herfindahl-Hirschman concentration index}
+\EFo{RESULT}( \EFo{WHTAVE}( \EFs{"s"}, \EFs{"s"} ) )
+
+\end{Verbatim}
+\end{Code}
+\end{frame}
+\begin{frame}[label={sec:orgfec052f},fragile]{Lost? II}
+ \begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}( \EFs{"exit\_decision"} )
+\EFk{if} ( V( \EFs{"s"} ) < V( \EFs{"sMin"} ) ) \{
+    \EFo{WRITE}( \EFs{"a"}, V( \EFs{"aAvg"} ) * ( 1 + V( \EFs{"eta"} ) * beta( V( \EFs{"beta1"} ), V( \EFs{"beta2"} ) ) ) );
+    \EFo{WRITE}( \EFs{"s"}, 1 / \EFo{COUNT}( \EFs{"Firm"} ) );
+\}
+\EFo{RESULT}( 0 )
+
+\EFo{EQUATION}( \EFs{"aAvg"} )
+\EFcd{//} \EFc{Mean knowledge/productivity}
+v[0] = 0;        \EFcd{//} \EFc{accumulator}
+\EFo{CYCLE}( cur, \EFs{"Firm"} )
+    v[0] += \EFo{VLS}( cur, \EFs{"s"}, 1 ) * VS( cur, \EFs{"a"} );
+\EFo{RESULT}( v[0] )
+\end{Verbatim}
+\end{Code}
+\end{frame}
+\begin{frame}[label={sec:orgfd90adc},fragile]{Lost? III}
+ \begin{Code}
+\begin{Verbatim}
+\color{EFD}\EFo{EQUATION}( \EFs{"exit\_entry"} )
+\EFcd{//} \EFc{Trigger market-wise exit-entry dynamics and re-scale shares}
+V( \EFs{"HHI"} ); \EFcd{//} \EFc{first, compute HH index before exits}
+\EFo{CYCLE}( cur, \EFs{"Firm"} ) \EFcd{//} \EFc{second, ensure firms have decided on exit}
+    VS( cur, \EFs{"exit\_decision"} );
+v[0] = 1 / \EFo{SUM}( \EFs{"s"} );\EFcd{//} \EFc{factor to scale back to sum = 1}
+\EFo{CYCLE}( cur, \EFs{"Firm"} ) \EFcd{//} \EFc{third, rescale market shares after exits}
+    \EFo{WRITES}( cur, \EFs{"s"}, v[0] * VS( cur, \EFs{"s"} ) );
+\EFo{RESULT}(0)
+\end{Verbatim}
+\end{Code}
+\end{frame}
 \section{Activities}
-\label{sec:org9dd7500}
+\label{sec:org87175c1}
 
 
-\begin{frame}[label={sec:org10fc1c1},fragile]{Activity I}
+\begin{frame}[label={sec:org1ca0ea0},fragile]{Activity I}
  \begin{enumerate}
-\item Show that average productivity (\texttt{aAvg}) is always between than maximum and minimum productivities
+\item Show that average productivity (\texttt{aAvg}) is always between a maximum and minimum productivities
 \item Check that the total market share of firms is constant and equal to 1
 \item Increase (1) the number of firms to 150, (2) the exit threshold \texttt{sMin} to 0.001, and the number of simulation steps.
 \item Run and analyze the results. What are the main differences?
 \item Using this new configuration, produce a \alert{histogram} of the firm log-size distribution at \(t = 200\)
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:org79bd856}]{Histogram of firm log-size distribution (\(t = 200\))}
+\begin{frame}[label={sec:orgb88e23b}]{Histogram of firm log-size distribution (\(t = 200\))}
 \begin{center}
 \includesvg[width=.9\linewidth]{./figs/150_firms_log_size_histogram}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org9d5adae}]{A simple Monte Carlo experiment I}
+\begin{frame}[label={sec:org9ef311b}]{A simple Monte Carlo experiment I}
 \begin{enumerate}
 \item Close Analysis of Results window
 \item Re-open the baseline configuration
@@ -272,12 +322,12 @@
 \item Analyze the Monte Carlo experiment results
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:org9a9b688}]{A simple Monte Carlo experiment II}
+\begin{frame}[label={sec:orgcfd79ed}]{A simple Monte Carlo experiment II}
 \begin{center}
 \includesvg[width=.9\linewidth]{./figs/HHI_MC}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgdc9ff9a}]{Activity II}
+\begin{frame}[label={sec:orga5ad440}]{Activity II}
 \begin{enumerate}
 \item Show the max-min intervals for the average log-productivity (\alert{aAvg}) and the \alert{HHI} in the MC experiment
 \item Why the MC confidence width is not comparable for the two variables?
@@ -285,10 +335,10 @@
 \item The Monte Carlo analysis uncovers a potential problem with this simplified version of the model, try to identify it, and to reason if it can invalidate the results obtained
 \end{enumerate}
 \end{frame}
-\section{{\bfseries\sffamily TODO} Simple parameter sensitivity check}
-\label{sec:org90e6444}
+\section{Simple parameter sensitivity check}
+\label{sec:org8c384c2}
 
-\begin{frame}[label={sec:orgb1269ad}]{Introduction}
+\begin{frame}[label={sec:orga7cdb3f}]{Introduction}
 In this part of the lecture, we will playaround with \(A\) and \(\eta\) parameters and check their impacts on the model output.
 Here, we will leverage the benefits of an OOP design associated with an isolated configuration setting.
 
@@ -298,10 +348,10 @@ By doing this, we can make different experiments on each copy and analyze it on 
 LSD has some ways to automatize this task for us.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org1a91fa2},fragile]{Setting the DoE I}
+\begin{frame}[label={sec:org8b6b745},fragile]{Setting the DoE I}
  \begin{enumerate}
-\item Load \texttt{Sim1.lsd} and save it as \texttt{Sim2.lsd}
-\item Right click on \texttt{A} and select \alert{Sensitivity analysis}
+\item Load \texttt{Sim1.lsd} and save it as \texttt{Sim1\_DoE.lsd}
+\item Right click on \texttt{A} and select \alert{Sensitivity}
 \item On the new window, specify the parameter range as follows:
 \end{enumerate}
 
@@ -318,45 +368,51 @@ LSD has some ways to automatize this task for us.
 
 Next, repeat the same for \texttt{eta}
 \end{frame}
-\begin{frame}[label={sec:org74cb95b},fragile]{Example of the parametric space}
+\begin{frame}[label={sec:org6b03f2d},fragile]{Example of the parametric space}
  \begin{center}
 \begin{tabular}{ccccc}
 \hline
  & Desc & Baseline & Min & Max\\
 \hline
-\(\eta\) & Innovation opportunity support & 0.3 & 0.0 & 0.7\\
+\(\eta\) & Innovation opportunity support & 0.3 & 0.1 & 0.7\\
 \(A\) & replicator dynamics intensity & 1 & 0.2 & 5\\
 \hline
 \end{tabular}
 \end{center}
 \begin{description}
-\item[{eta}] \texttt{=0.0:0.7@10\%L}
-\item[{A}] \texttt{=0.2:5@10\%L}
+\item[{eta}] \texttt{=0.1:0.7@3\%L}
+\item[{A}] \texttt{=0.2:5@3\%L}
 \end{description}
 \end{frame}
-\begin{frame}[label={sec:orge9d80b2}]{Setting the DoE II}
-\begin{enumerate}
+\begin{frame}[label={sec:org109b9a1},fragile]{Setting the DoE II}
+ \begin{enumerate}
 \item After, save the sensitivity analysis file (\alert{File>Save sensitivity})
-\item Set the DoE (\alert{Data > Sensitivity Analysis > XX Full Online})
-\item Run a \alert{parallel XX} (Run > Parallel XX) to produce the results files (accept the defaults)
+\item Mark \texttt{A} and \texttt{eta} to be saved
+\item Set the DoE (\alert{Data > Sensitivity Analysis > Full (Online)})
+\item Run the simulations (Run > Run) to produce the results files (accept the defaults)
 \item Choose \alert{Data > Analysis of results} and inspects the results
+\item Whenever picking a variable to plot, right click on it and choose to select all
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:orgec3f6bb}]{Activity III}
-Set your own parametric ranges.
+\begin{frame}[label={sec:org847fc11},fragile]{Activity III}
+ Set your own parametric ranges (choose an small number for \texttt{NUM}).
 
 \begin{itemize}
+\item How can we evaluate the importance of a parameter?
 \item How each parameter affects the model's results?
 \item What is the economic intuition of this?
 \item How can we efficiently repeat this for all other parameters and initial conditions?
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org20f4e49}]{Visualizing this experiment}
+\begin{frame}[label={sec:org0ca373e}]{Visualizing this experiment}
+\begin{center}
+\includesvg[height=.85\textheight]{./figs/Full_DoE.svg}
+\end{center}
 \end{frame}
 \section{Primer on sensitivity analysis (Bonus)}
-\label{sec:org9324733}
+\label{sec:org3ee2441}
 
-\begin{frame}[label={sec:org0e451e9}]{Model sensitivity to parameters}
+\begin{frame}[label={sec:org0e644fe}]{Model sensitivity to parameters}
 How do parameters and initial conditions \alert{jointly} affect variables?
 
 \begin{itemize}
@@ -368,7 +424,7 @@ How do parameters and initial conditions \alert{jointly} affect variables?
 \item We will briefly check some Design of Experiments Techniques that helps with this situations
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org4354334}]{Sensitivity analysis}
+\begin{frame}[label={sec:org4ce0c40}]{Sensitivity analysis}
 Sensitivity analysis requires many steps:
 
 \begin{enumerate}
@@ -385,7 +441,7 @@ Sensitivity analysis requires many steps:
 As the model is small, we will skip screening and jump directly to metamodels
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org7067da5}]{Parametric space}
+\begin{frame}[label={sec:orgc17b02e}]{Parametric space}
 \begin{center}
 \begin{tabular}{ccccc}
 \hline
@@ -406,7 +462,7 @@ As the model is small, we will skip screening and jump directly to metamodels
 \end{itemize}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgcf72c5a}]{Exploring the industry model}
+\begin{frame}[label={sec:org45c4f87}]{Exploring the industry model}
 Load \href{Industry\_SummerSchool/R/data/Sim-Sobol.lsd}{R/data/Sim-Sobol.lsd} file in LSD
 \begin{enumerate}
 \item This is a copy of \href{Industry\_SummerSchool/Sim1.lsd}{Sim1.lsd} with 5 simulation runs
@@ -425,27 +481,27 @@ Load \href{Industry\_SummerSchool/R/data/Sim-Sobol.lsd}{R/data/Sim-Sobol.lsd} fi
 Which parameters do you expect to most influence \alert{HHI}? What about \alert{aAvg}?
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgb03e966}]{Sobol decomposition indexes (HHI)}
+\begin{frame}[label={sec:orgeaf3153}]{Sobol decomposition indexes (HHI)}
 \begin{center}
 \includegraphics[height=.875\textheight,page=4]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgf8d1d0a}]{Meta-model response I}
+\begin{frame}[label={sec:org2bbaf12}]{Meta-model response I}
 \begin{center}
 \includegraphics[height=.85\textheight,page=5]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgf60b2ec}]{Meta-model response II}
+\begin{frame}[label={sec:org877370b}]{Meta-model response II}
 \begin{center}
 \includegraphics[height=.85\textheight,page=6]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgb6768f4}]{Meta-model response III}
+\begin{frame}[label={sec:org26a12ee}]{Meta-model response III}
 \begin{center}
 \includegraphics[height=.85\textheight,page=7]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:org0590829},fragile]{Bonus Activity}
+\begin{frame}[label={sec:org9fcbd00},fragile]{Bonus Activity}
  \begin{itemize}
 \item In the Rscript, uncomment \Verb[commandchars=\\\{\},highlightcolor=white!95!black!80!blue,breaklines=true,breaksymbol=\color{white!60!black}\tiny\ensuremath{\hookrightarrow}]{\color{EFD}varName \textcolor[HTML]{008b8b}{<-} \EFs{"aAvg"}} and source the file again
 \item Open the resulting PDF file
@@ -453,7 +509,7 @@ Which parameters do you expect to most influence \alert{HHI}? What about \alert{
 \item What are the economic intuition associated with these parameters?
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orgfb98372}]{Phew!}
+\begin{frame}[label={sec:orgef50c8e}]{Phew!}
 
 Our papers are available at:
 

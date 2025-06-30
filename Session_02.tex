@@ -1,4 +1,4 @@
-% Created 2025-06-29 dom 08:20
+% Created 2025-06-30 Mon 15:34
 % Intended LaTeX compiler: pdflatex
 \documentclass[bigger,aspectratio=169]{beamer}
   \usepackage{caption, subcaption, csquotes, amssymb, xcolor}
@@ -33,6 +33,13 @@
 \date{July, 2025}
 \title{ABM Macro Lab: Agent-based Modelling Tools}
 \subtitle{Session 02}
+\hypersetup{
+ pdfauthor={Gabriel Petrini},
+ pdftitle={ABM Macro Lab: Agent-based Modelling Tools},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 29.3 (Org mode 9.7.31)}, 
+ pdflang={English}}
 
 % Setup for code blocks [1/2]
 
@@ -132,12 +139,11 @@
 \newcommand{\EFrc}[1]{\textcolor{EFrc}{\textbf{#1}}} % font-lock-regexp-grouping-construct
 \definecolor{EFrb}{HTML}{4078f2}
 \newcommand{\EFrb}[1]{\textcolor{EFrb}{\textbf{#1}}} % font-lock-regexp-grouping-backslash
-\definecolor{EFob}{HTML}{bd93f9}
 \definecolor{Efob}{HTML}{e7e7e7}
-\newcommand{\EFob}[1]{\colorbox{Efob}{\efstrut{}\textcolor{EFob}{#1}}} % org-block
-\definecolor{Efobb}{HTML}{23242f}
+\newcommand{\EFob}[1]{\colorbox{Efob}{\efstrut{}#1}} % org-block
+\definecolor{Efobb}{HTML}{e7e7e7}
 \newcommand{\EFobb}[1]{\colorbox{Efobb}{\efstrut{}\textit{#1}}} % org-block-begin-line
-\definecolor{Efobe}{HTML}{23242f}
+\definecolor{Efobe}{HTML}{e7e7e7}
 \newcommand{\EFobe}[1]{\colorbox{Efobe}{\efstrut{}\textit{#1}}} % org-block-end-line
 \definecolor{EFOa}{HTML}{e45649}
 \newcommand{\EFOa}[1]{\textcolor{EFOa}{\textbf{#1}}} % outline-1
@@ -155,28 +161,18 @@
 \newcommand{\EFOg}[1]{\textcolor{EFOg}{\textbf{#1}}} % outline-7
 \definecolor{EFOh}{HTML}{d8e4fc}
 \newcommand{\EFOh}[1]{\textcolor{EFOh}{\textbf{#1}}} % outline-8
-\definecolor{EFhn}{HTML}{da8548}
-\newcommand{\EFhn}[1]{\textcolor{EFhn}{\textbf{#1}}} % highlight-numbers-number
+\newcommand{\EFhn}[1]{#1} % highlight-numbers-number
 \newcommand{\EFhq}[1]{#1} % highlight-quoted-quote
 \newcommand{\EFhs}[1]{#1} % highlight-quoted-symbol
-\definecolor{EFrda}{HTML}{4078f2}
-\newcommand{\EFrda}[1]{\textcolor{EFrda}{#1}} % rainbow-delimiters-depth-1-face
-\definecolor{EFrdb}{HTML}{a626a4}
-\newcommand{\EFrdb}[1]{\textcolor{EFrdb}{#1}} % rainbow-delimiters-depth-2-face
-\definecolor{EFrdc}{HTML}{50a14f}
-\newcommand{\EFrdc}[1]{\textcolor{EFrdc}{#1}} % rainbow-delimiters-depth-3-face
-\definecolor{EFrdd}{HTML}{b751b6}
-\newcommand{\EFrdd}[1]{\textcolor{EFrdd}{#1}} % rainbow-delimiters-depth-4-face
-\definecolor{EFrde}{HTML}{4db5bd}
-\newcommand{\EFrde}[1]{\textcolor{EFrde}{#1}} % rainbow-delimiters-depth-5-face
-\definecolor{EFrdf}{HTML}{4078f2}
-\newcommand{\EFrdf}[1]{\textcolor{EFrdf}{#1}} % rainbow-delimiters-depth-6-face
-\definecolor{EFrdg}{HTML}{a626a4}
-\newcommand{\EFrdg}[1]{\textcolor{EFrdg}{#1}} % rainbow-delimiters-depth-7-face
-\definecolor{EFrdh}{HTML}{50a14f}
-\newcommand{\EFrdh}[1]{\textcolor{EFrdh}{#1}} % rainbow-delimiters-depth-8-face
-\definecolor{EFrdi}{HTML}{b751b6}
-\newcommand{\EFrdi}[1]{\textcolor{EFrdi}{#1}} % rainbow-delimiters-depth-9-face
+\newcommand{\EFrda}[1]{#1} % rainbow-delimiters-depth-1-face
+\newcommand{\EFrdb}[1]{#1} % rainbow-delimiters-depth-2-face
+\newcommand{\EFrdc}[1]{#1} % rainbow-delimiters-depth-3-face
+\newcommand{\EFrdd}[1]{#1} % rainbow-delimiters-depth-4-face
+\newcommand{\EFrde}[1]{#1} % rainbow-delimiters-depth-5-face
+\newcommand{\EFrdf}[1]{#1} % rainbow-delimiters-depth-6-face
+\newcommand{\EFrdg}[1]{#1} % rainbow-delimiters-depth-7-face
+\newcommand{\EFrdh}[1]{#1} % rainbow-delimiters-depth-8-face
+\newcommand{\EFrdi}[1]{#1} % rainbow-delimiters-depth-9-face
 \definecolor{EFany}{HTML}{986801}
 \definecolor{Efany}{HTML}{986801}
 \newcommand{\EFany}[1]{\colorbox{Efany}{\efstrut{}\textcolor{EFany}{#1}}} % ansi-color-yellow
@@ -233,9 +229,9 @@
 \end{frame}
 
 \section{Technical review}
-\label{sec:org5a16571}
+\label{sec:org8389284}
 
-\begin{frame}[label={sec:org0eaf694}]{Simulation pipeline}
+\begin{frame}[label={sec:orgc375df6}]{Simulation pipeline}
 As a recap, whenever running a model on LSD, we need to:
 
 \begin{enumerate}
@@ -251,14 +247,14 @@ Now, we will focus on a economic ABM.
 \end{block}
 \end{frame}
 \section{Theoretical model presentation}
-\label{sec:org5b8bc4a}
+\label{sec:orgfdd8103}
 
 
-\begin{frame}[label={sec:org1ee0c79},fragile]{Sequence of events}
+\begin{frame}[label={sec:org976ee91},fragile]{Sequence of events}
  At time \(t = 0\), there are \(NF\) identical incumbent firms with equal \(a_{i,t=0}\) and \(s_{i,0}\).
 At each time step \(t = 1, 2, \ldots, T\):
 \begin{enumerate}
-\item Firms learn (updates (\(a_{i}\))
+\item Firms learn (updates (\(a_{i}\)))
 \item Firms computes market share (updates \(s_{i}\))
 \item Market concentration index (\(HHI\)) is computed
 \item Firms exits the market if \(s_{i} < s_{min}\)
@@ -270,21 +266,21 @@ At each time step \(t = 1, 2, \ldots, T\):
 The exit-entry process is time-coordinated during each simulated time step by the technical variable \texttt{exit\_entry}: \texttt{HHI} > \texttt{exit\_decision} > \texttt{s} rescaling
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org6b3a18f}]{Equations}
+\begin{frame}[label={sec:orgb384df1}]{Equations}
 \[ \begin{array}{lrl}
-\mbox{Idiosyncratic learning process:} & a_{i,t} = &a_{i,t-1}\cdot (1 + \theta_{i,t})\\
+\mbox{Idiosyncratic learning process:} & a_{i,t} = &a_{i,t-1}\cdot (1 + \eta\cdot\theta_{i,t})\\
 \mbox{Learning shocks} & \theta_{i,t} \sim  & Beta(\beta_1, \beta_2)\\
 \mbox{Market selection} & s_{i,t} =  & s_{i,t-1} \cdot \left( 1 + A\cdot\frac{a_{i,t} - \bar{a}_{t}}{\bar{a}_{t}}\right) \\
 \mbox{Average productivity} & \bar{a}_{t} =  & \sum_{i=1}^{NF} s_{i, t-1}\cdot a_{i,t} \\
 \mbox{Exit condition} & s_{i,t} < & s_{min}\\
-\mbox{Entrant productivity} & a_{j,t} =&  \bar{a}_{t}\cdot (1 + \theta_{i,t})\\
+\mbox{Entrant productivity} & a_{j,t} =&  \bar{a}_{t}\cdot (1 + \eta\cdot\theta_{i,t})\\
 \mbox{Entrant market-share} & s_{j,t} =& 1/NF \\
 \mbox{Market concentration index} & HHI_{t} =& \sum_{i=1}^{NF} (s_{i})^2 \\
 \mbox{Market-share adjustment} &  s_{i} \mapsto & s_{i}\cdot \frac{1}{\sum_{i=1}^{NF} s_{i}} \Rightarrow \sum_{i=1}^{NF} s_{i} = 1 \\
 \mbox{Fixed number of firms} & \#\{1, \ldots, n\} =& NF
 \end{array}\]
 \end{frame}
-\begin{frame}[label={sec:org482a9d5}]{Parameters and initial values}
+\begin{frame}[label={sec:org23d29c7}]{Parameters and initial values}
 \begin{table}[htbp]
 \caption{Baseline parameters}
 \centering
@@ -304,7 +300,7 @@ The exit-entry process is time-coordinated during each simulated time step by th
 \end{tabular}
 \end{table}
 \end{frame}
-\begin{frame}[label={sec:org1edab29}]{Model structure and data organization}
+\begin{frame}[label={sec:org18450f1}]{Model structure and data organization}
 \begin{figure}[htbp]
 \centering
 \includegraphics[clip,trim=0 0 0 0,width=.8\textwidth,height=.75\textheight]{figs/Structure_Industry_LSD.png}
@@ -312,35 +308,35 @@ The exit-entry process is time-coordinated during each simulated time step by th
 \end{figure}
 \end{frame}
 \section{Model implementation}
-\label{sec:org7f47abc}
+\label{sec:orge4a5b55}
 
-\begin{frame}[label={sec:org9f270d4},fragile]{Firm-level productivity (\(a_{i}\)\textsubscript{nil})}
+\begin{frame}[label={sec:orgda6f275},fragile]{Firm-level productivity (\(a_i\))}
  \begin{equation}
-a_{i,t} = a_{i,t-1}\cdot (1 + \theta_{i,t})
+a_{i,t} = a_{i,t-1}\cdot (1 + \eta\cdot\theta_{i,t})
 \end{equation}
 
 
 \begin{Code}
 \begin{Verbatim}
-\color{EFD}EQUATION\EFrda{(}\EFs{"a"}\EFrda{)}
+\color{EFD}\EFo{EQUATION}(\EFs{"a"})
 \EFcd{//} \EFc{Firm knowledge/productivity}
-v\EFrda{[}\EFhn{0}\EFrda{]} = CURRENT;
-v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"eta"}\EFrda{)}; v\EFrda{[}\EFhn{2}\EFrda{]} = V\EFrda{(}\EFs{"beta1"}\EFrda{)}; v\EFrda{[}\EFhn{3}\EFrda{]} = V\EFrda{(}\EFs{"beta2"}\EFrda{)};
-v\EFrda{[}\EFhn{4}\EFrda{]} = beta\EFrda{(}v\EFrdb{[}\EFhn{2}\EFrdb{]}, v\EFrdb{[}\EFhn{3}\EFrdb{]}\EFrda{)};
-v\EFrda{[}\EFhn{5}\EFrda{]} = v\EFrda{[}\EFhn{0}\EFrda{]} * \EFrda{(}\EFhn{1} + v\EFrdb{[}\EFhn{1}\EFrdb{]} * v\EFrdb{[}\EFhn{4}\EFrdb{]}\EFrda{)};
-RESULT\EFrda{(}v\EFrdb{[}\EFhn{5}\EFrdb{]}\EFrda{)}
+v[0] = \EFo{CURRENT};
+v[1] = V(\EFs{"eta"}); v[2] = V(\EFs{"beta1"}); v[3] = V(\EFs{"beta2"});
+v[4] = beta(v[2], v[3]);
+v[5] = v[0] * (1 + v[1] * v[4]);
+\EFo{RESULT}(v[5])
 \end{Verbatim}
 \end{Code}
 \begin{block}{One-liner}
 \begin{Code}
 \begin{Verbatim}
-\color{EFD}EQUATION\EFrda{(}\EFs{"a"}\EFrda{)}
-RESULT\EFrda{(}VL\EFrdb{(}\EFs{"a"}, \EFhn{1}\EFrdb{)} * \EFrdb{(}\EFhn{1} + V\EFrdc{(}\EFs{"eta"}\EFrdc{)} * \EFrdc{(}beta\EFrdd{(}V\EFrda{(}\EFs{"beta1"}\EFrda{)}, V\EFrda{(}\EFs{"beta2"}\EFrda{)}\EFrdd{)}\EFrdc{)}\EFrdb{)}\EFrda{)}
+\color{EFD}\EFo{EQUATION}(\EFs{"a"})
+\EFo{RESULT}(VL(\EFs{"a"}, 1) * (1 + V(\EFs{"eta"}) * (beta(V(\EFs{"beta1"}), V(\EFs{"beta2"})))))
 \end{Verbatim}
 \end{Code}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgd32040b},fragile]{Market-share (\(s_{i}\))}
+\begin{frame}[label={sec:org515cd8c},fragile]{Market-share (\(s_{i}\))}
  \begin{equation}
 s_{i,t} = s_{i,t-1} \cdot \left( 1 + A\cdot\frac{a_{i,t} - \bar{a}_{t}}{\bar{a}_{t}}\right)
 \end{equation}
@@ -348,44 +344,44 @@ s_{i,t} = s_{i,t-1} \cdot \left( 1 + A\cdot\frac{a_{i,t} - \bar{a}_{t}}{\bar{a}_
 
 \begin{Code}
 \begin{Verbatim}
-\color{EFD}EQUATION\EFrda{(}\EFs{"s"}\EFrda{)}
+\color{EFD}\EFo{EQUATION}(\EFs{"s"})
 \EFcd{//} \EFc{Firm size/market share}
-v\EFrda{[}\EFhn{0}\EFrda{]} = CURRENT;
-v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"A"}\EFrda{)}; v\EFrda{[}\EFhn{2}\EFrda{]} = V\EFrda{(}\EFs{"a"}\EFrda{)}; v\EFrda{[}\EFhn{3}\EFrda{]} = V\EFrda{(}\EFs{"aAvg"}\EFrda{)};
-v\EFrda{[}\EFhn{4}\EFrda{]} = \EFrda{(}v\EFrdb{[}\EFhn{2}\EFrdb{]} - v\EFrdb{[}\EFhn{3}\EFrdb{]}\EFrda{)}/v\EFrda{[}\EFhn{3}\EFrda{]};
-v\EFrda{[}\EFhn{5}\EFrda{]} = v\EFrda{[}\EFhn{0}\EFrda{]} * \EFrda{(}\EFhn{1} + v\EFrdb{[}\EFhn{1}\EFrdb{]} * v\EFrdb{[}\EFhn{4}\EFrdb{]}\EFrda{)};
-RESULT\EFrda{(}v\EFrdb{[}\EFhn{5}\EFrdb{]}\EFrda{)}
+v[0] = \EFo{CURRENT};
+v[1] = V(\EFs{"A"}); v[2] = V(\EFs{"a"}); v[3] = V(\EFs{"aAvg"});
+v[4] = (v[2] - v[3])/v[3];
+v[5] = v[0] * (1 + v[1] * v[4]);
+\EFo{RESULT}(v[5])
 \end{Verbatim}
 \end{Code}
 \begin{block}{One-liner}
 \begin{Code}
 \begin{Verbatim}
-\color{EFD}EQUATION\EFrda{(}\EFs{"s"}\EFrda{)} \EFcd{//} \EFc{Firm size/market share}
-RESULT\EFrda{(}VL\EFrdb{(}\EFs{"s"}, \EFhn{1}\EFrdb{)} * \EFrdb{(}\EFhn{1} + V\EFrdc{(}\EFs{"A"}\EFrdc{)} * \EFrdc{(}\EFrdd{(}V\EFrda{(}\EFs{"a"}\EFrda{)} - V\EFrda{(}\EFs{"aAvg"}\EFrda{)}\EFrdd{)}/V\EFrdd{(}\EFs{"aAvg"}\EFrdd{)}\EFrdc{)}\EFrdb{)}\EFrda{)}
+\color{EFD}\EFo{EQUATION}(\EFs{"s"}) \EFcd{//} \EFc{Firm size/market share}
+\EFo{RESULT}(VL(\EFs{"s"}, 1) * (1 + V(\EFs{"A"}) * ((V(\EFs{"a"}) - V(\EFs{"aAvg"}))/V(\EFs{"aAvg"}))))
 \end{Verbatim}
 \end{Code}
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org07962bf},fragile]{Exit condition}
+\begin{frame}[label={sec:org70d3cdd},fragile]{Exit condition}
  \begin{Code}
 \begin{Verbatim}
-\color{EFD}EQUATION\EFrda{(}\EFs{"exit\_decision"}\EFrda{)}
+\color{EFD}\EFo{EQUATION}(\EFs{"exit\_decision"})
 
-v\EFrda{[}\EFhn{0}\EFrda{]} = V\EFrda{(}\EFs{"s"}\EFrda{)}; v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"sMin"}\EFrda{)};
+v[0] = V(\EFs{"s"}); v[1] = V(\EFs{"sMin"});
 \EFcd{//} \EFc{update entrant firm productivity and market share}
-\EFk{if} \EFrda{(}v\EFrdb{[}\EFhn{0}\EFrdb{]} < v\EFrdb{[}\EFhn{1}\EFrdb{]}\EFrda{)} \EFrda{\{}
-  v\EFrdb{[}\EFhn{2}\EFrdb{]} = V\EFrdb{(}\EFs{"eta"}\EFrdb{)}; v\EFrdb{[}\EFhn{3}\EFrdb{]} = V\EFrdb{(}\EFs{"beta1"}\EFrdb{)}; v\EFrdb{[}\EFhn{4}\EFrdb{]} = V\EFrdb{(}\EFs{"beta2"}\EFrdb{)};
-  v\EFrdb{[}\EFhn{5}\EFrdb{]} = beta\EFrdb{(}v\EFrdc{[}\EFhn{3}\EFrdc{]}, v\EFrdc{[}\EFhn{4}\EFrdc{]}\EFrdb{)};
-  v\EFrdb{[}\EFhn{6}\EFrdb{]} = V\EFrdb{(}\EFs{"aAvg"}\EFrdb{)};
-  v\EFrdb{[}\EFhn{7}\EFrdb{]} = v\EFrdb{[}\EFhn{6}\EFrdb{]} * \EFrdb{(}\EFhn{1} + v\EFrdc{[}\EFhn{2}\EFrdc{]} * v\EFrdc{[}\EFhn{5}\EFrdc{]}\EFrdb{)};
-  WRITE\EFrdb{(} \EFs{"a"}, v\EFrdc{[}\EFhn{7}\EFrdc{]} \EFrdb{)};
-  WRITE\EFrdb{(} \EFs{"s"}, \EFhn{1} / COUNT\EFrdc{(} \EFs{"Firm"} \EFrdc{)} \EFrdb{)};
-\EFrda{\}}
-RESULT\EFrda{(}\EFhn{0}\EFrda{)}
+\EFk{if} (v[0] < v[1]) \{
+  v[2] = V(\EFs{"eta"}); v[3] = V(\EFs{"beta1"}); v[4] = V(\EFs{"beta2"});
+  v[5] = beta(v[3], v[4]);
+  v[6] = V(\EFs{"aAvg"});
+  v[7] = v[6] * (1 + v[2] * v[5]);
+  \EFo{WRITE}( \EFs{"a"}, v[7] );
+  \EFo{WRITE}( \EFs{"s"}, 1 / \EFo{COUNT}( \EFs{"Firm"} ) );
+\}
+\EFo{RESULT}(0)
 \end{Verbatim}
 \end{Code}
 \end{frame}
-\begin{frame}[label={sec:org43205e4},fragile]{Market-level Productivity (Weighted) Average (\(\bar{a_{t}}\))}
+\begin{frame}[label={sec:orgd33dd32},fragile]{Market-level Productivity (Weighted) Average (\(\bar{a_{t}}\))}
  \begin{equation}
 \bar{a}_{t} =  \sum_{i=1}^{NF} s_{i, t-1}\cdot a_{i,t}
 \end{equation}
@@ -393,40 +389,40 @@ RESULT\EFrda{(}\EFhn{0}\EFrda{)}
 
 \begin{Code}
 \begin{Verbatim}
-\color{EFD}EQUATION\EFrda{(} \EFs{"aAvg"} \EFrda{)}
+\color{EFD}\EFo{EQUATION}( \EFs{"aAvg"} )
 \EFcd{//} \EFc{Mean knowledge/productivity}
-v\EFrda{[}\EFhn{0}\EFrda{]} = \EFhn{0};        \EFcd{//} \EFc{accumulator}
-\EFv{CYCLE}\EFrda{(}cur, \EFs{"Firm"}\EFrda{)} \EFrda{\{}
-  v\EFrdb{[}\EFhn{1}\EFrdb{]} = VLS\EFrdb{(} cur, \EFs{"s"}, \EFhn{1} \EFrdb{)};
-  v\EFrdb{[}\EFhn{2}\EFrdb{]} = VS\EFrdb{(} cur, \EFs{"a"} \EFrdb{)};
-  v\EFrdb{[}\EFhn{3}\EFrdb{]} = v\EFrdb{[}\EFhn{1}\EFrdb{]} * v\EFrdb{[}\EFhn{2}\EFrdb{]};
-  v\EFrdb{[}\EFhn{0}\EFrdb{]} += v\EFrdb{[}\EFhn{3}\EFrdb{]} ;
-\EFrda{\}}
-RESULT\EFrda{(} v\EFrdb{[}\EFhn{0}\EFrdb{]} \EFrda{)}
+v[0] = 0;        \EFcd{//} \EFc{accumulator}
+\EFv{CYCLE}(cur, \EFs{"Firm"}) \{
+  v[1] = \EFo{VLS}( cur, \EFs{"s"}, 1 );
+  v[2] = VS( cur, \EFs{"a"} );
+  v[3] = v[1] * v[2];
+  v[0] += v[3] ;
+\}
+\EFo{RESULT}( v[0] )
 \end{Verbatim}
 \end{Code}
 \end{frame}
-\begin{frame}[label={sec:org4a25dba},fragile]{Entry-Exit condition}
+\begin{frame}[label={sec:orga2aa618},fragile]{Entry-Exit condition}
  \begin{Code}
 \begin{Verbatim}
-\color{EFD}EQUATION\EFrda{(} \EFs{"exit\_entry"} \EFrda{)}
+\color{EFD}\EFo{EQUATION}( \EFs{"exit\_entry"} )
 \EFcd{//} \EFc{Trigger market-wise exit-entry dynamics and re-scale shares}
-V\EFrda{(} \EFs{"HHI"} \EFrda{)}; \EFcd{//} \EFc{first, compute HH index before exits}
+V( \EFs{"HHI"} ); \EFcd{//} \EFc{first, compute HH index before exits}
 
 \EFcd{//} \EFc{second, ensure firms have decided on exit}
-\EFv{CYCLE}\EFrda{(}cur, \EFs{"Firm"}\EFrda{)} \EFrda{\{}VS\EFrdb{(} cur, \EFs{"exit\_decision"} \EFrdb{)};\EFrda{\}}
+\EFv{CYCLE}(cur, \EFs{"Firm"}) \{VS( cur, \EFs{"exit\_decision"} );\}
 
-v\EFrda{[}\EFhn{0}\EFrda{]} = \EFhn{1} / SUM\EFrda{(} \EFs{"s"} \EFrda{)}; \EFcd{//} \EFc{factor to scale back to sum = 1}
-\EFv{CYCLE}\EFrda{(}cur, \EFs{"Firm"}\EFrda{)} \EFrda{\{} \EFcd{//} \EFc{third, rescale market shares after exits}
-  v\EFrdb{[}\EFhn{1}\EFrdb{]} = VS\EFrdb{(} cur, \EFs{"s"} \EFrdb{)};
-  v\EFrdb{[}\EFhn{2}\EFrdb{]} = v\EFrdb{[}\EFhn{0}\EFrdb{]} * v\EFrdb{[}\EFhn{1}\EFrdb{]};
-  WRITES\EFrdb{(} cur, \EFs{"s"}, v\EFrdc{[}\EFhn{2}\EFrdc{]}\EFrdb{)};
-\EFrda{\}}
-RESULT\EFrda{(} SUM\EFrdb{(}\EFs{"s"}\EFrdb{)} \EFrda{)}
+v[0] = 1 / \EFo{SUM}( \EFs{"s"} ); \EFcd{//} \EFc{factor to scale back to sum = 1}
+\EFv{CYCLE}(cur, \EFs{"Firm"}) \{ \EFcd{//} \EFc{third, rescale market shares after exits}
+  v[1] = VS( cur, \EFs{"s"} );
+  v[2] = v[0] * v[1];
+  \EFo{WRITES}( cur, \EFs{"s"}, v[2]);
+\}
+\EFo{RESULT}( \EFo{SUM}(\EFs{"s"}) )
 \end{Verbatim}
 \end{Code}
 \end{frame}
-\begin{frame}[label={sec:org11f2617},fragile]{Herfindahl-Hirschman concentration index (\(HHI\))}
+\begin{frame}[label={sec:org95f6371},fragile]{Herfindahl-Hirschman concentration index (\(HHI\))}
  \begin{equation}
 HHI_{t} = \sum_{i=1}^{NF} (s_{i})^2
 \end{equation}
@@ -434,10 +430,10 @@ HHI_{t} = \sum_{i=1}^{NF} (s_{i})^2
 
 \begin{Code}
 \begin{Verbatim}
-\color{EFD}EQUATION\EFrda{(} \EFs{"HHI"} \EFrda{)}
+\color{EFD}\EFo{EQUATION}( \EFs{"HHI"} )
 \EFcd{//} \EFc{Herfindahl-Hirschman concentration index}
-v\EFrda{[}\EFhn{0}\EFrda{]} = WHTAVE\EFrda{(} \EFs{"s"}, \EFs{"s"} \EFrda{)};
-RESULT\EFrda{(} v\EFrdb{[}\EFhn{0}\EFrdb{]} \EFrda{)}
+v[0] = \EFo{WHTAVE}( \EFs{"s"}, \EFs{"s"} );
+\EFo{RESULT}( v[0] )
 \end{Verbatim}
 \end{Code}
 \begin{block}{Note on WHTAVE(LS)}
@@ -445,9 +441,9 @@ RESULT\EFrda{(} v\EFrdb{[}\EFhn{0}\EFrdb{]} \EFrda{)}
 \end{block}
 \end{frame}
 \section{Model initialization}
-\label{sec:orgd62dbe0}
+\label{sec:org1f065e1}
 
-\begin{frame}[label={sec:org89ac9d5},fragile]{Initialization I}
+\begin{frame}[label={sec:orgf533b30},fragile]{Initialization I}
  Firm-level initialization can be set for every \(NF\) objects on the LSD browser.
 The same applies for every other initial condition.
 
@@ -458,37 +454,36 @@ In the following slide (optional), we will see an alternative way in which we co
 
 \begin{Code}
 \begin{Verbatim}
-\color{EFD}ADDNOBJ\_EX\EFrda{(}\EFs{"TypeOfAgent"}, number, *pointer\EFrda{)};
+\color{EFD}\EFo{ADDNOBJ\_EX}(\EFs{"TypeOfAgent"}, number, *pointer);
 \end{Verbatim}
 \end{Code}
 \begin{block}{Semi-automated initialization and sensitivity analysis}
 By doing this, we automate the model initialization to test different model configurations (next lecture)
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgacefb46},fragile]{Initialization II}
+\begin{frame}[label={sec:org921a147},fragile]{Initialization II}
  \begin{Code}
 \begin{Verbatim}
-\color{EFD}EQUATION\EFrda{(} \EFs{"init"} \EFrda{)}
-PARAMETER;                  \EFcd{//} \EFc{turn into parameter (run once)}
-\EFcd{//} \EFc{finds the agent on memory}
-cur = SEARCH\EFrda{(} \EFs{"Market"} \EFrda{)}; cur1 = SEARCHS\EFrda{(}cur, \EFs{"Firm"} \EFrda{)};
-
-v\EFrda{[}\EFhn{0}\EFrda{]} = V\EFrda{(}\EFs{"A0"}\EFrda{)}; \EFcd{//} \EFc{We define}
-v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"Nfirm"}\EFrda{)}; \EFcd{//} \EFc{We define}
-v\EFrda{[}\EFhn{2}\EFrda{]} = \EFhn{1} / v\EFrda{[}\EFhn{1}\EFrda{]}; \EFcd{//} \EFc{Fair share}
+\color{EFD}\EFo{EQUATION}( \EFs{"init"} )
+\EFo{PARAMETER};                  \EFcd{//} \EFc{turn into parameter (run once)}
+v[0] = V(\EFs{"A0"}); v[1] = V(\EFs{"Nfirm"});
+v[2] = 1 / v[1]; \EFcd{//} \EFc{Fair share}
+\EFv{CYCLE}(cur, \EFs{"Market"})\{
+    cur1 = \EFo{SEARCHS}(cur, \EFs{"Firm"} );
 \EFcd{//} \EFc{Overwrites the lag 1 of "a" to v[0] at time 1}
-WRITELLS\EFrda{(}cur1, \EFs{"a"}, v\EFrdb{[}\EFhn{0}\EFrdb{]}, \EFhn{1}, \EFhn{1}\EFrda{)};
-WRITELLS\EFrda{(}cur1, \EFs{"s"}, v\EFrdb{[}\EFhn{2}\EFrdb{]}, \EFhn{1}, \EFhn{1}\EFrda{)};
+    \EFo{WRITELLS}(cur1, \EFs{"a"}, v[0], 1, 1);
+    \EFo{WRITELLS}(cur1, \EFs{"s"}, v[2], 1, 1);
 \EFcd{//} \EFc{Adds N - 1 copies of cur1 agent located under cur}
-ADDNOBJ\_EXS\EFrda{(}cur, \EFs{"Firm"}, v\EFrdb{[}\EFhn{1}\EFrdb{]} - \EFhn{1}, cur1\EFrda{)};
-RESULT\EFrda{(} \EFhn{1} \EFrda{)}
+    \EFo{ADDNOBJ\_EXS}(cur, \EFs{"Firm"}, v[1] - 1, cur1);
+\}
+\EFo{RESULT}( 1 )
 \end{Verbatim}
 \end{Code}
 \end{frame}
 \section{Simulations}
-\label{sec:org7f0caf2}
+\label{sec:org3ffe1fe}
 
-\begin{frame}[label={sec:org6bda625}]{Analyzing the model results}
+\begin{frame}[label={sec:org0161508}]{Analyzing the model results}
 \begin{itemize}
 \item After a successful simulation run, in \alert{Browser} click on menu \alert{Data > Analysis of Results}
 \item To analyze the \emph{saved} data time series, select the desired variables from the \alert{Series available} list to include them in the \alert{Series selected} list
@@ -497,7 +492,7 @@ RESULT\EFrda{(} \EFhn{1} \EFrda{)}
 \item Plots and analysis data can be \emph{saved} pressing the \alert{Save Plot} and \alert{Save Data} buttons
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org34ff638}]{Exploring the single run results}
+\begin{frame}[label={sec:orgcb8fa1d}]{Exploring the single run results}
 \begin{figure}[ht]
     % First row: Market-level data
     \begin{subfigure}{0.48\textwidth}

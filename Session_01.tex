@@ -1,4 +1,4 @@
-% Created 2025-06-29 dom 07:58
+% Created 2025-06-30 Mon 15:39
 % Intended LaTeX compiler: pdflatex
 \documentclass[bigger,aspectratio=169]{beamer}
   \usepackage{caption, subcaption, csquotes, amssymb, xcolor}
@@ -33,6 +33,13 @@
 \date{July, 2025}
 \title{ABM Macro Lab: Agent-based Modelling Tools}
 \subtitle{Session 01}
+\hypersetup{
+ pdfauthor={Gabriel Petrini},
+ pdftitle={ABM Macro Lab: Agent-based Modelling Tools},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 29.3 (Org mode 9.7.31)}, 
+ pdflang={English}}
 
 % Setup for code blocks [1/2]
 
@@ -132,12 +139,11 @@
 \newcommand{\EFrc}[1]{\textcolor{EFrc}{\textbf{#1}}} % font-lock-regexp-grouping-construct
 \definecolor{EFrb}{HTML}{4078f2}
 \newcommand{\EFrb}[1]{\textcolor{EFrb}{\textbf{#1}}} % font-lock-regexp-grouping-backslash
-\definecolor{EFob}{HTML}{bd93f9}
 \definecolor{Efob}{HTML}{e7e7e7}
-\newcommand{\EFob}[1]{\colorbox{Efob}{\efstrut{}\textcolor{EFob}{#1}}} % org-block
-\definecolor{Efobb}{HTML}{23242f}
+\newcommand{\EFob}[1]{\colorbox{Efob}{\efstrut{}#1}} % org-block
+\definecolor{Efobb}{HTML}{e7e7e7}
 \newcommand{\EFobb}[1]{\colorbox{Efobb}{\efstrut{}\textit{#1}}} % org-block-begin-line
-\definecolor{Efobe}{HTML}{23242f}
+\definecolor{Efobe}{HTML}{e7e7e7}
 \newcommand{\EFobe}[1]{\colorbox{Efobe}{\efstrut{}\textit{#1}}} % org-block-end-line
 \definecolor{EFOa}{HTML}{e45649}
 \newcommand{\EFOa}[1]{\textcolor{EFOa}{\textbf{#1}}} % outline-1
@@ -155,28 +161,18 @@
 \newcommand{\EFOg}[1]{\textcolor{EFOg}{\textbf{#1}}} % outline-7
 \definecolor{EFOh}{HTML}{d8e4fc}
 \newcommand{\EFOh}[1]{\textcolor{EFOh}{\textbf{#1}}} % outline-8
-\definecolor{EFhn}{HTML}{da8548}
-\newcommand{\EFhn}[1]{\textcolor{EFhn}{\textbf{#1}}} % highlight-numbers-number
+\newcommand{\EFhn}[1]{#1} % highlight-numbers-number
 \newcommand{\EFhq}[1]{#1} % highlight-quoted-quote
 \newcommand{\EFhs}[1]{#1} % highlight-quoted-symbol
-\definecolor{EFrda}{HTML}{4078f2}
-\newcommand{\EFrda}[1]{\textcolor{EFrda}{#1}} % rainbow-delimiters-depth-1-face
-\definecolor{EFrdb}{HTML}{a626a4}
-\newcommand{\EFrdb}[1]{\textcolor{EFrdb}{#1}} % rainbow-delimiters-depth-2-face
-\definecolor{EFrdc}{HTML}{50a14f}
-\newcommand{\EFrdc}[1]{\textcolor{EFrdc}{#1}} % rainbow-delimiters-depth-3-face
-\definecolor{EFrdd}{HTML}{b751b6}
-\newcommand{\EFrdd}[1]{\textcolor{EFrdd}{#1}} % rainbow-delimiters-depth-4-face
-\definecolor{EFrde}{HTML}{4db5bd}
-\newcommand{\EFrde}[1]{\textcolor{EFrde}{#1}} % rainbow-delimiters-depth-5-face
-\definecolor{EFrdf}{HTML}{4078f2}
-\newcommand{\EFrdf}[1]{\textcolor{EFrdf}{#1}} % rainbow-delimiters-depth-6-face
-\definecolor{EFrdg}{HTML}{a626a4}
-\newcommand{\EFrdg}[1]{\textcolor{EFrdg}{#1}} % rainbow-delimiters-depth-7-face
-\definecolor{EFrdh}{HTML}{50a14f}
-\newcommand{\EFrdh}[1]{\textcolor{EFrdh}{#1}} % rainbow-delimiters-depth-8-face
-\definecolor{EFrdi}{HTML}{b751b6}
-\newcommand{\EFrdi}[1]{\textcolor{EFrdi}{#1}} % rainbow-delimiters-depth-9-face
+\newcommand{\EFrda}[1]{#1} % rainbow-delimiters-depth-1-face
+\newcommand{\EFrdb}[1]{#1} % rainbow-delimiters-depth-2-face
+\newcommand{\EFrdc}[1]{#1} % rainbow-delimiters-depth-3-face
+\newcommand{\EFrdd}[1]{#1} % rainbow-delimiters-depth-4-face
+\newcommand{\EFrde}[1]{#1} % rainbow-delimiters-depth-5-face
+\newcommand{\EFrdf}[1]{#1} % rainbow-delimiters-depth-6-face
+\newcommand{\EFrdg}[1]{#1} % rainbow-delimiters-depth-7-face
+\newcommand{\EFrdh}[1]{#1} % rainbow-delimiters-depth-8-face
+\newcommand{\EFrdi}[1]{#1} % rainbow-delimiters-depth-9-face
 \definecolor{EFany}{HTML}{986801}
 \definecolor{Efany}{HTML}{986801}
 \newcommand{\EFany}[1]{\colorbox{Efany}{\efstrut{}\textcolor{EFany}{#1}}} % ansi-color-yellow
@@ -233,9 +229,9 @@
 \end{frame}
 
 \section{Introduction}
-\label{sec:orge87a8d0}
+\label{sec:orge93aaec}
 
-\begin{frame}[label={sec:org7a7cc8f}]{Objectives}
+\begin{frame}[label={sec:orgcc5503d}]{Objectives}
 Throughout the sessions, we will
 
 \begin{enumerate}
@@ -245,7 +241,7 @@ Throughout the sessions, we will
 \item Analyze the model results on LSD
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:org0deb3c8}]{Structure of the sessions}
+\begin{frame}[label={sec:orgf20f731}]{Structure of the sessions}
 \begin{description}
 \item[{Session 1}] Presents the general structure of LSD and perform some simulations
 \item[{Session 2}] Write the industry model equations in LSD
@@ -253,7 +249,7 @@ Throughout the sessions, we will
 \item[{Bonus}] A primer on sensitivity analysis
 \end{description}
 \end{frame}
-\begin{frame}[label={sec:orgd90a266},fragile]{Repository structure}
+\begin{frame}[label={sec:org9fee14a},fragile]{Repository structure}
  This presentation can be found on this \href{https://github.com/gpetrini/CodingSession}{repository} with another examples:
 
 \url{https://github.com/gpetrini/CodingSession}
@@ -271,9 +267,9 @@ Throughout the sessions, we will
 \end{block}
 \end{frame}
 \section{Crash course on LSD}
-\label{sec:orgc1d5b7f}
+\label{sec:org3fb6557}
 
-\begin{frame}[label={sec:org629004a},fragile]{C++ for LSD I}
+\begin{frame}[label={sec:org0dbdc35},fragile]{C++ for LSD I}
  LSD adds macros to \texttt{C++}.
 As a consequence, some basic knowledge on \texttt{C++} is usefull.
 What do we need to know here?
@@ -282,8 +278,8 @@ What do we need to know here?
 \begin{block}{In python, R}
 \begin{Code}
 \begin{Verbatim}
-\color{EFD}\EFv{x} = \EFhn{5} \EFcd{\#} \EFc{A comment}
-\EFv{y} = \EFhn{2.5}
+\color{EFD}\EFv{x} = 5 \EFcd{\#} \EFc{A comment}
+\EFv{y} = 2.5
 \EFcd{\#\#} \EFc{We do not need to}
 \EFcd{\#\#} \EFc{work with pointers}
 \end{Verbatim}
@@ -294,8 +290,8 @@ What do we need to know here?
 \begin{block}{In C++}
 \begin{Code}
 \begin{Verbatim}
-\color{EFD}\EFt{int} \EFv{x} = \EFhn{5}; \EFcd{//} \EFc{A comment}
-\EFt{double} \EFv{y} = \EFhn{2.5};
+\color{EFD}\EFt{int} \EFv{x} = 5; \EFcd{//} \EFc{A comment}
+\EFt{double} \EFv{y} = 2.5;
 \EFt{object} *\EFv{agent}; \EFcd{//} \EFc{Latter}
 \end{Verbatim}
 \end{Code}
@@ -306,15 +302,15 @@ What do we need to know here?
 Different from python and R, we need to \alert{compile} our code before using it.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgd3eafb1},fragile]{C++ for LSD II}
+\begin{frame}[label={sec:orgaae6dfa},fragile]{C++ for LSD II}
  To avoid initializing everything, LSD has some already initialized variables:
 
 \begin{Code}
 \begin{Verbatim}
-\color{EFD}v\EFrda{[}\EFhn{0}\EFrda{]} = \EFhn{10}; \EFcd{//} \EFc{We can assing number to}
-v\EFrda{[}\EFhn{1}\EFrda{]} = \EFhn{50}; \EFcd{//} \EFc{a vector (always available)}
+\color{EFD}v[0] = 10; \EFcd{//} \EFc{We can assing number to}
+v[1] = 50; \EFcd{//} \EFc{a vector (always available)}
 T; \EFcd{//} \EFc{Current simulation time}
-i = \EFhn{1}; \EFcd{//} \EFc{i,h,j,k can be used for integers}
+i = 1; \EFcd{//} \EFc{i,h,j,k can be used for integers}
 cur; cur1; \EFcd{//} \EFc{Pre-allocated pointers}
 \end{Verbatim}
 \end{Code}
@@ -324,7 +320,7 @@ Those are \alert{local variables} that we can use on equations.
 LSD has an internal debbuger that allow us to look to local variables on the fly.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org0ef0c21},fragile]{Macros I}
+\begin{frame}[label={sec:org88ba2e7},fragile]{Macros I}
  \begin{figure}[htbp]
 \centering
 \includegraphics[width=.9\linewidth]{./figs/Macros_LSD.pdf}
@@ -332,39 +328,39 @@ LSD has an internal debbuger that allow us to look to local variables on the fly
 \end{figure}
 
 \begin{itemize}
-\item \Verb[commandchars=\\\{\},highlightcolor=white!95!black!80!blue,breaklines=true,breaksymbol=\color{white!60!black}\tiny\ensuremath{\hookrightarrow}]{\color{EFD}VLS\EFrda{(}POS, \EFs{"NAME"}, \EFhn{1}\EFrda{)}} Returns the value of \texttt{NAME} at lag \texttt{1}, position \texttt{POS}
-\item \Verb[commandchars=\\\{\},highlightcolor=white!95!black!80!blue,breaklines=true,breaksymbol=\color{white!60!black}\tiny\ensuremath{\hookrightarrow}]{\color{EFD}SUMS\EFrda{(}POS, \EFs{"NAME"}\EFrda{)}} Sums the value of variable \texttt{NAME} at position \texttt{POS}
-\item \Verb[commandchars=\\\{\},highlightcolor=white!95!black!80!blue,breaklines=true,breaksymbol=\color{white!60!black}\tiny\ensuremath{\hookrightarrow}]{\color{EFD}SEARCHS\EFrda{(}PARENT, \EFs{"AGT"}\EFrda{)}} Searches for agent \texttt{AGT} starting from \texttt{PARENT}
-\item \Verb[commandchars=\\\{\},highlightcolor=white!95!black!80!blue,breaklines=true,breaksymbol=\color{white!60!black}\tiny\ensuremath{\hookrightarrow}]{\color{EFD}WRITELS\EFrda{(}POS, \EFs{"NAME"}, \EFhn{1}\EFrda{)}} Overwrites \texttt{NAME} at lag \texttt{1} at position \texttt{POS}
+\item \Verb[commandchars=\\\{\},highlightcolor=white!95!black!80!blue,breaklines=true,breaksymbol=\color{white!60!black}\tiny\ensuremath{\hookrightarrow}]{\color{EFD}\EFo{VLS}(\EFo{POS}, \EFs{"NAME"}, 1)} Returns the value of \texttt{NAME} at lag \texttt{1}, position \texttt{POS}
+\item \Verb[commandchars=\\\{\},highlightcolor=white!95!black!80!blue,breaklines=true,breaksymbol=\color{white!60!black}\tiny\ensuremath{\hookrightarrow}]{\color{EFD}\EFo{SUMS}(\EFo{POS}, \EFs{"NAME"})} Sums the value of variable \texttt{NAME} at position \texttt{POS}
+\item \Verb[commandchars=\\\{\},highlightcolor=white!95!black!80!blue,breaklines=true,breaksymbol=\color{white!60!black}\tiny\ensuremath{\hookrightarrow}]{\color{EFD}\EFo{SEARCHS}(\EFo{PARENT}, \EFs{"AGT"})} Searches for agent \texttt{AGT} starting from \texttt{PARENT}
+\item \Verb[commandchars=\\\{\},highlightcolor=white!95!black!80!blue,breaklines=true,breaksymbol=\color{white!60!black}\tiny\ensuremath{\hookrightarrow}]{\color{EFD}\EFo{WRITELS}(\EFo{POS}, \EFs{"NAME"}, 1)} Overwrites \texttt{NAME} at lag \texttt{1} at position \texttt{POS}
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orgadaec36}]{Macros II}
+\begin{frame}[label={sec:org2e95eee}]{Macros II}
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.9\linewidth]{figs/LSD_Macros_ScreenShot.png}
 \caption{Other LSD macros}
 \end{figure}
 \end{frame}
-\begin{frame}[label={sec:org3be7e12},fragile]{Macro example I}
+\begin{frame}[label={sec:orgdb66af1},fragile]{Macro example I}
  How can we write the following equation using LSD syntax?
 \[X_{t} = X_{t-1} + m\]
 \begin{Code}
 \begin{Verbatim}
-\color{EFD}EQUATION\EFrda{(}\EFs{"X"}\EFrda{)} \EFcd{//} \EFc{This is a single-line comment}
+\color{EFD}\EFo{EQUATION}(\EFs{"X"}) \EFcd{//} \EFc{This is a single-line comment}
 \EFcd{/*}
 \EFc{This is a multi-line comment}
 \EFcd{*/}
-v\EFrda{[}\EFhn{0}\EFrda{]} = VL\EFrda{(}\EFs{"X"},\EFhn{1}\EFrda{)}; \EFcd{//}\EFc{past value of X, lagged of 1 period}
-v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"m"}\EFrda{)}; \EFcd{//}\EFc{current value of m (variable or parameter)}
-v\EFrda{[}\EFhn{2}\EFrda{]} = v\EFrda{[}\EFhn{0}\EFrda{]} + v\EFrda{[}\EFhn{1}\EFrda{]}; \EFcd{//} \EFc{v[n] are local variables}
-RESULT\EFrda{(}v\EFrdb{[}\EFhn{2}\EFrdb{]}\EFrda{)} \EFcd{//} \EFc{Specify the output of the function}
+v[0] = VL(\EFs{"X"},1); \EFcd{//}\EFc{past value of X, lagged of 1 period}
+v[1] = V(\EFs{"m"}); \EFcd{//}\EFc{current value of m (variable or parameter)}
+v[2] = v[0] + v[1]; \EFcd{//} \EFc{v[n] are local variables}
+\EFo{RESULT}(v[2]) \EFcd{//} \EFc{Specify the output of the function}
 \end{Verbatim}
 \end{Code}
 \begin{block}{Variable or parameter?}
 As a rule of thumb, variables have an \texttt{EQUATION} associated, parameters do not.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org01384f5},fragile]{Macro example II}
+\begin{frame}[label={sec:orgb75681d},fragile]{Macro example II}
  How can we write the following equation using LSD syntax?
 
 \[Y_{t} = \sum_{i=1}^{n} X_{n,t} + W_{n,t-1}\]
@@ -373,19 +369,19 @@ As a rule of thumb, variables have an \texttt{EQUATION} associated, parameters d
 
 \begin{Code}
 \begin{Verbatim}
-\color{EFD}EQUATION\EFrda{(}\EFs{"Y"}\EFrda{)}
-v\EFrda{[}\EFhn{0}\EFrda{]} = \EFhn{0}; \EFcd{//} \EFc{Initialize the Accumulation}
-\EFv{CYCLE}\EFrda{(}cur, \EFs{"Firm"}\EFrda{)} \EFrda{\{} \EFcd{//} \EFc{Similar to a for-loop in other languages}
-    v\EFrdb{[}\EFhn{1}\EFrdb{]} = VS\EFrdb{(}cur, \EFs{"X"}\EFrdb{)}; \EFcd{//} \EFc{cur points to a "Firm" object}
-    v\EFrdb{[}\EFhn{2}\EFrdb{]} = VLS\EFrdb{(}cur, \EFs{"W"}, \EFhn{1}\EFrdb{)}; \EFcd{//} \EFc{cur is a locally defined pointer}
-    v\EFrdb{[}\EFhn{3}\EFrdb{]} = v\EFrdb{[}\EFhn{1}\EFrdb{]} + v\EFrdb{[}\EFhn{2}\EFrdb{]};
-    v\EFrdb{[}\EFhn{0}\EFrdb{]} = v\EFrdb{[}\EFhn{0}\EFrdb{]} + v\EFrdb{[}\EFhn{3}\EFrdb{]};
-\EFrda{\}}
-RESULT\EFrda{(}v\EFrdb{[}\EFhn{0}\EFrdb{]}\EFrda{)}
+\color{EFD}\EFo{EQUATION}(\EFs{"Y"})
+v[0] = 0; \EFcd{//} \EFc{Initialize the Accumulation}
+\EFv{CYCLE}(cur, \EFs{"Firm"}) \{ \EFcd{//} \EFc{Similar to a for-loop in other languages}
+    v[1] = VS(cur, \EFs{"X"}); \EFcd{//} \EFc{cur points to a "Firm" object}
+    v[2] = \EFo{VLS}(cur, \EFs{"W"}, 1); \EFcd{//} \EFc{cur is a locally defined pointer}
+    v[3] = v[1] + v[2];
+    v[0] = v[0] + v[3];
+\}
+\EFo{RESULT}(v[0])
 \end{Verbatim}
 \end{Code}
 \end{frame}
-\begin{frame}[label={sec:orgfd07e2e},fragile]{Macro example III}
+\begin{frame}[label={sec:org68133e4},fragile]{Macro example III}
  We can also write on an alternative way
 
 \[Y_{t} = \sum_{i=1}^{n} X_{n,t} + W_{n,t-1}\]
@@ -394,34 +390,34 @@ RESULT\EFrda{(}v\EFrdb{[}\EFhn{0}\EFrdb{]}\EFrda{)}
 
 \begin{Code}
 \begin{Verbatim}
-\color{EFD}EQUATION\EFrda{(}\EFs{"Y"}\EFrda{)}
+\color{EFD}\EFo{EQUATION}(\EFs{"Y"})
 \EFcd{//} \EFc{If X and W are bellow Y on the tree (later)}
-v\EFrda{[}\EFhn{0}\EFrda{]} = SUM\EFrda{(}\EFs{"X"}\EFrda{)};
-v\EFrda{[}\EFhn{1}\EFrda{]} = SUML\EFrda{(}\EFs{"W"}, \EFhn{1}\EFrda{)};
-v\EFrda{[}\EFhn{2}\EFrda{]} = v\EFrda{[}\EFhn{0}\EFrda{]} + v\EFrda{[}\EFhn{1}\EFrda{]};
-RESULT\EFrda{(}v\EFrdb{[}\EFhn{2}\EFrdb{]}\EFrda{)}
+v[0] = \EFo{SUM}(\EFs{"X"});
+v[1] = \EFo{SUML}(\EFs{"W"}, 1);
+v[2] = v[0] + v[1];
+\EFo{RESULT}(v[2])
 \end{Verbatim}
 \end{Code}
 \end{frame}
-\begin{frame}[label={sec:org08d774a},fragile]{Equation file}
+\begin{frame}[label={sec:org65c426e},fragile]{Equation file}
  Any equation file (\texttt{.cpp}) must contain the following text:
 \begin{Code}
 \begin{Verbatim}
 \color{EFD}\EFcd{//} \EFc{File created using org-mode tangle feature.}
 \EFpp{\#include} \EFs{"fun\_head.h"} \EFcd{//} \EFc{This is mandatory}
 
-MODELBEGIN
+\EFo{MODELBEGIN}
 
 \EFcd{//} \EFc{Your code goes here}
 
-MODELEND
-\EFt{void} \EFf{close\_sim}\EFrda{(}\EFt{void}\EFrda{)} \EFrda{\{}\EFrda{\}}
+\EFo{MODELEND}
+\EFt{void} \EFf{close\_sim}(\EFt{void}) \{\}
 \end{Verbatim}
 \end{Code}
 
 In our session, we will copy-and-paste the initialization equation and continue from there.
 \end{frame}
-\begin{frame}[label={sec:org6f4b402},fragile]{Model structure and data organization I}
+\begin{frame}[label={sec:orgdeb2d04},fragile]{Model structure and data organization I}
  Besides the equation files (\texttt{.cpp} or \texttt{.h}), LSD defines the model structures on a different file (extension \texttt{.lsd}).
 This special file has:
 
@@ -438,9 +434,9 @@ This structure ensure the modeler to think in terms of data structure.
 \end{block}
 \end{frame}
 \section{Logistic chaotic model}
-\label{sec:orge3e7b57}
+\label{sec:orgf82c075}
 
-\begin{frame}[label={sec:org462c115},fragile]{Start}
+\begin{frame}[label={sec:orga13279c},fragile]{Start}
  Let's start with the file on \url{Chaotic\_Model/fun\_chaos.cpp}
 
 
@@ -448,16 +444,16 @@ This structure ensure the modeler to think in terms of data structure.
 \begin{Verbatim}
 \color{EFD}\EFpp{\#include} \EFs{"fun\_head.h"} \EFcd{//} \EFc{This is mandatory}
 
-MODELBEGIN
+\EFo{MODELBEGIN}
 
 \EFcd{//} \EFc{Your code goes here}
 
-MODELEND
-\EFt{void} \EFf{close\_sim}\EFrda{(}\EFt{void}\EFrda{)} \EFrda{\{}\EFrda{\}}
+\EFo{MODELEND}
+\EFt{void} \EFf{close\_sim}(\EFt{void}) \{\}
 \end{Verbatim}
 \end{Code}
 \end{frame}
-\begin{frame}[label={sec:org2bbba02}]{Equation}
+\begin{frame}[label={sec:org4745719}]{Equation}
 Consider the model made of the single equation
 
 \[X_{t} = m\cdot X_{t-1}\cdot (1 - X_{t-1})\]
@@ -469,7 +465,7 @@ To implement this model follow this steps:
 \item Using the Lsd model program generate one object and place in it variable \(X\) with 1 lag and parameter \(m\).
 \end{enumerate}
 \end{frame}
-\begin{frame}[label={sec:org2f8b8c8},fragile]{Equation on LSD}
+\begin{frame}[label={sec:org61fa720},fragile]{Equation on LSD}
  The model equation can be written as follows:
 
 \[X_{t} = m\cdot X_{t-1}\cdot (1 - X_{t-1})\]
@@ -477,15 +473,15 @@ To implement this model follow this steps:
 \begin{Code}
 \begin{Verbatim}
 \color{EFD}
-EQUATION\EFrda{(}\EFs{"X"}\EFrda{)}
-v\EFrda{[}\EFhn{0}\EFrda{]} = VL\EFrda{(}\EFs{"X"},\EFhn{1}\EFrda{)};
-v\EFrda{[}\EFhn{1}\EFrda{]} = V\EFrda{(}\EFs{"m"}\EFrda{)};
-v\EFrda{[}\EFhn{2}\EFrda{]} = v\EFrda{[}\EFhn{1}\EFrda{]}*v\EFrda{[}\EFhn{0}\EFrda{]}*\EFrda{(}\EFhn{1}-v\EFrdb{[}\EFhn{0}\EFrdb{]}\EFrda{)};
-RESULT\EFrda{(}v\EFrdb{[}\EFhn{2}\EFrdb{]}\EFrda{)}
+\EFo{EQUATION}(\EFs{"X"})
+v[0] = VL(\EFs{"X"},1);
+v[1] = V(\EFs{"m"});
+v[2] = v[1]*v[0]*(1-v[0]);
+\EFo{RESULT}(v[2])
 \end{Verbatim}
 \end{Code}
 \end{frame}
-\begin{frame}[label={sec:org8bf7b40},fragile]{Configuring the model structure}
+\begin{frame}[label={sec:org154a0f1},fragile]{Configuring the model structure}
  \begin{itemize}
 \item Compile (\texttt{Model > Compile and run ...}).
 \item Wait to open a new window.
@@ -497,7 +493,7 @@ RESULT\EFrda{(}v\EFrdb{[}\EFhn{2}\EFrdb{]}\EFrda{)}
 \item Analyze the results
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org22fbda7},fragile]{Logistic chaotic model IV}
+\begin{frame}[label={sec:orga6ac1ef},fragile]{Logistic chaotic model IV}
  So far, there is nothing new if you use other programming language.
 However, we can leverage from the fact that LSD is OOP.
 
@@ -511,12 +507,12 @@ The source code remains untouched, while we produced a completelly different str
 This is the benefit of isolating the code and the structure.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:org4034540}]{Results I}
+\begin{frame}[label={sec:org96a401d}]{Results I}
 \begin{center}
 \includesvg[width=.83\linewidth]{./figs/chaos_X}
 \end{center}
 \end{frame}
-\begin{frame}[label={sec:orgd469d60}]{Sensitivity to \(m\)}
+\begin{frame}[label={sec:org313bff8}]{Sensitivity to \(m\)}
 The function produces \alert{extremely} different outcomes depending on the value of \alert{\(m\)}.
 
 \begin{itemize}
@@ -525,7 +521,7 @@ The function produces \alert{extremely} different outcomes depending on the valu
 \item We will set the \alert{initial} points for the \(X\) to random values.
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org1a24bdb},fragile]{Exploiting the chaotic behaviour}
+\begin{frame}[label={sec:orgd722c33},fragile]{Exploiting the chaotic behaviour}
  \begin{itemize}
 \item Load \texttt{Sim1.lsd} and save it as \texttt{Sim2.lsd}
 \item Generate \alert{10000} copies of \texttt{Obj1}
@@ -540,7 +536,7 @@ The function produces \alert{extremely} different outcomes depending on the valu
 \item Save, run, analyze
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:org5ff225a}]{Plotting}
+\begin{frame}[label={sec:orgb011e93}]{Plotting}
 \begin{itemize}
 \item Open Analysis of results
 \item Select all \(m\) and \(X\) series
@@ -554,16 +550,16 @@ Once again, the code remains \alert{untouched}.
 Later, we will check other features of LSD that benefit from this design principle.
 \end{block}
 \end{frame}
-\begin{frame}[label={sec:orgdc073e0}]{Results II}
+\begin{frame}[label={sec:orga33522e}]{Results II}
 \begin{center}
 \includesvg[width=.83\linewidth]{figs/chaotic_bifurcation}
 \end{center}
 \end{frame}
 \section{The industry model}
-\label{sec:orgb5a99b8}
+\label{sec:org33815db}
 
 
-\begin{frame}[label={sec:org271ce29}]{Where are we aand where are we going?}
+\begin{frame}[label={sec:org579fbd7}]{Where are we and where are we going?}
 So far, we implemented a small non-economic model.
 On the following lectures, we will focus on the \alert{industry model}.
 
@@ -576,31 +572,21 @@ On the following lectures, we will focus on the \alert{industry model}.
 \item Scaling of the growth-variance relationship
 \end{itemize}
 \end{frame}
-\begin{frame}[label={sec:orgea28d5f}]{The Industry model}
-\textcite{dosi_2017_footprint} design objective: simplest industrial dynamics model capturing most \alert{stylized facts}:
-\begin{itemize}
-\item Persistent heterogeneity in productivity and all other performance variables
-\item Persistent market share and entry-exit turbulence
-\item Skewed size distributions
-\item Fat-tailed distribution of growth rates
-\item Scaling of the growth-variance relationship
-\end{itemize}
-\end{frame}
-\begin{frame}[label={sec:orga61563d}]{Equations}
+\begin{frame}[label={sec:org5e3ddac}]{Equations}
 \[ \begin{array}{lrl}
-\mbox{Idiosyncratic learning process:} & a_{i,t} = &a_{i,t-1}\cdot (1 + \theta_{i,t})\\
+\mbox{Idiosyncratic learning process:} & a_{i,t} = &a_{i,t-1}\cdot (1 + \eta\cdot\theta_{i,t})\\
 \mbox{Learning shocks} & \theta_{i,t} \sim  & Beta(\beta_1, \beta_2)\\
 \mbox{Market selection} & s_{i,t} =  & s_{i,t-1} \cdot \left( 1 + A\cdot\frac{a_{i,t} - \bar{a}_{t}}{\bar{a}_{t}}\right) \\
 \mbox{Average productivity} & \bar{a}_{t} =  & \sum_{i=1}^{NF} s_{i, t-1}\cdot a_{i,t} \\
 \mbox{Exit condition} & s_{i,t} < & s_{min}\\
-\mbox{Entrant productivity} & a_{j,t} =&  \bar{a}_{t}\cdot (1 + \theta_{i,t})\\
+\mbox{Entrant productivity} & a_{j,t} =&  \bar{a}_{t}\cdot (1 + \eta\cdot\theta_{i,t})\\
 \mbox{Entrant market-share} & s_{j,t} =& 1/NF \\
 \mbox{Market concentration index} & HHI_{t} =& \sum_{i=1}^{NF} (s_{i})^2 \\
 \mbox{Market-share adjustment} &  s_{i} \mapsto & s_{i}\cdot \frac{1}{\sum_{i=1}^{NF} s_{i}} \Rightarrow \sum_{i=1}^{NF} s_{i} = 1 \\
 \mbox{Fixed number of firms} & \#\{1, \ldots, n\} =& NF
 \end{array}\]
 \end{frame}
-\begin{frame}[label={sec:org2fb6c30}]{DAG of industry model}
+\begin{frame}[label={sec:org3721f41}]{Graph of industry model}
 \resizebox{\linewidth}{!}{%
   \begin{tikzpicture}[
     node distance=.1cm and 0.5cm,

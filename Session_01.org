@@ -1,0 +1,587 @@
+#+OPTIONS: H:2 toc: ':t |: t
+#+TITLE: ABM Macro Lab: Agent-based Modelling Tools
+#+SUBTITLE: Session 01
+#+AUTHOR: Gabriel Petrini
+#+DATE: July, 2025
+#+email: gpetrinidasilveira@gmail.com
+#+BIBLIOGRAPHY: ~/Org/zotero_refs.bib
+#+CITE_EXPORT: biblatex authoryear
+#+language: en
+#+PROPERTY: header-args :eval never-export :exports code
+
+
+* Linear cpp file :noexport:
+
+
+#+name: linear-cpp
+#+begin_src cpp :eval no :noweb yes :main no :tangle ./Linear_Model/fun_linear_determ.cpp
+// Script created using tangle and noweb features of org-mode
+
+#include "fun_head_fast.h"
+
+MODELBEGIN
+
+<<linear-X-EQ>>
+
+MODELEND
+
+
+void close_sim(void)
+{
+
+}
+#+end_src
+
+* Linear Random walk cpp file :noexport:
+
+
+#+name: linear-cpp
+#+begin_src cpp :eval no :noweb yes :main no :tangle ./Linear_Model/fun_linear_complete.cpp
+// Script created using tangle and noweb features of org-mode
+
+#include "fun_head_fast.h"
+
+MODELBEGIN
+
+<<linear-X-EQ>>
+
+<<linear-m-EQ>>
+
+MODELEND
+
+
+void close_sim(void)
+{
+
+}
+#+end_src
+
+* Chaotic cpp file :noexport:
+
+
+#+name: linear-cpp
+#+begin_src cpp :eval no :noweb yes :main no :tangle ./Chaotic_Model/fun_chaos_complete.cpp
+// Script created using tangle and noweb features of org-mode
+
+#include "fun_head_fast.h"
+
+MODELBEGIN
+
+<<chaos-X-EQ>>
+
+MODELEND
+
+
+void close_sim(void)
+{
+
+}
+#+end_src
+
+
+* Beamer specific settings :ignore:noexport:
+
+#+LATEX_HEADER: \usepackage{caption, subcaption, csquotes, amssymb, xcolor}
+#+LATEX_HEADER: \usepackage[english]{babel}
+#+beamer_frame_level: 1
+#+startup: beamer
+#+latex_class_options: [bigger,aspectratio=169]
+# #+BEAMER_THEME: Dresden
+# #+BEAMER_THEME: Pittsburgh
+#+BEAMER_THEME: metropolis
+#+BEAMER_COLOR_THEME: beaver
+#+LATEX_HEADER: \titlegraphic{\includesvg[height=1cm]{./figs/IE_Unicamp}\hspace*{1.25cm}\includesvg[height=1cm]{./figs/SSSA}\hspace*{1.25cm} \includesvg[height=1cm]{./figs/YSI}}
+#+LATEX_HEADER: \AtBeginSection[]{
+#+LATEX_HEADER:   \begin{frame}{Outline}
+#+LATEX_HEADER:     \tableofcontents[currentsection]
+#+LATEX_HEADER:   \end{frame}
+#+LATEX_HEADER: }
+
+* LaTex packages :noexport:ignore:
+
+
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{amsfonts}
+#+LATEX_HEADER: \usepackage{amssymb}
+#+LATEX_HEADER: \usepackage{multicol}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage{textpos}
+#+LATEX_HEADER: \usepackage{caption}
+#+LATEX_HEADER: \usepackage{subfig}
+#+LATEX_HEADER: \usepackage{svg}
+#+LATEX_HEADER: \usepackage{pgfpages}
+#+LATEX_HEADER: \usepackage{epstopdf}
+#+LATEX_HEADER: \epstopdfsetup{update} % only regenerate if changed
+#+LATEX_HEADER: \DeclareGraphicsRule{.eps}{pdf}{.pdf}{`epstopdf #1}
+# #+latex_header: \usepackage{minted}
+# #+latex_header: \setminted{autogobble,fontsize=\footnotesize}
+# #+LATEX_HEADER: \usemintedstyle{perldoc}
+#+latex_header: \usepackage{tikz}
+#+latex_header: \usetikzlibrary{arrows.meta, positioning, shapes}
+#+LATEX_HEADER: \usepackage{fontawesome5}
+
+
+
+* Introduction
+
+** Objectives
+
+Throughout the sessions, we will
+
+1. Understand how LSD works.
+2. Implement a chaotic model[fn::Based on the slides of LSD manual folder]
+3. Understand and implement the [cite/t:@dosi_2017_footprint] model on LSD
+4. Analyze the model results on LSD
+
+** Structure of the sessions
+
+- Session 1 :: Presents the general structure of LSD and perform some simulations
+- Session 2 :: Write the industry model equations in LSD
+- Session 3 :: Complete the scripts (if necessary), run the simulation and the analysis of results
+- Bonus :: A primer on sensitivity analysis
+
+** Repository structure
+
+This presentation can be found on this [[https://github.com/gpetrini/CodingSession][repository]] with another examples:
+
+[[https://github.com/gpetrini/CodingSession]]
+
+- Linear_Model/fun_linear.cpp :: Starting script for the linear model
+- Chaotic_Model/fun_chaotic.cpp :: Starting script for the chaotic model
+- Industry_SummerSchool/fun_industry.cpp :: Starting script for the industry model
+- Sim*.lsd :: Are the configuration files
+
+*Important:* Clone/Download this folder under =LSD/Work/=
+
+*** Missed something?
+
+=*_complete.cpp= contains the complete equation file for reference.
+
+
+
+* Crash course on LSD
+
+** C++ for LSD I
+
+LSD adds macros to =C++=.
+As a consequence, some basic knowledge on =C++= is usefull.
+What do we need to know here?
+
+*** In python, R
+    :PROPERTIES:
+    :BEAMER_col: 0.4
+    :BEAMER_env: block
+    :END:
+
+#+begin_src python
+x = 5 # A comment
+y = 2.5
+## We do not need to
+## work with pointers
+#+end_src
+
+
+*** In C++
+    :PROPERTIES:
+    :BEAMER_col: 0.4
+    :BEAMER_env: block
+    :END:
+
+#+begin_src cpp
+int x = 5; // A comment
+double y = 2.5;
+object *agent; // Latter
+#+end_src
+
+*** Compilation
+
+Different from python and R, we need to *compile* our code before using it.
+
+** C++ for LSD II
+
+To avoid initializing everything, LSD has some already initialized variables:
+
+#+begin_src cpp
+v[0] = 10; // We can assing number to
+v[1] = 50; // a vector (always available)
+T; // Current simulation time
+i = 1; // i,h,j,k can be used for integers
+cur; cur1; // Pre-allocated pointers
+#+end_src
+
+Those are *local variables* that we can use on equations.
+
+
+*** Debbuging
+
+LSD has an internal debbuger that allow us to look to local variables on the fly.
+
+
+
+** Macros I
+
+#+begin_src python :results output graphics file :file ./figs/Macros_LSD.pdf :exports results
+import matplotlib.pyplot as plt
+
+# Use LaTeX-style text rendering
+plt.rcParams["text.usetex"] = False
+plt.rcParams["font.family"] = "monospace"
+
+fig, ax = plt.subplots(figsize=(10, 2))
+ax.axis("off")
+
+# The main syntax string
+text = '*LS(POS, "...", LAG)'
+
+# Add the syntax string in the center
+ax.text(0.5, 0.5, text, fontsize=24, ha="center", va="center", color="goldenrod")
+
+# Annotated segments
+segments = {
+    "Operation": {
+        "text": "Macro",
+        "xytext": (0.15, 0.8),
+        "xy": (0.3, 0.53),
+        "color": "orange",
+    },
+    "Lag (optional)": {
+        "text": "L",
+        "xytext": (0.65, 0.2),
+        "xy": (0.65, 0.45),
+        "color": "royalblue",
+    },
+    "Obj (optional)": {
+        "text": "S",
+        "xytext": (0.4, 0.85),
+        "xy": (0.4, 0.575),
+        "color": "purple",
+    },
+    "Name (mandatory)": {
+        "text": "Equation name",
+        "xytext": (0.6, 0.85),
+        "xy": (0.55, 0.52),
+        "color": "seagreen",
+    },
+}
+
+results = {
+    "Value": {
+        "text": "Value",
+        "xytext": (0.9, 0.85),
+        "xy": (0.7, 0.52),
+        "color": "red",
+    },
+    "Pointer": {
+        "text": "Pointer",
+        "xytext": (0.9, 0.5),
+        "xy": (0.7, 0.52),
+        "color": "brown",
+    },
+    "Overwrites": {
+        "text": "Overwrites",
+        "xytext": (0.9, 0.125),
+        "xy": (0.7, 0.52),
+        "color": "gray",
+    },
+}
+
+# Draw arrows and labels
+for label, props in segments.items():
+    ax.annotate(
+        label,
+        xy=props["xy"],
+        xytext=props["xytext"],
+        textcoords="axes fraction",
+        arrowprops=dict(arrowstyle="->", color=props["color"], lw=1.5),
+        fontsize=14,
+        color=props["color"],
+        ha="center",
+    )
+
+for label, props in results.items():
+    ax.annotate(
+        label,
+        xy=props["xy"],
+        xytext=props["xytext"],
+        textcoords="axes fraction",
+        arrowprops=dict(arrowstyle="<-", color=props["color"], lw=1.5),
+        fontsize=14,
+        color=props["color"],
+        ha="center",
+    )
+
+plt.tight_layout()
+#+end_src
+
+#+caption: General structure of most LSD macros
+#+RESULTS:
+[[file:./figs/Macros_LSD.pdf]]
+
+- src_cpp{VLS(POS, "NAME", 1)} Returns the value of =NAME= at lag =1=, position =POS=
+- src_cpp{SUMS(POS, "NAME")} Sums the value of variable =NAME= at position =POS=
+- src_cpp{SEARCHS(PARENT, "AGT")} Searches for agent =AGT= starting from =PARENT=
+- src_cpp{WRITELS(POS, "NAME", 1)} Overwrites =NAME= at lag =1= at position =POS=
+
+
+** Macros II
+
+
+#+caption: Other LSD macros
+[[file:figs/LSD_Macros_ScreenShot.png]]
+
+** Macro example I
+
+How can we write the following equation using LSD syntax?
+\[X_{t} = X_{t-1} + m\]
+#+begin_src cpp :eval no
+EQUATION("X") // This is a single-line comment
+/*
+This is a multi-line comment
+*/
+v[0] = VL("X",1); //past value of X, lagged of 1 period
+v[1] = V("m"); //current value of m (variable or parameter)
+v[2] = v[0] + v[1]; // v[n] are local variables
+RESULT(v[2]) // Specify the output of the function
+#+end_src
+
+*** Variable or parameter?
+
+As a rule of thumb, variables have an =EQUATION= associated, parameters do not.
+
+
+** Macro example II
+
+How can we write the following equation using LSD syntax?
+
+\[Y_{t} = \sum_{i=1}^{n} X_{n,t} + W_{n,t-1}\]
+
+
+
+#+begin_src cpp :eval no
+EQUATION("Y")
+v[0] = 0; // Initialize the Accumulation
+CYCLE(cur, "Firm") { // Similar to a for-loop in other languages
+    v[1] = VS(cur, "X"); // cur points to a "Firm" object
+    v[2] = VLS(cur, "W", 1); // cur is a locally defined pointer
+    v[3] = v[1] + v[2];
+    v[0] = v[0] + v[3];
+}
+RESULT(v[0])
+#+end_src
+
+
+** Macro example III
+
+We can also write on an alternative way
+
+\[Y_{t} = \sum_{i=1}^{n} X_{n,t} + W_{n,t-1}\]
+
+
+
+#+begin_src cpp :eval no
+EQUATION("Y")
+// If X and W are bellow Y on the tree (later)
+v[0] = SUM("X");
+v[1] = SUML("W", 1);
+v[2] = v[0] + v[1];
+RESULT(v[2])
+#+end_src
+
+
+** Equation file
+
+Any equation file (=.cpp=) must contain the following text:
+#+begin_src cpp :eval no :tangle ./Industry_SummerSchool/fun_industry.cpp :main no
+// File created using org-mode tangle feature.
+#include "fun_head.h" // This is mandatory
+
+MODELBEGIN
+
+// Your code goes here
+
+MODELEND
+void close_sim(void) {}
+#+end_src
+
+In our session, we will copy-and-paste the initialization equation and continue from there.
+
+** Model structure and data organization I
+
+Besides the equation files (=.cpp= or =.h=), LSD defines the model structures on a different file (extension =.lsd=).
+This special file has:
+
+- Variables and parameters names
+- Model structure (where elements are)
+- Initial and parameter values
+- Simulation settings
+- Number of objects
+- Variables to plot, analyze, debug, etc
+
+*** LSD and OOP
+
+This structure ensure the modeler to think in terms of data structure.
+
+
+
+
+
+
+
+* Logistic chaotic model
+
+** Start
+
+Let's start with the file on [[file:Chaotic_Model/fun_chaos.cpp]]
+
+
+#+begin_src cpp :eval no :tangle ./Chaotic_Model/fun_chaos.cpp :main no
+#include "fun_head.h" // This is mandatory
+
+MODELBEGIN
+
+// Your code goes here
+
+MODELEND
+void close_sim(void) {}
+#+end_src
+
+
+** Equation
+
+Consider the model made of the single equation
+
+\[X_{t} = m\cdot X_{t-1}\cdot (1 - X_{t-1})\]
+
+To implement this model follow this steps:
+1. Insert the equation’s code for the model.
+2. Compile and run the model (menu *Model/Run*).
+3. Using the Lsd model program generate one object and place in it variable \(X\) with 1 lag and parameter \(m\).
+
+** Equation on LSD
+
+The model equation can be written as follows:
+
+\[X_{t} = m\cdot X_{t-1}\cdot (1 - X_{t-1})\]
+
+#+name: chaos-X-EQ
+#+begin_src cpp :eval no :main no
+
+EQUATION("X")
+v[0] = VL("X",1);
+v[1] = V("m");
+v[2] = v[1]*v[0]*(1-v[0]);
+RESULT(v[2])
+#+end_src
+
+
+
+** Configuring the model structure
+
+- Compile (=Model > Compile and run ...=).
+- Wait to open a new window.
+- Create a descending object called =Obj1= (=Model > Add Object=)
+- Double click on =Obj1=
+- Add the Variable \(X\) (max. lags = 1, \(X_{0} = 0.5\)) and Parameter (\(m = 2\))
+- Save this configuration as =Sim1.lsd=
+- Mark \(X\) to be saved (=F5=) and run
+- Analyze the results
+
+
+
+
+** Logistic chaotic model IV
+
+So far, there is nothing new if you use other programming language.
+However, we can leverage from the fact that LSD is OOP.
+
+- Use menu =Data/Set Number of Objects= and set to 10 the copies of =Obj1=
+- Select \(m\) and click on =Data>Initial Values ...= and set different values for each instance from \((1 \ldots 3.99)_{}\)
+- Run and plot \(X\)
+
+
+*** Key takeaways
+
+The source code remains untouched, while we produced a completelly different structure.
+This is the benefit of isolating the code and the structure.
+
+
+** Results I
+
+
+#+ATTR_LATEX: :width .83\linewidth :heigth .8\paperheight
+[[file:./figs/chaos_X.svg]]
+
+** Sensitivity to \(m\)
+
+The function produces *extremely* different outcomes depending on the value of *\(m\)*.
+
+- We will create a large number of series computed independently.
+- We will set \(m\) to a slightly different value for each series.
+- We will set the *initial* points for the \(X\) to random values.
+
+
+** Exploiting the chaotic behaviour
+
+- Load =Sim1.lsd= and save it as =Sim2.lsd=
+- Generate *10000* copies of =Obj1=
+- Open the initial values interface with =Data/Initial Values...=
+- Use the buttons =Set All= on the side of \(m\) and \(X\) to assign values to all the elements.
+  - \(m\): *Range* between 2.8 and 3.99.
+  - \(X\): Random (Uniform) between 0.01 and 0.99.
+- =Run>Simulation Settings...= to set 1000 time steps.
+- Mark \(m\) to be saved
+- Save, run, analyze
+
+
+** Plotting
+
+- Open Analysis of results
+- Select all \(m\) and \(X\) series
+- On the bottom right, select *Cross section* and *XY plot*
+- Select *Points*
+- Plot for the last timestep (1000, default)
+- Hit continue and wait
+
+*** Key takeaways
+
+Once again, the code remains *untouched*.
+Later, we will check other features of LSD that benefit from this design principle.
+
+
+** Results II
+
+#+ATTR_LATEX: :width .83\linewidth :heigth .8\paperheight
+[[file:figs/chaotic_bifurcation.svg]]
+
+
+
+** Results III :noexport:
+
+The graph contains one point for each value of \(X_{1000}\) with the coordinate of the corresponding \(m\) value on the horizontal axis.
+
+The graph shows that, for increasing values of \(m\), we see firstly the convergence of the series to a unique point.
+
+For larger values of \(m\) the series oscillate indefinitely between two points, generating a biforcation in the plot because the series will be differently located at the two poles of their oscillations.
+
+For a short span of \(m\), the function generates a cycle across 4 points.
+Subsequently it becomes chaotic, although in some areas the density of the points seem to be very thin.
+
+
+* The industry model
+
+
+** Where are we aand where are we going?
+
+So far, we implemented a small non-economic model.
+On the following lectures, we will focus on the *industry model*.
+
+#+include: "Model.org::*The industry model" :only-contents t
+
+** Theoretical model :ignore:
+
+
+#+include: "Model.org::*Equations" :level 2
+
+#+include: "Model.org::*DAG of industry model" :level 2

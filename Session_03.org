@@ -1,0 +1,292 @@
+#+OPTIONS: H:2 toc: ':t |: t
+#+TITLE: ABM Macro Lab: Agent-based Modelling Tools
+#+SUBTITLE: Session 03
+#+AUTHOR: Gabriel Petrini
+#+DATE: July, 2025
+#+email: gpetrinidasilveira@gmail.com
+#+BIBLIOGRAPHY: ~/Org/zotero_refs.bib
+#+CITE_EXPORT: biblatex authoryear
+#+language: en
+#+PROPERTY: header-args :eval never-export :exports code
+
+* Beamer specific settings :ignore:noexport:
+
+#+LATEX_HEADER: \usepackage{caption, subcaption, csquotes, amssymb, xcolor}
+#+LATEX_HEADER: \usepackage[english]{babel}
+#+beamer_frame_level: 1
+#+startup: beamer
+#+latex_class_options: [bigger,aspectratio=169]
+# #+BEAMER_THEME: Dresden
+# #+BEAMER_THEME: Pittsburgh
+#+BEAMER_THEME: metropolis
+#+BEAMER_COLOR_THEME: beaver
+#+LATEX_HEADER: \titlegraphic{\includesvg[height=1cm]{./figs/IE_Unicamp}\hspace*{1.25cm}\includesvg[height=1cm]{./figs/SSSA}\hspace*{1.25cm} \includesvg[height=1cm]{./figs/YSI}}
+#+LATEX_HEADER: \AtBeginSection[]{
+#+LATEX_HEADER:   \begin{frame}{Outline}
+#+LATEX_HEADER:     \tableofcontents[currentsection]
+#+LATEX_HEADER:   \end{frame}
+#+LATEX_HEADER: }
+
+* LaTex packages :noexport:ignore:
+
+
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{amsfonts}
+#+LATEX_HEADER: \usepackage{amssymb}
+#+LATEX_HEADER: \usepackage{multicol}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage{textpos}
+#+LATEX_HEADER: \usepackage{caption}
+#+LATEX_HEADER: \usepackage{subfig}
+#+LATEX_HEADER: \usepackage{svg}
+#+LATEX_HEADER: \usepackage{pgfpages}
+#+LATEX_HEADER: \usepackage{epstopdf}
+#+LATEX_HEADER: \epstopdfsetup{update} % only regenerate if changed
+#+LATEX_HEADER: \DeclareGraphicsRule{.eps}{pdf}{.pdf}{`epstopdf #1}
+# #+latex_header: \usepackage{minted}
+# #+latex_header: \setminted{autogobble,fontsize=\footnotesize}
+# #+LATEX_HEADER: \usemintedstyle{perldoc}
+#+latex_header: \usepackage{tikz}
+#+latex_header: \usetikzlibrary{arrows.meta, positioning, shapes}
+#+LATEX_HEADER: \usepackage{fontawesome5}
+
+
+
+* Introduction
+
+
+** Where are we and where are we going?
+
+- Session I :: Basics of LSD and small models implementation
+- Session II :: Presentation of the Industry model and implementation
+- Session III (Today) :: Q&A, bug fixes, and analysis of results and Monte Carlo Experiment
+
+
+* Activities
+
+
+** Activity I
+
+
+1. Show that average productivity (=aAvg=) is always between than maximum and minimum productivities
+2. Check that the total market share of firms is constant and equal to 1
+3. Increase (1) the number of firms to 150, (2) the exit threshold =sMin= to 0.001, and the number of simulation steps.
+4. Run and analyze the results. What are the main differences?
+5. Using this new configuration, produce a *histogram* of the firm log-size distribution at \(t = 200\)
+
+** Histogram of firm log-size distribution (\(t = 200\))
+
+[[file:./figs/150_firms_log_size_histogram.svg]]
+** A simple Monte Carlo experiment I
+
+1. Close Analysis of Results window
+2. Re-open the baseline configuration
+3. Set the simulation runs to *20* (*Run > Simulation*)
+4. Save as a new configuration
+5. Run the new configuration (*Run > Run*)
+6. Choose *Data > Analysis of MC Experiment*, accept using last results, and mark to create *Average* and *Maximum and minimum* series, and to include confidence intervals
+7. Analyze the Monte Carlo experiment results
+
+** A simple Monte Carlo experiment II
+
+
+[[file:./figs/HHI_MC.svg]]
+
+** Activity II
+
+1. Show the max-min intervals for the average log-productivity (*aAvg*) and the *HHI* in the MC experiment
+2. Why the MC confidence width is not comparable for the two variables?
+3. Show the distribution of the productivity (*a*) considering all MC runs (tip: select *Keep original series in Monte Carlo options*)
+4. The Monte Carlo analysis uncovers a potential problem with this simplified version of the model, try to identify it, and to reason if it can invalidate the results obtained
+
+
+* TODO Simple parameter sensitivity check
+
+** Introduction
+
+In this part of the lecture, we will playaround with \(A\) and \(\eta\) parameters and check their impacts on the model output.
+Here, we will leverage the benefits of an OOP design associated with an isolated configuration setting.
+
+In the same way we made copies of a specific firm, we can also make a copy of the whole structure of the model.
+By doing this, we can make different experiments on each copy and analyze it on LSD.
+
+*** Good news!
+
+LSD has some ways to automatize this task for us.
+
+** Setting the DoE I
+
+1. Load =Sim1.lsd= and save it as =Sim2.lsd=
+2. Right click on =A= and select *Sensitivity*
+3. On the new window, specify the parameter range as follows:
+
+#+begin_example txt
+=MIN:MAX@NUM%L
+#+end_example
+
+- MIN :: Minimal value
+- MAX :: Maximum value
+- NUM :: Number of samples
+- %L :: Indicates to vary linearly
+
+Next, repeat the same for =eta=
+
+** Example of the parametric space
+
+
+|-------+--------------------------------+----------+-----+-----|
+|       |              Desc              | Baseline | Min | Max |
+|-------+--------------------------------+----------+-----+-----|
+|  <c>  |              <c>               |   <c>    | <c> | <c> |
+| \(\eta\) | Innovation opportunity support |   0.3    | 0.0 | 0.7 |
+| \(A\) | replicator dynamics intensity  |    1     | 0.2 |  5  |
+|-------+--------------------------------+----------+-----+-----|
+- eta :: ==0.0:0.7@3%L=
+- A :: ==0.2:5@3%L=
+
+** Setting the DoE II
+
+1. After, save the sensitivity analysis file (*File>Save sensitivity*)
+2. Mark =A= and =eta= to be saved
+3. Set the DoE (*Data > Sensitivity Analysis > Full (Online)*)
+4. Run the simulations (Run > Run) to produce the results files (accept the defaults)
+5. Choose *Data > Analysis of results* and inspects the results
+6. Whenever picking a variable to plot, right click on it and choose to select all
+
+** Activity III
+
+Set your own parametric ranges (choose an small number for =NUM=).
+
+- How can we evaluate the importance of a parameter?
+- How each parameter affects the model's results?
+- What is the economic intuition of this?
+- How can we efficiently repeat this for all other parameters and initial conditions?
+
+** TODO Visualizing this experiment
+
+* Primer on sensitivity analysis (Bonus)
+
+** Model sensitivity to parameters
+
+How do parameters and initial conditions *jointly* affect variables?
+
+- The most common approach is to perform a one-variable at a time change
+  - In this small-scale model, we can play with different parameters and check
+- However, even with this small parametric space, the number of combinations can get quickly large
+- We will briefly check some Design of Experiments Techniques that helps with this situations
+
+** Sensitivity analysis
+
+Sensitivity analysis requires many steps:
+
+1. Screening: Filter down unimportant factors (elementary effects)
+2. Select a *Design of Experiments* (DoE) strategy
+3. Evaluate multiple runs per configuration
+4. If required, fit a *meta-model*
+5. Compute the sensitivity analysis *statistics*
+6. Explore the *response surfaces*
+
+*Good news:* LSD (+R) can handle this through a NNF approach
+
+*** Note on screening
+
+As the model is small, we will skip screening and jump directly to metamodels
+
+
+** Parametric space
+
+
+|------------+----------------------------------+----------+--------+------|
+|            |               Desc               | Baseline |  Min   | Max  |
+|------------+----------------------------------+----------+--------+------|
+|    <c>     |               <c>                |   <c>    |  <c>   | <c>  |
+|   \(\eta\)    |  Innovation opportunity support  |   0.3    |  0.0   | 0.7  |
+| \(\beta_{1}, \beta_{2}\) |   beta distribution parameters   | 1.0; 5.0 |  1; 3  | 3;10 |
+|   \(A\)    |  replicator dynamics intensity   |    1     |  0.2   |  5   |
+|  \(s_{min}\)  | minimum market share to not exit |   0.01   | 0.0001 | 0.01 |
+|   \(NF\)   |         number of firms          |    10    |   10   | 350  |
+|------------+----------------------------------+----------+--------+------|
+
+*** Monte Carlo vs Near Orthogonal Latin Hypercube
+
+- All combinations possible (MC): 64 (x 5)
+- NOLH: 43 (x 5)
+
+
+** Exploring the industry model
+
+Load [[file:Industry_SummerSchool/R/data/Sim-Sobol.lsd][R/data/Sim-Sobol.lsd]] file in LSD
+   1. This is a copy of [[file:Industry_SummerSchool/Sim1.lsd][Sim1.lsd]] with 5 simulation runs
+2. Load sensitivity analysis configuration (*File > Load sensitivity...*) and choose [[file:Industry_SummerSchool/R/Sim-Sobol.sa][R/Sim-Sobol.sa]]
+3. Set the DoE (*Data > Sensitivity Analysis > NOHL sampling*)
+   1. Select *Extended number of samples*, hit *OK* and accepts the default
+4. Run a *parallel batch* (Run > Parallel Batch) to produce the results files (accept the defaults)
+5. Let's jump into R(studio) and create a project under the *R* folder
+6. Select the *sobol-SA.R* and hit source
+
+*** Before checking the results
+
+Which parameters do you expect to most influence *HHI*? What about *aAvg*?
+
+** Sobol decomposition indexes (HHI)
+
+#+begin_export latex
+\begin{center}
+\includegraphics[height=.875\textheight,page=4]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
+\end{center}
+#+end_export
+
+
+** Meta-model response I
+
+#+begin_export latex
+\begin{center}
+\includegraphics[height=.85\textheight,page=5]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
+\end{center}
+#+end_export
+
+** Meta-model response II
+
+#+begin_export latex
+\begin{center}
+\includegraphics[height=.85\textheight,page=6]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
+\end{center}
+#+end_export
+
+** Meta-model response III
+
+#+begin_export latex
+\begin{center}
+\includegraphics[height=.85\textheight,page=7]{./Industry_SummerSchool/R/data/Sim-Sobol_kriging_HHI.pdf}
+\end{center}
+#+end_export
+
+
+** Bonus Activity
+
+- In the Rscript, uncomment src_R{varName <- "aAvg"} and source the file again
+- Open the resulting PDF file
+- Analyze the results and contrast with your expectations
+- What are the economic intuition associated with these parameters?
+
+
+** Phew!
+
+
+
+#+begin_export latex
+
+Our papers are available at:
+
+\faNewspaper\ \texttt{http://www.lem.sssup.it/wplem.html}\\
+
+You can reach me at:
+
+\faEnvelope\ \texttt{gpetrinidasilveira@gmail.com} \\
+\faGithub\ \texttt{github.com/gpetrini} \\
+\faOrcid & \texttt{https://orcid.org/0000-0002-3523-9826} \\
+
+\\\Huge{Thank you!}
+#+end_export

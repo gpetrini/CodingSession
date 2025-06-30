@@ -1,0 +1,357 @@
+#+OPTIONS: H:2 toc: ':t |: t
+#+TITLE: ABM Macro Lab: Agent-based Modelling Tools
+#+SUBTITLE: Session 02
+#+AUTHOR: Gabriel Petrini
+#+DATE: July, 2025
+#+email: gpetrinidasilveira@gmail.com
+#+BIBLIOGRAPHY: ~/Org/zotero_refs.bib
+#+CITE_EXPORT: biblatex authoryear
+#+language: en
+#+PROPERTY: header-args :eval never-export :exports code
+
+* Industry cpp file :noexport:
+
+
+#+name: main-cpp
+#+begin_src cpp :eval no :noweb yes :main no :tangle ./Industry_SummerSchool/fun_complete.cpp
+// Script created using tangle and noweb features of org-mode
+
+#include "fun_head_fast.h"
+
+MODELBEGIN
+
+
+<<EQ-init>>
+
+<<EQ-a>>
+
+<<EQ-s>>
+
+<<EQ-exit>>
+
+<<EQ-aAvg>>
+
+<<EQ-entry-exit>>
+
+<<EQ-hhi>>
+
+MODELEND
+
+
+void close_sim(void)
+{
+
+}
+#+end_src
+
+* Beamer specific settings :ignore:noexport:
+
+#+LATEX_HEADER: \usepackage{caption, subcaption, csquotes, amssymb, xcolor}
+#+LATEX_HEADER: \usepackage[english]{babel}
+#+beamer_frame_level: 1
+#+startup: beamer
+#+latex_class_options: [bigger,aspectratio=169]
+# #+BEAMER_THEME: Dresden
+# #+BEAMER_THEME: Pittsburgh
+#+BEAMER_THEME: metropolis
+#+BEAMER_COLOR_THEME: beaver
+#+LATEX_HEADER: \titlegraphic{\includesvg[height=1cm]{./figs/IE_Unicamp}\hspace*{1.25cm}\includesvg[height=1cm]{./figs/SSSA}\hspace*{1.25cm} \includesvg[height=1cm]{./figs/YSI}}
+#+LATEX_HEADER: \AtBeginSection[]{
+#+LATEX_HEADER:   \begin{frame}{Outline}
+#+LATEX_HEADER:     \tableofcontents[currentsection]
+#+LATEX_HEADER:   \end{frame}
+#+LATEX_HEADER: }
+
+* LaTex packages :noexport:ignore:
+
+
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{amsfonts}
+#+LATEX_HEADER: \usepackage{amssymb}
+#+LATEX_HEADER: \usepackage{multicol}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage{textpos}
+#+LATEX_HEADER: \usepackage{caption}
+#+LATEX_HEADER: \usepackage{subfig}
+#+LATEX_HEADER: \usepackage{svg}
+#+LATEX_HEADER: \usepackage{pgfpages}
+#+LATEX_HEADER: \usepackage{epstopdf}
+#+LATEX_HEADER: \epstopdfsetup{update} % only regenerate if changed
+#+LATEX_HEADER: \DeclareGraphicsRule{.eps}{pdf}{.pdf}{`epstopdf #1}
+# #+latex_header: \usepackage{minted}
+# #+latex_header: \setminted{autogobble,fontsize=\footnotesize}
+# #+LATEX_HEADER: \usemintedstyle{perldoc}
+#+latex_header: \usepackage{tikz}
+#+latex_header: \usetikzlibrary{arrows.meta, positioning, shapes}
+#+LATEX_HEADER: \usepackage{fontawesome5}
+
+
+* Technical review
+
+** Simulation pipeline
+
+As a recap, whenever running a model on LSD, we need to:
+
+1. Design a model (on paper);
+2. Write the code implementing the equation;
+3. Define the model structure and initialization;
+4. Run the simulation;
+5. Analyze the results.
+
+*** Where are we and where are we going?
+
+In the previous session, we implemented two different small models.
+Now, we will focus on a economic ABM.
+
+
+
+* Theoretical model presentation
+
+
+#+include: "Model.org::*Sequence of events" :levels 2
+
+#+include: "Model.org::*Equations" :levels 2
+
+#+include: "Model.org::*Parameters and initial values" :levels 2
+
+#+include: "Model.org::*Model structure and data organization" :levels 2
+
+
+* Model implementation
+
+** Firm-level productivity (\(a_{i}\)_{})
+
+#+begin_export latex
+\begin{equation}
+a_{i,t} = a_{i,t-1}\cdot (1 + \theta_{i,t})
+\end{equation}
+#+end_export
+
+
+#+name: EQ-a
+#+begin_src cpp :eval no :noweb yes
+EQUATION("a")
+// Firm knowledge/productivity
+v[0] = CURRENT;
+v[1] = V("eta"); v[2] = V("beta1"); v[3] = V("beta2");
+v[4] = beta(v[2], v[3]);
+v[5] = v[0] * (1 + v[1] * v[4]);
+RESULT(v[5])
+#+end_src
+
+
+*** One-liner
+
+#+begin_src cpp :eval no :noweb yes :tangle no
+EQUATION("a")
+RESULT(VL("a", 1) * (1 + V("eta") * (beta(V("beta1"), V("beta2")))))
+#+end_src
+
+** Market-share (\(s_{i}\))
+
+#+begin_export latex
+\begin{equation}
+s_{i,t} = s_{i,t-1} \cdot \left( 1 + A\cdot\frac{a_{i,t} - \bar{a}_{t}}{\bar{a}_{t}}\right)
+\end{equation}
+#+end_export
+
+
+#+name: EQ-s
+#+begin_src cpp :eval no :noweb yes
+EQUATION("s")
+// Firm size/market share
+v[0] = CURRENT;
+v[1] = V("A"); v[2] = V("a"); v[3] = V("aAvg");
+v[4] = (v[2] - v[3])/v[3];
+v[5] = v[0] * (1 + v[1] * v[4]);
+RESULT(v[5])
+#+end_src
+
+
+*** One-liner
+
+#+begin_src cpp :eval no :noweb yes :tangle no
+EQUATION("s") // Firm size/market share
+RESULT(VL("s", 1) * (1 + V("A") * ((V("a") - V("aAvg"))/V("aAvg"))))
+#+end_src
+
+** Exit condition
+
+
+#+name: EQ-exit
+#+begin_src cpp :eval no :noweb yes
+EQUATION("exit_decision")
+
+v[0] = V("s"); v[1] = V("sMin");
+// update entrant firm productivity and market share
+if (v[0] < v[1]) {
+  v[2] = V("eta"); v[3] = V("beta1"); v[4] = V("beta2");
+  v[5] = beta(v[3], v[4]);
+  v[6] = V("aAvg");
+  v[7] = v[6] * (1 + v[2] * v[5]);
+  WRITE( "a", v[7] );
+  WRITE( "s", 1 / COUNT( "Firm" ) );
+}
+RESULT(0)
+#+end_src
+
+** Market-level Productivity (Weighted) Average (\(\bar{a_{t}}\))
+
+#+begin_export latex
+\begin{equation}
+\bar{a}_{t} =  \sum_{i=1}^{NF} s_{i, t-1}\cdot a_{i,t}
+\end{equation}
+#+end_export
+
+
+#+name: EQ-aAvg
+#+begin_src cpp :eval no :noweb yes
+EQUATION( "aAvg" )
+// Mean knowledge/productivity
+v[0] = 0;        // accumulator
+CYCLE(cur, "Firm") {
+  v[1] = VLS( cur, "s", 1 );
+  v[2] = VS( cur, "a" );
+  v[3] = v[1] * v[2];
+  v[0] += v[3] ;
+}
+RESULT( v[0] )
+#+end_src
+
+
+** Entry-Exit condition
+
+
+#+name: EQ-Entry-Exit
+#+begin_src cpp :eval no :noweb yes
+EQUATION( "exit_entry" )
+// Trigger market-wise exit-entry dynamics and re-scale shares
+V( "HHI" ); // first, compute HH index before exits
+
+// second, ensure firms have decided on exit
+CYCLE(cur, "Firm") {VS( cur, "exit_decision" );}
+
+v[0] = 1 / SUM( "s" ); // factor to scale back to sum = 1
+CYCLE(cur, "Firm") { // third, rescale market shares after exits
+  v[1] = VS( cur, "s" );
+  v[2] = v[0] * v[1];
+  WRITES( cur, "s", v[2]);
+}
+RESULT( SUM("s") )
+#+end_src
+
+
+** Herfindahl-Hirschman concentration index (\(HHI\))
+
+#+begin_export latex
+\begin{equation}
+HHI_{t} = \sum_{i=1}^{NF} (s_{i})^2
+\end{equation}
+#+end_export
+
+
+#+name: EQ-hhi
+#+begin_src cpp :eval no :noweb yes
+EQUATION( "HHI" )
+// Herfindahl-Hirschman concentration index
+v[0] = WHTAVE( "s", "s" );
+RESULT( v[0] )
+#+end_src
+
+*** Note on WHTAVE(LS)
+
+=WHTAVE= (weighed average, not used here in the strict sense) computes the sum of \(s\times s\) over every firm
+
+
+* Model initialization
+
+** Initialization I
+
+Firm-level initialization can be set for every \(NF\) objects on the LSD browser.
+The same applies for every other initial condition.
+
+Whenever changing the number of firms \(NF\), it is important to also a compatible initial market-share \(1/NF\).
+This procedure should be done for every firm (instance) of the model.
+
+In the following slide (optional), we will see an alternative way in which we control some few parameters and create \(NF-1\) copies of a example object.
+
+#+begin_src cpp
+ADDNOBJ_EX("TypeOfAgent", number, *pointer);
+#+end_src
+
+
+*** Semi-automated initialization and sensitivity analysis
+
+By doing this, we automate the model initialization to test different model configurations (next lecture)
+
+
+** Initialization II
+
+
+#+name: EQ-init
+#+begin_src cpp :eval no :noweb yes
+EQUATION( "init" )
+PARAMETER;                  // turn into parameter (run once)
+// finds the agent on memory
+cur = SEARCH( "Market" ); cur1 = SEARCHS(cur, "Firm" );
+
+v[0] = V("A0"); // We define
+v[1] = V("Nfirm"); // We define
+v[2] = 1 / v[1]; // Fair share
+// Overwrites the lag 1 of "a" to v[0] at time 1
+WRITELLS(cur1, "a", v[0], 1, 1);
+WRITELLS(cur1, "s", v[2], 1, 1);
+// Adds N - 1 copies of cur1 agent located under cur
+ADDNOBJ_EXS(cur, "Firm", v[1] - 1, cur1);
+RESULT( 1 )
+#+end_src
+
+* Simulations
+
+** Analyzing the model results
+
+- After a successful simulation run, in *Browser* click on menu *Data > Analysis of Results*
+- To analyze the /saved/ data time series, select the desired variables from the *Series available* list to include them in the *Series selected* list
+- Click on *Plot* button to show the selected variable(s) time series plot
+- Click on *Statistics* button to show the selected time series descriptive statistics in *LSD Log*
+- Plots and analysis data can be /saved/ pressing the *Save Plot* and *Save Data* buttons
+
+
+** Exploring the single run results
+
+#+begin_export latex
+\begin{figure}[ht]
+    % First row: Market-level data
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includesvg[width=\linewidth, height=.3\textheight]{./figs/single_avg_log_productivity.svg}
+        \caption{Average log-productivity ($a$)}
+        \label{fig:avg_prod}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includesvg[width=\linewidth, height=.3\textheight]{./figs/single_firm_log_productivity.svg}
+        \caption{Firm log-productivity ($a$)}
+        \label{fig:firm_prod}
+    \end{subfigure}
+
+    % Second row: Firm-level data
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includesvg[width=\linewidth, height=.3\textheight]{./figs/single_HHI.svg}
+        \caption{Herfindahl-Hirschman Index (HHI)}
+        \label{fig:hhi}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \centering
+        \includesvg[width=\linewidth, height=.3\textheight]{./figs/single_firm_market_share.svg}
+        \caption{Firm market share ($s$)}
+        \label{fig:market_share}
+    \end{subfigure}
+    \label{single-run-industry}
+\end{figure}
+#+end_export

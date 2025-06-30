@@ -11,7 +11,7 @@
 
 * Beamer specific settings :ignore:noexport:
 
-#+LATEX_HEADER: \usepackage{caption, subcaption, csquotes, amssymb, xcolor}
+#+LATEX_HEADER: \usepackage{caption, subcaption, csquotes, amssymb, xcolor, svg}
 #+LATEX_HEADER: \usepackage[english]{babel}
 #+beamer_frame_level: 1
 #+startup: beamer
@@ -64,13 +64,66 @@
 - Session III (Today) :: Q&A, bug fixes, and analysis of results and Monte Carlo Experiment
 
 
+** Lost? I
+
+In case you are lost, here are some few-liner to catch up (code may differ)?
+
+#+begin_src cpp :tangle no :eval no
+EQUATION( "a" )
+// Firm knowledge/productivity
+RESULT( VL( "a", 1 ) * ( 1 + V( "eta" ) * beta( V( "beta1" ), V( "beta2" ) ) ) )
+
+EQUATION( "s" )
+// Firm size/market share
+RESULT( VL( "s", 1 ) * ( 1 + V( "A" ) * ( V( "a" ) - V( "aAvg" ) ) / V( "aAvg" ) ) )
+
+EQUATION( "HHI" )
+// Herfindahl-Hirschman concentration index
+RESULT( WHTAVE( "s", "s" ) )
+
+#+end_src
+
+** Lost? II
+
+
+#+begin_src cpp :tangle no :eval no
+EQUATION( "exit_decision" )
+if ( V( "s" ) < V( "sMin" ) ) {
+    WRITE( "a", V( "aAvg" ) * ( 1 + V( "eta" ) * beta( V( "beta1" ), V( "beta2" ) ) ) );
+    WRITE( "s", 1 / COUNT( "Firm" ) );
+}
+RESULT( 0 )
+
+EQUATION( "aAvg" )
+// Mean knowledge/productivity
+v[0] = 0;        // accumulator
+CYCLE( cur, "Firm" )
+    v[0] += VLS( cur, "s", 1 ) * VS( cur, "a" );
+RESULT( v[0] )
+#+end_src
+
+** Lost? III
+
+
+#+begin_src cpp :tangle no :eval no
+EQUATION( "exit_entry" )
+// Trigger market-wise exit-entry dynamics and re-scale shares
+V( "HHI" ); // first, compute HH index before exits
+CYCLE( cur, "Firm" ) // second, ensure firms have decided on exit
+    VS( cur, "exit_decision" );
+v[0] = 1 / SUM( "s" );// factor to scale back to sum = 1
+CYCLE( cur, "Firm" ) // third, rescale market shares after exits
+    WRITES( cur, "s", v[0] * VS( cur, "s" ) );
+RESULT(0)
+#+end_src
+
 * Activities
 
 
 ** Activity I
 
 
-1. Show that average productivity (=aAvg=) is always between than maximum and minimum productivities
+1. Show that average productivity (=aAvg=) is always between a maximum and minimum productivities
 2. Check that the total market share of firms is constant and equal to 1
 3. Increase (1) the number of firms to 150, (2) the exit threshold =sMin= to 0.001, and the number of simulation steps.
 4. Run and analyze the results. What are the main differences?
@@ -102,7 +155,7 @@
 4. The Monte Carlo analysis uncovers a potential problem with this simplified version of the model, try to identify it, and to reason if it can invalidate the results obtained
 
 
-* TODO Simple parameter sensitivity check
+* Simple parameter sensitivity check
 
 ** Introduction
 
@@ -118,7 +171,7 @@ LSD has some ways to automatize this task for us.
 
 ** Setting the DoE I
 
-1. Load =Sim1.lsd= and save it as =Sim2.lsd=
+1. Load =Sim1.lsd= and save it as =Sim1_DoE.lsd=
 2. Right click on =A= and select *Sensitivity*
 3. On the new window, specify the parameter range as follows:
 
@@ -140,10 +193,10 @@ Next, repeat the same for =eta=
 |       |              Desc              | Baseline | Min | Max |
 |-------+--------------------------------+----------+-----+-----|
 |  <c>  |              <c>               |   <c>    | <c> | <c> |
-| \(\eta\) | Innovation opportunity support |   0.3    | 0.0 | 0.7 |
+| \(\eta\) | Innovation opportunity support |   0.3    | 0.1 | 0.7 |
 | \(A\) | replicator dynamics intensity  |    1     | 0.2 |  5  |
 |-------+--------------------------------+----------+-----+-----|
-- eta :: ==0.0:0.7@3%L=
+- eta :: ==0.1:0.7@3%L=
 - A :: ==0.2:5@3%L=
 
 ** Setting the DoE II
@@ -164,7 +217,14 @@ Set your own parametric ranges (choose an small number for =NUM=).
 - What is the economic intuition of this?
 - How can we efficiently repeat this for all other parameters and initial conditions?
 
-** TODO Visualizing this experiment
+** Visualizing this experiment
+
+
+#+begin_export latex
+\begin{center}
+\includesvg[height=.85\textheight]{./figs/Full_DoE.svg}
+\end{center}
+#+end_export
 
 * Primer on sensitivity analysis (Bonus)
 

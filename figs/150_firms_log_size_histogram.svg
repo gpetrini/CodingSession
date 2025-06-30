@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"  version="1.1" width="732.0" height="389.0" viewBox="-6.0 -13.0 726.0 376.0">
+	<desc>LSD Plot - Baseline-150-firms</desc>
+	<polyline points="214.0,6.0 214.0,304.0" fill="none" stroke="#33393b" />
+	<polyline points="364.0,6.0 364.0,304.0" fill="none" stroke="#33393b" />
+	<polyline points="514.0,6.0 514.0,304.0" fill="none" stroke="#33393b" />
+	<polyline points="65.0,80.0 663.0,80.0" fill="none" stroke="#33393b" />
+	<polyline points="65.0,155.0 663.0,155.0" fill="none" stroke="#33393b" />
+	<polyline points="65.0,230.0 663.0,230.0" fill="none" stroke="#33393b" />
+	<text x="5.0" y="351.0" font-family="Nimbus Sans" font-size="12pt">t = 200 </text>
+	<rect x="64.0" y="290.0" width="24.0" height="15.0" fill="#ff6347" stroke="#000000" />
+	<rect x="112.0" y="290.0" width="24.0" height="15.0" fill="#ff6347" stroke="#000000" />
+	<rect x="136.0" y="274.0" width="23.0" height="31.0" fill="#ff6347" stroke="#000000" />
+	<rect x="159.0" y="258.0" width="24.0" height="47.0" fill="#ff6347" stroke="#000000" />
+	<rect x="207.0" y="242.0" width="25.0" height="63.0" fill="#ff6347" stroke="#000000" />
+	<rect x="232.0" y="242.0" width="24.0" height="63.0" fill="#ff6347" stroke="#000000" />
+	<rect x="256.0" y="163.0" width="24.0" height="142.0" fill="#ff6347" stroke="#000000" />
+	<rect x="280.0" y="116.0" width="23.0" height="189.0" fill="#ff6347" stroke="#000000" />
+	<rect x="303.0" y="53.0" width="24.0" height="252.0" fill="#ff6347" stroke="#000000" />
+	<rect x="327.0" y="37.0" width="24.0" height="268.0" fill="#ff6347" stroke="#000000" />
+	<rect x="351.0" y="100.0" width="25.0" height="205.0" fill="#ff6347" stroke="#000000" />
+	<rect x="376.0" y="5.0" width="24.0" height="300.0" fill="#ff6347" stroke="#000000" />
+	<rect x="400.0" y="211.0" width="24.0" height="94.0" fill="#ff6347" stroke="#000000" />
+	<rect x="424.0" y="21.0" width="23.0" height="284.0" fill="#ff6347" stroke="#000000" />
+	<rect x="447.0" y="211.0" width="24.0" height="94.0" fill="#ff6347" stroke="#000000" />
+	<rect x="471.0" y="179.0" width="24.0" height="126.0" fill="#ff6347" stroke="#000000" />
+	<rect x="495.0" y="290.0" width="25.0" height="15.0" fill="#ff6347" stroke="#000000" />
+	<rect x="520.0" y="211.0" width="24.0" height="94.0" fill="#ff6347" stroke="#000000" />
+	<rect x="544.0" y="290.0" width="24.0" height="15.0" fill="#ff6347" stroke="#000000" />
+	<rect x="568.0" y="290.0" width="23.0" height="15.0" fill="#ff6347" stroke="#000000" />
+	<rect x="591.0" y="290.0" width="24.0" height="15.0" fill="#ff6347" stroke="#000000" />
+	<rect x="639.0" y="290.0" width="25.0" height="15.0" fill="#ff6347" stroke="#000000" />
+	<polyline points="64.0,5.0 664.0,5.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="64.0,305.0 664.0,305.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="64.0,305.0 64.0,310.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="214.0,305.0 214.0,310.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="364.0,305.0 364.0,310.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="514.0,305.0 514.0,310.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="664.0,305.0 664.0,310.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="64.0,5.0 64.0,305.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="664.0,5.0 664.0,305.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="59.0,5.0 64.0,5.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="664.0,5.0 669.0,5.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="59.0,80.0 64.0,80.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="664.0,80.0 669.0,80.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="59.0,155.0 64.0,155.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="664.0,155.0 669.0,155.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="59.0,230.0 64.0,230.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="664.0,230.0 669.0,230.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="59.0,305.0 64.0,305.0" fill="none" stroke="#b3b3b3" />
+	<polyline points="664.0,305.0 669.0,305.0" fill="none" stroke="#b3b3b3" />
+	<text x="64.0" y="329.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt" text-anchor="middle">19.9</text>
+	<text x="214.0" y="329.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt" text-anchor="middle">20</text>
+	<text x="364.0" y="329.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt" text-anchor="middle">20.2</text>
+	<text x="514.0" y="329.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt" text-anchor="middle">20.3</text>
+	<text x="664.0" y="329.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt" text-anchor="middle">20.5</text>
+	<text x="54.0" y="8.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt" text-anchor="end">0.127</text>
+	<text x="674.0" y="8.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt">19</text>
+	<text x="54.0" y="83.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt" text-anchor="end">0.095</text>
+	<text x="674.0" y="83.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt">14.2</text>
+	<text x="54.0" y="158.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt" text-anchor="end">0.0633</text>
+	<text x="674.0" y="158.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt">9.5</text>
+	<text x="54.0" y="233.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt" text-anchor="end">0.0317</text>
+	<text x="674.0" y="233.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt">4.75</text>
+	<text x="54.0" y="308.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt" text-anchor="end">0</text>
+	<text x="674.0" y="308.0" fill="#b3b3b3" font-family="Nimbus Sans" font-size="12pt">0</text>
+</svg>

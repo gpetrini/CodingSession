@@ -36,3 +36,4 @@
 
 etc/*
 !./figs/Macros_LSD.pdf
+!./figs/LSD_Macros_ScreenShot.png

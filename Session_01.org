@@ -572,7 +572,7 @@ Subsequently it becomes chaotic, although in some areas the density of the point
 * The industry model
 
 
-** Where are we aand where are we going?
+** Where are we and where are we going?
 
 So far, we implemented a small non-economic model.
 On the following lectures, we will focus on the *industry model*.
@@ -584,4 +584,4 @@ On the following lectures, we will focus on the *industry model*.
 
 #+include: "Model.org::*Equations" :level 2
 
-#+include: "Model.org::*DAG of industry model" :level 2
+#+include: "Model.org::*Graph of industry model" :level 2

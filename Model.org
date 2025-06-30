@@ -109,7 +109,7 @@ The exit-entry process is time-coordinated during each simulated time step by th
 |   \(s_{i}\)    |          Initial Firm market-share          | \(1/NF\) |
 |-------------+---------------------------------------------+----------|
 
-* Model structure and data organization II
+* Model structure and data organization
 
 #+caption: Structure of industry model
 #+ATTR_LATEX: :width .8\textwidth :height .75\textheight :float t :options [clip,trim=0 0 0 0]

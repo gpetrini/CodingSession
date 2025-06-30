@@ -7,7 +7,7 @@
 #+BIBLIOGRAPHY: ~/Org/zotero_refs.bib
 #+CITE_EXPORT: biblatex authoryear
 #+language: en
-#+PROPERTY: header-args :eval never-export :exports code
+#+PROPERTY: header-args :eval never-export :exports code :tangle no
 
 
 * Industry cpp file :noexport:

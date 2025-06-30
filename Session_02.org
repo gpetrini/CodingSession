@@ -121,11 +121,11 @@ Now, we will focus on a economic ABM.
 
 * Model implementation
 
-** Firm-level productivity (\(a_{i}\)_{})
+** Firm-level productivity (\(a_i\))
 
 #+begin_export latex
 \begin{equation}
-a_{i,t} = a_{i,t-1}\cdot (1 + \theta_{i,t})
+a_{i,t} = a_{i,t-1}\cdot (1 + \eta\cdot\theta_{i,t})
 \end{equation}
 #+end_export
 

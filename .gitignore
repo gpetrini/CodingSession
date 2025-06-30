@@ -35,3 +35,4 @@
 *lsdNW
 
 etc/*
+!./figs/Macros_LSD.pdf

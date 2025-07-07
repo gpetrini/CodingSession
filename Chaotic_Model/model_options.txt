@@ -1,6 +1,6 @@
 # LSD options
 TARGET=LSD
-FUN=fun_chaos_complete
+FUN=fun_chaos
 
 # Additional model files
 FUN_EXTRA=

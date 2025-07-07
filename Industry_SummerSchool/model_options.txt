@@ -1,6 +1,6 @@
 # LSD options
 TARGET=LSD
-FUN=fun_complete
+FUN=fun_industry
 
 # Additional model files
 FUN_EXTRA=

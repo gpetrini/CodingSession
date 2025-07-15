@@ -1,0 +1,78 @@
+	
+Label Root
+{
+	Son: Obj1
+	Label Obj1
+	{
+
+	}
+
+	Var: X
+	Param: m
+
+}
+
+
+DATA
+
+Object: Root C	1
+Var: X 1 s + n n	0.5
+Param: m 0 n + n n	2
+
+Object: Obj1 C	1
+
+SIM_NUM 1
+SEED 1
+MAX_STEP 100
+EQUATION fun_chaos.cpp
+MODELREPORT report_Test.html
+
+DESCRIPTION
+
+Object_Root
+
+END_DESCRIPTION
+
+Variable_X
+
+_INIT_
+All 1 instances equal to 0.5
+END_DESCRIPTION
+
+Parameter_m
+
+_INIT_
+All 1 instances equal to 2
+END_DESCRIPTION
+
+Object_Obj1
+
+END_DESCRIPTION
+
+
+DOCUOBSERVE
+
+END_DOCUOBSERVE
+
+
+DOCUINITIAL
+
+END_DOCUINITIAL
+
+
+EQ_FILE
+#include "fun_head.h" // This is mandatory
+
+MODELBEGIN
+
+// Your code goes here
+EQUATION("X")
+v[0] = VL("X",1);
+v[1] = V("m");
+v[2] = v[1]*v[0]*(1-v[0]);
+RESULT(v[2])
+
+MODELEND
+void close_sim(void) {}
+
+END_EQ_FILE
